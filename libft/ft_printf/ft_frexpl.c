@@ -13,9 +13,9 @@
 #include "ft_printf.h"
 
 /*
-*	fill_nb fills the string "nb_str" with 0's and 1's from "temp"
+*	fill_nb fills the string "str" with 0's and 1's from "temp"
 */
-static void	fill_nb(char *nb_str, unsigned char *temp)
+static void	fill_nb(char *str, unsigned char *temp)
 {
 	int	i;
 	int	j;
@@ -30,16 +30,16 @@ static void	fill_nb(char *nb_str, unsigned char *temp)
 		while (j < 8)
 		{
 			if (temp[i] & 1)
-				nb_str[k] = '1';
+				str[k] = '1';
 			else
-				nb_str[k] = '0';
+				str[k] = '0';
 			temp[i] >>= 1;
 			k++;
 			j++;
 		}
 		i++;
 	}
-	nb_str[k] = '\0';
+	str[k] = '\0';
 }
 
 /*

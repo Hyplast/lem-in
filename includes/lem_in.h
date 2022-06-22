@@ -56,15 +56,14 @@ typedef struct s_ant
 }				t_ant;
 
 t_lem_in	*lem_in_init(void);
-void		lem_in_free(s_stuct_lem_in *lem_in);
-void		lem_in_add_room(s_stuct_lem_in *lem_in, char *name, int x, int y);
-void		lem_in_add_link(s_stuct_lem_in *lem_in, char *name1, char *name2);
-void		lem_in_add_ant(s_stuct_lem_in *lem_in, int ant_id, char *room_name);
-void		lem_in_add_move(s_stuct_lem_in *lem_in, int ant_id,
-				char *room_name);
-void		lem_in_add_comment(s_stuct_lem_in *lem_in, char *comment);
-void		lem_in_add_error(s_stuct_lem_in *lem_in, char *error);
-void		lem_in_add_warning(s_stuct_lem_in *lem_in, char *warning);
-void		lem_in_add_debug(s_stuct_lem_in *lem_in, char *debug);
+void		lem_in_free(t_lem_in *lem_in);
+void		lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y);
+void		lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2);
+void		lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name);
+void		lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name);
+void		lem_in_add_comment(t_lem_in *lem_in, char *comment);
+void		lem_in_add_error(t_lem_in *lem_in, char *error);
+void		lem_in_add_warning(t_lem_in *lem_in, char *warning);
+void		lem_in_add_debug(t_lem_in *lem_in, char *debug);
 
 #endif
