@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libft.h"
 
 static int	ft_look_for_nl(char **static_var, char **line)
 {

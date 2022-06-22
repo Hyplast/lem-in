@@ -13,6 +13,7 @@
 NAME = lem-in
 
 SRC = lem_in.c \
+init.c \
 
 SRCS = $(addprefix srcs/, $(SRC))
 
@@ -47,7 +48,7 @@ dir:
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJS): obj/%.o : srcs/%.c
-	@$(CC) $(CFLAGS) -I $(INC) -I $(LIB_INC) -c $< -o $@ 
+	$(CC) $(CFLAGS) -I $(INC) -I $(LIB_INC) -c $< -o $@ 
 
 debug: dir $(OBJS_DEBUG) $(DEBUG_NAME)
 	@make -C libft/

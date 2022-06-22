@@ -13,11 +13,9 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
-# include <stdlib.h>
-# include <unistd.h>
 # include <stdio.h>
-# include <string.h>
-# include <fcntl.h>
+# include "ft_printf.h"
+# include "get_next_line.h"
 
 typedef struct s_lem_in
 {
