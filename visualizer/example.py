@@ -1,7 +1,69 @@
 import vpython as vp
-ball=vp.sphere(pos=vp.vector(0,0,0),radius=0.5,color=vp.color.red)
+from time import sleep
+
+nestR=.25
+antSize=vp.vector(.11,.05,.03)
+antPos=vp.vector(0,0,0)
+antRot=vp.vector(0,0,0)
+antColor=vp.color.red
+ant=vp.box(pos=antPos,size=antSize,color=antColor,axis=antRot)
+
+ball=vp.sphere(pos=vp.vector(0,0,0),radius=0.1,color=vp.color.red)
+nest1=vp.sphere(pos=vp.vector(3,0,0),radius=nestR,color=vp.color.orange)
+nest2=vp.sphere(pos=vp.vector(-3,0,3),radius=nestR,color=vp.color.yellow)
+nest3=vp.sphere(pos=vp.vector(-3,3,0),radius=nestR,color=vp.color.green)
+sleep(2)
+ball.color=vp.color.blue
+ant1 = vp.box(pos=vp.vector(1,1,1),size=antSize,color=vp.color.blue)
+ant2 = vp.box(pos=vp.vector(1,1,2),size=antSize,color=vp.color.green)
+
+# ant1.color=vp.color.red
+# ant2.color=vp.color.green
+
+deltaX=vp.vector(.1,0,0)
+xPos=vp.vector(0,0,0)
+
+
 while True:
-	pass
+	vp.rate(10)
+	xPos = xPos + deltaX
+	ant1.pos=xPos
+	# xPos+=deltaX
+	if xPos.x>3:
+		deltaX.x=-deltaX.x
+	if xPos.x<-3:
+		deltaX.x=-deltaX.x
+	if xPos.y>3:
+		deltaX.y=-deltaX.y
+	if xPos.y<-3:
+		deltaX.y=-deltaX.y
+	if xPos.z>3:
+		deltaX.z=-deltaX.z
+	if xPos.z<-3:
+		deltaX.z=-deltaX.z
+	# if xPos.x>3 and xPos.y>3 and xPos.z>3:
+	# 	deltaX.x=-deltaX.x
+	# 	deltaX.y=-deltaX.y
+	# 	deltaX.z=-deltaX.z
+	# if xPos.x<-3 and xPos.y<-3 and xPos.z<-3:
+	# 	deltaX.x=-deltaX.x
+	# 	deltaX.y=-deltaX.y
+	# 	deltaX.z=-deltaX.z
+	# if xPos.x>3 and xPos.y>3 and xPos.z<-3:
+	# 	deltaX.x=-deltaX.x
+	# 	deltaX.y=-deltaX.y
+	# 	deltaX.z=-deltaX.z
+	# if xPos.x<-3 and xPos.y<-3 and xPos.z>3:
+	# 	deltaX.x=-deltaX.x
+	# 	deltaX.y=-deltaX.y
+	# 	deltaX.z=-deltaX.z
+	# if xPos.x>3 and xPos.y<-3 and xPos.z>3:
+	# 	deltaX.x=-deltaX.x
+	# 	deltaX.y=-deltaX.y
+	# 	deltaX.z=-deltaX.z
+
+
+
 
 # ball = vp.sphere(pos=vp.vector(0, 0, 0), radius=0.5, color=vp.color.red)
 # ball.velocity = vp.vector(0, 0, 0)
