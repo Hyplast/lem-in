@@ -12,98 +12,82 @@
 
 #include lem_in.h
 
-free_lem_in(lem_in)
+void	free_lem_in(t_lem_in *lem_in)
 {
-    free(lem_in->rooms);
-    free(lem_in->links);
-    free(lem_in->ants);
-    free(lem_in->moves);
-    free(lem_in->comments);
-    free(lem_in->errors);
-    free(lem_in->warnings);
-    free(lem_in->debugs);
-    free(lem_in);
+	free(lem_in->rooms);
+	free(lem_in->links);
+	free(lem_in->ants);
+	free(lem_in->moves);
+	free(lem_in);
 }
 
-lem_in_add_room(lem_in, name, x, y)
+void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 {
-    s_room *room;
+	t_room	*room;
 
-    room = (s_room *)malloc(sizeof(s_room));
-    room->name = name;
-    room->x = x;
-    room->y = y;
-    room->next = lem_in->rooms;
-    lem_in->rooms = room;
-
+	room = (s_room *)malloc(sizeof(s_room));
+	room->name = name;
+	room->x = x;
+	room->y = y;
+	room->next = lem_in->rooms;
+	lem_in->rooms = room;
 }
 
-lem_in_add_link(lem_in, name1, name2)
+void	lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2)
 {
-    s_link *link;
+	t_link	*link;
 
-    link = (s_link *)malloc(sizeof(s_link));
-    link->name1 = name1;
-    link->name2 = name2;
-    link->next = lem_in->links;
-    lem_in->links = link;
-
+	link = (t_link *)malloc(sizeof(s_link));
+	link->name1 = name1;
+	link->name2 = name2;
+	link->next = lem_in->links;
+	lem_in->links = link;
 }
 
-lem_in_add_ant(lem_in, ant_id, room_name)
+void	lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name)
 {
-    s_ant *ant;
+	s_ant	*ant;
 
-    ant = (s_ant *)malloc(sizeof(s_ant));
-    ant->ant_id = ant_id;
-    ant->room_name = room_name;
-    ant->next = lem_in->ants;
-    lem_in->ants = ant;
-
+	ant = (t_ant *)malloc(sizeof(s_ant));
+	ant->ant_id = ant_id;
+	ant->room_name = room_name;
+	ant->next = lem_in->ants;
+	lem_in->ants = ant;
 }
 
-lem_in_add_move(lem_in, ant_id, room_name)
+void	lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name)
 {
-    s_move *move;
+	s_move	*move;
+
+	move = (t_move *)malloc(sizeof(s_move));
+	move->ant_id = ant_id;
+	move->room_name = room_name;
+	move->next = lem_in->moves;
+	lem_in->moves = move;
 }
 
-t_lem_in    *lem_in_init()
+t_lem_in	*lem_in_init(void)
 {
-    t_lem_in *lem_in;
+	t_lem_in	*lem_in;
 
-    lem_in = (t_lem_in *)malloc(sizeof(t_lem_in));
-    lem_in->rooms = NULL;
-    lem_in->links = NULL;
-    lem_in->ants = NULL;
-    lem_in->moves = NULL;
-    lem_in->comments = NULL;
-    lem_in->errors = NULL;
-    lem_in->warnings = NULL;
-    lem_in->debugs = NULL;
-    lem_in->ants = 0;
-    lem_in->rooms = 0;
-    lem_in->links = 0;
-    lem_in->comments = 0;
-    lem_in->errors = 0;
-    lem_in->warnings = 0;
-    lem_in->debugs = 0;
-    lem_in->moves = 0;
-
-    return (lem_in);
+	lem_in = (t_lem_in *)malloc(sizeof(t_lem_in));
+	lem_in->rooms = NULL;
+	lem_in->links = NULL;
+	lem_in->ants = NULL;
+	lem_in->moves = NULL;
+	return (lem_in);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    t_lem_in	*lem_in;
-    int			i;
-    int			j;
-    int			k;
+	t_lem_in	*lem_in;
+	int			i;
+	int			j;
+	int			k;
 
-    lem_in = lem_in_init();
-
-    i = 0;
-    j = 0;
-    k = 0;
-
-
+	lem_in = lem_in_init();
+	i = 0;
+	j = 0;
+	k = 0;
+	return (0);
 }

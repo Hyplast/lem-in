@@ -18,11 +18,6 @@
 # include <stdio.h>
 # include <string.h>
 # include <fcntl.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <sys/time.h>
-# include <sys/resource.h>
 
 typedef struct s_lem_in
 {
@@ -30,10 +25,18 @@ typedef struct s_lem_in
 	char		**links;
 	char		**ants;
 	char		**moves;
-	char		**comments;
-	char		**errors;
-	char		**warnings;
-	char		**debugs;
+	int			ants_count;
+	int			rooms_count;
+	int			links_count;
+	int			moves_count;
+	int			start;
+	int			end;
+	int			start_index;
+	int			end_index;
+	int			*path;
+	int			*path_len;
+	int			*path_index;
+	int			*path_index_len;
 }				t_lem_in;
 
 typedef struct s_room
@@ -61,9 +64,5 @@ void		lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y);
 void		lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2);
 void		lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name);
 void		lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name);
-void		lem_in_add_comment(t_lem_in *lem_in, char *comment);
-void		lem_in_add_error(t_lem_in *lem_in, char *error);
-void		lem_in_add_warning(t_lem_in *lem_in, char *warning);
-void		lem_in_add_debug(t_lem_in *lem_in, char *debug);
 
 #endif
