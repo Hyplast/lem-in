@@ -17,12 +17,42 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
+
+typedef struct s_room
+{
+	char			*name;
+	int				x;
+	int				y;
+	struct s_room	*next;
+}					t_room;
+
+typedef struct s_link
+{
+	char			*name1;
+	char			*name2;
+	struct s_link	*next;
+}					t_link;
+
+typedef struct s_ant
+{
+	int				ant_id;
+	char			*room_name;
+	struct s_ant	*next;
+}					t_ant;
+
+typedef struct s_move
+{
+	int				ant_id;
+	char			*room_name;
+	struct s_move	*next;
+}					t_move;
+
 typedef struct s_lem_in
 {
-	char		**rooms;
-	char		**links;
-	char		**ants;
-	char		**moves;
+	t_room		*rooms;
+	t_link		*links;
+	t_ant		*ants;
+	t_move		*moves;
 	int			ants_count;
 	int			rooms_count;
 	int			links_count;
@@ -36,25 +66,6 @@ typedef struct s_lem_in
 	int			*path_index;
 	int			*path_index_len;
 }				t_lem_in;
-
-typedef struct s_room
-{
-	char		*name;
-	int			x;
-	int			y;
-}				t_room;
-
-typedef struct s_link
-{
-	char		*name1;
-	char		*name2;
-}				t_link;
-
-typedef struct s_ant
-{
-	int			ant_id;
-	char		*room_name;
-}				t_ant;
 
 t_lem_in	*lem_in_init(void);
 void		lem_in_free(t_lem_in *lem_in);
