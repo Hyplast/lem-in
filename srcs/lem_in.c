@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: severi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/27 09:54:01 by severi            #+#    #+#             */
-/*   Updated: 2022/06/28 10:41:54 by severi           ###   ########.fr       */
+/*   Created: 2022/06/23 22:58:14 by severi            #+#    #+#             */
+/*   Updated: 2022/06/24 00:42:22 by severi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "lem_in.h"
 
@@ -29,8 +30,47 @@ int handle_error(t_lem_in *lem_in, char *error_msg)
 }
 	
 
+void	print_rooms(t_lem_in *lem_in)
+{
+	t_room	*temp;
+	int	len;
 
+	len = 0;
+	temp = lem_in->rooms;
+	while (temp != NULL)
+	{
+		ft_printf("room_name : %10s " ,temp->name);
+		ft_printf(" room_coord : %i %i\n" ,temp->x, temp->y);
+		len++;
+		temp = temp->next;
+	}
+	ft_printf("amount of rooms: %i\n" , len);
+}
 
+void	print_links(t_lem_in *lem_in)
+{
+	t_link	*l_temp;
+
+	l_temp = lem_in->links;
+	while (l_temp != NULL)
+	{
+		ft_printf("room      : %10s  linked with %10s\n" ,l_temp->name1, l_temp->name2);
+		l_temp = l_temp->next;
+	}
+}
+
+void	print_moves(t_lem_in *lem_in)
+{
+	t_move	*temp;
+
+	temp = lem_in->moves;
+	while (temp != NULL)
+	{
+		ft_printf("L%i-%s", temp->ant_id, temp->room_name);
+		temp = temp->next;
+	}
+	ft_printf("\n");
+}
 
 void	do_lem_in(t_lem_in *lem_in)
 {
@@ -59,35 +99,65 @@ void	do_lem_in(t_lem_in *lem_in)
 		lem_in_add_ant(lem_in, i, room_start);
 
 
-	t_room	*temp;
-	int	len;
-
-	len = 0;
-	temp = lem_in->rooms;
-	while (temp != NULL)
-	{
-		ft_printf("room_name : %10s " ,temp->name);
-		ft_printf(" room_coord : %i %i\n" ,temp->x, temp->y);
-		len++;
-		temp = temp->next;
-	}
-
-	t_link	*l_temp;
-
-	l_temp = lem_in->links;
-	while (l_temp != NULL)
-	{
-		ft_printf("room      : %10s  linked with %10s\n" ,l_temp->name1, l_temp->name2);
-		l_temp = l_temp->next;
-	}
+	lem_in_add_move(lem_in, 1, room_end);
+	lem_in_add_move(lem_in, 2, room_end);
+	lem_in_add_move(lem_in, 3, "middle");
 
 
-	ft_printf("amount of rooms: %i\n" , len);
-	// while ()
+	print_rooms(lem_in);
+	print_links(lem_in);
+	print_moves(lem_in);
+		// while ()
 	ft_printf("room_name : %s\n" ,lem_in->rooms->name);
 	ft_printf("ants : %i\n" ,lem_in->ants->ant_id);
 }
 
+void	add_to_lem_in(t_lem_in *lem_in, char *line)
+{
+	char	**temp;
+	int		i;
+	int		j;
+
+//	while (line[i++] != ' ');
+//	temp = ft_strsub(line, 0, i);
+//	while (line[i+j++] != ' ');
+	temp = ft_strsplit(line, ' ');
+	lem_in_add_room(lem_in, temp[0], ft_atoi(temp[1]), ft_atoi(temp[2]));
+	ft_strdel(temp);
+	
+}
+
+int	get_lem_in(t_lem_in *lem_in)
+{
+	int		read;
+	char	*found;
+	char	*buf;
+	int		i;
+
+	read = get_next_line(0, &buf);
+	if (read == 0)
+	{
+		perror(" ");
+		exit(-1);
+	}
+	lem_in->ants_count = ft_atoi(buf);
+	while (read != 0)
+	{
+		
+		while (ft_isdigit(buf[i]))
+			i++;
+		if (i == (int)ft_strlen(buf))
+			add_to_lem_in(lem_in, buf); 
+		read = get_next_line(0, &buf);
+	} 
+	found = ft_strstr(buf, "##start");
+	found = NULL;
+	ft_strdel(&buf);
+	found = ft_strstr(buf, "##end");
+	found = NULL;
+	ft_strdel(&buf);
+
+}
 
 int	main(int argc, char **argv)
 {
@@ -109,6 +179,9 @@ int	main(int argc, char **argv)
 	lem_in = lem_in_init();
 	if (!lem_in)
 		return (0);
+	
+	get_lem_in(lem_in);
 	do_lem_in(lem_in);
+	free_lem_in(lem_in);
 	return (0);
 }

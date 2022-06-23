@@ -6,7 +6,7 @@
 #    By: severi <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/20 00:48:33 by severi            #+#    #+#              #
-#    Updated: 2022/06/09 12:58:21 by severi           ###   ########.fr        #
+#    Updated: 2022/06/23 22:56:58 by severi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra
 
-DEBUG_FLAGS = -Wconversion -g -fsanitize=address
+#DEBUG
+CFLAGS = -Wconversion -g -fsanitize=address
 
 DEBUG_NAME = lem-in.debug
 
