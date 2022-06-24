@@ -47,7 +47,7 @@ static size_t	ft_word_len(char const *s, char c)
 	return (len);
 }
 
-static void	free_array(char **spl_s)
+void	ft_free_array(char **spl_s)
 {
 	size_t	i;
 
@@ -78,7 +78,7 @@ static int	ft_fill_array(const char *s, char c, char **spl_s, size_t words)
 		spl_s[j] = ft_strsub(s, (unsigned int) i, word_len);
 		if (spl_s[j++] == NULL)
 		{
-			free_array(spl_s);
+			ft_free_array(spl_s);
 			return (-1);
 		}
 		i += word_len;

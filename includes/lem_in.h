@@ -59,6 +59,12 @@ typedef struct s_lem_in
 	int			moves_count;
 	int			start;
 	int			end;
+	char		*start_room;
+	char		*end_room;
+	int			start_x;
+	int			start_y;
+	int			end_x;
+	int			end_y;
 	int			start_index;
 	int			end_index;
 	int			*path;

@@ -1,0 +1,238 @@
+#include "lem_in.h"
+
+
+void	do_lem_in(t_lem_in *lem_in)
+{
+	char	*room_start;
+	char	*room_end;
+	int		x;
+	int		y;
+
+	x = 23;
+	y = 3;
+
+	room_start = ft_strdup("start");
+	room_end = ft_strdup("end");
+
+	lem_in_add_room(lem_in, room_start, x, y);
+	lem_in_add_room(lem_in, "middle", x, y);
+	lem_in_add_room(lem_in, room_end, x, y);
+
+	lem_in_add_link(lem_in, room_start, "middle");
+	lem_in_add_link(lem_in, room_end, "middle");
+	lem_in_add_link(lem_in, room_start, room_end);
+
+	int i;
+	i = 1;
+	while (i++ < 10)
+		lem_in_add_ant(lem_in, i, room_start);
+
+
+	lem_in_add_move(lem_in, 1, room_end);
+	lem_in_add_move(lem_in, 2, room_end);
+	lem_in_add_move(lem_in, 3, "middle");
+
+
+	print_rooms(lem_in);
+	print_links(lem_in);
+	print_moves(lem_in);
+		// while ()
+	ft_printf("room_name : %s\n" ,lem_in->rooms->name);
+	ft_printf("ants : %i\n" ,lem_in->ants->ant_id);
+}
+
+
+/* Read stdout from argv[1] and parse it */
+
+void	print_lem_in(t_lem_in *lem_in)
+{
+	int i;
+
+	i = 0;
+	while (lem_in->rooms[i].name)
+	{
+		ft_putstr(lem_in->rooms[i].name);
+		ft_putstr(" ");
+		ft_putnbr(lem_in->rooms[i].x);
+		ft_putstr(" ");
+		ft_putnbr(lem_in->rooms[i].y);
+		ft_putstr("\n");
+		i++;
+	}
+	i = 0;
+	while (lem_in->links[i])
+	{
+		ft_putstr(lem_in->links[i]);
+		ft_putstr("\n");
+		i++;
+	}
+	i = 0;
+	while (lem_in->ants[i])
+	{
+		ft_putstr(lem_in->ants[i]);
+		ft_putstr("\n");
+		i++;
+	}
+	print_moves(lem_in);
+}
+
+void	print_route(t_lem_in *lem_in, int ant_id, int *route)
+{
+	int i;
+
+	i = 0;
+	while (route[i])
+	{
+		print_move(lem_in, ant_id, lem_in->rooms[route[i]].name);
+		i++;
+	}
+}
+
+void	print_moves(t_lem_in *lem_in)
+{
+	int i;
+
+	i = 0;
+	while (lem_in->moves[i])
+	{
+		print_route(lem_in, i + 1, lem_in->moves[i]);
+		ft_putstr("\n");
+		i++;
+	}
+}
+
+/*
+* Sort the array of void * pointers in ascending order.
+* The array must be terminated by a NULL pointer.
+*/
+void	sort_array(void **array)
+{
+	int		i;
+	int		j;
+	void	*temp;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		j = i + 1;
+		while (array[j] != NULL)
+		{
+			if (ft_strcmp((char *)array[i], (char *)array[j]) > 0)
+			{
+				temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+/*
+* Sort the array of void * pointers in descending order.
+* The array must be terminated by a NULL pointer.
+*/
+void	sort_array_desc(void **array)
+{
+	int		i;
+	int		j;
+	void	*temp;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		j = i + 1;
+		while (array[j] != NULL)
+		{
+			if (ft_strcmp((char *)array[i], (char *)array[j]) < 0)
+			{
+				temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+
+/*
+*	Check if room is already in the list
+*/
+int		is_room_in_list(t_lem_in *lem_in, char *room_name)
+{
+	t_room	*temp;
+
+	temp = lem_in->rooms;
+	while (temp != NULL)
+	{
+		if (ft_strcmp(temp->name, room_name) == 0)
+			return (1);
+		temp = temp->next;
+	}
+	return (0);
+}
+
+/*
+*	Check if room is valid
+*/
+int		is_room_valid(char *line)
+{
+	char	**temp;
+	int		i;
+	int		len;
+
+	temp = ft_strsplit(line, ' ');
+	len = lenght_of_array(temp);
+	if (len != 3)
+		return (0);
+	i = 0;
+	while (i < len)
+	{
+		if (ft_isprint(temp[i][0]) == 0)
+			return (0);
+		i++;
+	}
+	free_array(temp);
+	return (1);
+}
+
+/*
+*	Check if link is valid
+*/
+int		is_link_valid(t_lem_in *lem_in, char *line)
+{
+	char	**temp;
+	int		i;
+	int		len;
+
+	temp = ft_strsplit(line, '-');
+	len = lenght_of_array(temp);
+	if (len != 2)
+		return (0);
+	i = 0;
+	while (i < len)
+	{
+		if (is_room_in_list(lem_in, temp[i]) == 0)
+			return (0);
+		i++;
+	}
+	free_array(temp);
+	return (1);
+}
+
+/*
+*   Add ants to the starting room
+*/
+void	add_ants_to_start(t_lem_in *lem_in)
+{
+    int		i;
+    int		j;
+    int		len;
+    char	**temp;
+
+    i = 0;
+    
+

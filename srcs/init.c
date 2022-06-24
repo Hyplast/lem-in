@@ -66,5 +66,11 @@ t_lem_in	*lem_in_init(void)
 	lem_in->links = NULL;
 	lem_in->ants = NULL;
 	lem_in->moves = NULL;
+	lem_in->ants_count = 0;
+	lem_in->rooms_count = 0;
+	lem_in->links_count = 0;
+	lem_in->moves_count = 0;
+	lem_in->start = 0;
+	lem_in->end = 0;
 	return (lem_in);
 }

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "lem_in.h"
 
 void	free_lem_in(t_lem_in *lem_in)
@@ -28,7 +27,6 @@ int handle_error(t_lem_in *lem_in, char *error_msg)
 	free_lem_in(lem_in);
 	return (0);
 }
-	
 
 void	print_rooms(t_lem_in *lem_in)
 {
@@ -49,13 +47,13 @@ void	print_rooms(t_lem_in *lem_in)
 
 void	print_links(t_lem_in *lem_in)
 {
-	t_link	*l_temp;
+	t_link	*temp;
 
-	l_temp = lem_in->links;
-	while (l_temp != NULL)
+	temp = lem_in->links;
+	while (temp != NULL)
 	{
-		ft_printf("room      : %10s  linked with %10s\n" ,l_temp->name1, l_temp->name2);
-		l_temp = l_temp->next;
+		ft_printf("room      : %10s  linked with %10s\n" , temp->name1, temp->name2);
+		temp = temp->next;
 	}
 }
 
@@ -72,91 +70,164 @@ void	print_moves(t_lem_in *lem_in)
 	ft_printf("\n");
 }
 
+void	print_ants(t_lem_in *lem_in)
+{
+	t_ant	*temp;
+
+	temp = lem_in->ants;
+	while (temp != NULL)
+	{
+		ft_printf("ant_id : %i room_name : %s\n" , temp->ant_id, temp->room_name);
+		temp = temp->next;
+	}
+}
+
 void	do_lem_in(t_lem_in *lem_in)
 {
-	char	*room_start;
-	char	*room_end;
-	int		x;
-	int		y;
-
-	x = 23;
-	y = 3;
-
-	room_start = ft_strdup("start");
-	room_end = ft_strdup("end");
-
-	lem_in_add_room(lem_in, room_start, x, y);
-	lem_in_add_room(lem_in, "middle", x, y);
-	lem_in_add_room(lem_in, room_end, x, y);
-
-	lem_in_add_link(lem_in, room_start, "middle");
-	lem_in_add_link(lem_in, room_end, "middle");
-	lem_in_add_link(lem_in, room_start, room_end);
-
-	int i;
-	i = 1;
-	while (i++ < 10)
-		lem_in_add_ant(lem_in, i, room_start);
-
-
-	lem_in_add_move(lem_in, 1, room_end);
-	lem_in_add_move(lem_in, 2, room_end);
-	lem_in_add_move(lem_in, 3, "middle");
-
 
 	print_rooms(lem_in);
 	print_links(lem_in);
-	print_moves(lem_in);
+	print_ants(lem_in);
+	// print_moves(lem_in);
 		// while ()
 	ft_printf("room_name : %s\n" ,lem_in->rooms->name);
 	ft_printf("ants : %i\n" ,lem_in->ants->ant_id);
 }
 
+/*
+*	Calculate lenght of the string array
+*/
+int		lenght_of_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i] != NULL)
+		i++;
+	return (i);
+}
+
+
+/*
+*	Add ants to the start room
+*/
+
 void	add_to_lem_in(t_lem_in *lem_in, char *line)
 {
 	char	**temp;
-	int		i;
-	int		j;
 
-//	while (line[i++] != ' ');
-//	temp = ft_strsub(line, 0, i);
-//	while (line[i+j++] != ' ');
 	temp = ft_strsplit(line, ' ');
-	lem_in_add_room(lem_in, temp[0], ft_atoi(temp[1]), ft_atoi(temp[2]));
-	ft_strdel(temp);
-	
+	if (lenght_of_array(temp) == 3)
+		lem_in_add_room(lem_in, ft_strdup(temp[0]), ft_atoi(temp[1]), ft_atoi(temp[2]));
+	ft_free_array(temp);
+	temp = ft_strsplit(line, '-');
+	if (lenght_of_array(temp) == 2)
+	{
+		lem_in_add_link(lem_in, ft_strdup(temp[0]), ft_strdup(temp[1]));
+		lem_in_add_link(lem_in, ft_strdup(temp[1]), ft_strdup(temp[0]));
+	}
+	ft_free_array(temp);
 }
 
-int	get_lem_in(t_lem_in *lem_in)
+
+
+
+/* Reverse the order of the elements in the array 
+*  of void * pointers.
+*  The array must be terminated by a NULL pointer.
+*/
+void	reverse_array(void **array)
+{
+	void	*temp;
+	int		i;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		temp = array[i];
+		array[i] = array[i + 1];
+		array[i + 1] = temp;
+		i++;
+	}
+}
+
+
+/*
+*	If equals ##start or ##end handle it
+*/
+void	handle_start_end(t_lem_in *lem_in, char *line)
+{
+	size_t	i;
+
+	i = 0;
+	if (ft_strcmp(line, "##start") == 0)
+	{
+		lem_in->start = 1;
+		return ;
+	}
+	if (ft_strcmp(line, "##end") == 0)
+	{
+		lem_in->end = 1;
+		return ;
+	}
+	while (line[i] != ' ' && line[i] != '\0')
+		i++;
+	if (lem_in->start == 1)
+		lem_in->start_room = ft_strsub(line, 0, i);
+	else if (lem_in->end == 1)
+		lem_in->end_room = ft_strsub(line, 0, i);
+	lem_in->start = 0;
+	lem_in->end = 0;
+}
+
+/*
+*	Check if string is a number
+*/
+int		is_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
+/*
+*	Read the lem-in file and create a t_lem_in structure.
+*/
+void	get_lem_in(t_lem_in *lem_in)
 {
 	int		read;
-	char	*found;
 	char	*buf;
 	int		i;
 
+	i = 0;
 	read = get_next_line(0, &buf);
-	if (read == 0)
+	if (read == 0 || read == -1 || buf == NULL)
 	{
 		perror(" ");
 		exit(-1);
 	}
-	lem_in->ants_count = ft_atoi(buf);
-	while (read != 0)
+	if (is_number(buf) == 1)
+		lem_in->ants_count = ft_atoi(buf);
+	else
+		exit(-1);
+	read = get_next_line(0, &buf);
+	while (read != 0 && ft_strcmp("", buf) != 0)
 	{
-		
-		while (ft_isdigit(buf[i]))
-			i++;
-		if (i == (int)ft_strlen(buf))
-			add_to_lem_in(lem_in, buf); 
+		handle_start_end(lem_in, buf);
+		add_to_lem_in(lem_in, buf); 
 		read = get_next_line(0, &buf);
 	} 
-	found = ft_strstr(buf, "##start");
-	found = NULL;
 	ft_strdel(&buf);
-	found = ft_strstr(buf, "##end");
-	found = NULL;
-	ft_strdel(&buf);
-
+	while (i++ < lem_in->ants_count)
+		lem_in_add_ant(lem_in, i, lem_in->start_room);
 }
 
 int	main(int argc, char **argv)

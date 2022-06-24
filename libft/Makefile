@@ -121,9 +121,13 @@ OBJ_DIR = obj/
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra $(CFLAGS_DEBUG)
 
-CFLAGS_DEBUG = -g -fsanitize=address -Wconversion
+CFLAGS_DEBUG = -g -fsanitize=address #-Wconversion
+
+DEBUG_NAME = $(NAME).debug
+
+DEBUG_OBJS = $(DEBUG_OBJS_CORE) $(DEBUG_OBJS_PRINTF)
 
 all: dir $(NAME)
 
@@ -132,14 +136,29 @@ $(NAME): $(OBJS_CORE) $(OBJS_PRINTF)
 	@ranlib $(NAME)
 	@echo "library compiled"
 
-dir:
-	@mkdir -p $(OBJ_DIR)
-
 $(OBJS_CORE): obj/%.o : srcs/%.c
 	@$(CC) $(CFLAGS) -I $(INC) -c $< -o $@ 
 
 $(OBJS_PRINTF): obj/%.o : ft_printf/%.c
 	@$(CC) $(CFLAGS) -I $(INC) -c $< -o $@ 
+
+debug: dir $(DEBUG_NAME)
+
+dir:
+	@mkdir -p $(OBJ_DIR)
+
+$(DEBUG_NAME): $(DEBUG_OBJS_CORE) $(DEBUG_OBJS_PRINTF)
+	ar rc $(NAME) $(OBJS)
+	ranlib $(NAME)
+	@echo "debug library compiled"
+
+$(DEBUG_OBJS_CORE): obj/%.o : srcs/%.c
+	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) -I $(INC) -c $< -o $@ 
+
+$(DEBUG_OBJS_PRINTF): obj/%.o : ft_printf/%.c
+	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) -I $(INC) -c $< -o $@ 
+
+
 
 clean:
 	@rm -f $(OBJ)

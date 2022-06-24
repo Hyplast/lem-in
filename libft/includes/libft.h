@@ -78,5 +78,6 @@ int		ft_isalnum(int c);
 int		ft_isprint(int c);
 int		ft_isascii(int c);
 char	**ft_strsplit(const char *s, char c);
+void	ft_free_array(char **array);
 
 #endif
