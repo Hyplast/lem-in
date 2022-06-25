@@ -12,6 +12,21 @@
 
 #include "lem_in.h"
 
+
+/*
+*	Bread first traversal to find the shortest path
+*/
+void	bfs_algorithm(t_lem_in *lem_in)
+{
+	lem_in->start_room->visited = 1;
+	lem_in->start_room->distance = 0;
+	lem_in->start_room->parent = NULL;
+	lem_in->queue = lem_in->start_room;
+
+}
+
+
+
 void	free_lem_in(t_lem_in *lem_in)
 {
 	free(lem_in->rooms);
@@ -80,18 +95,6 @@ void	print_ants(t_lem_in *lem_in)
 		ft_printf("ant_id : %i room_name : %s\n" , temp->ant_id, temp->room_name);
 		temp = temp->next;
 	}
-}
-
-void	do_lem_in(t_lem_in *lem_in)
-{
-
-	print_rooms(lem_in);
-	print_links(lem_in);
-	print_ants(lem_in);
-	// print_moves(lem_in);
-		// while ()
-	ft_printf("room_name : %s\n" ,lem_in->rooms->name);
-	ft_printf("ants : %i\n" ,lem_in->ants->ant_id);
 }
 
 /*

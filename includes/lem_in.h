@@ -23,6 +23,7 @@ typedef struct s_room
 	char			*name;
 	int				x;
 	int				y;
+	int				visited;
 	struct s_room	*next;
 }					t_room;
 
@@ -79,5 +80,6 @@ void		lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y);
 void		lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2);
 void		lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name);
 void		lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name);
+void		do_lem_in(t_lem_in *lem_in);
 
 #endif

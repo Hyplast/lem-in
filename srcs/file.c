@@ -223,16 +223,67 @@ int		is_link_valid(t_lem_in *lem_in, char *line)
 	return (1);
 }
 
+
 /*
-*   Add ants to the starting room
+*    Calculate the distance between two rooms
 */
-void	add_ants_to_start(t_lem_in *lem_in)
+
+
+
+
+ 
+void BFS(int v)
 {
-    int		i;
-    int		j;
-    int		len;
-    char	**temp;
+	int i;
+	insert_queue(v);
+	state[v] = waiting;
+	while(!isEmpty_queue())
+	{
+		v = delete_queue( );
+		printf("%d ",v);
+		state[v] = visited;
+		for(i=0; i<n; i++)
+		{
+			if(adj[v][i] == 1 && state[i] == initial)
+			{
+				insert_queue(i);
+				state[i] = waiting;
+			}
+		}
+	}
+	printf("\n");
+}
+ 
+void insert_queue(int vertex)
+{
+	if(rear == MAX-1)
+		printf("Queue Overflow\n");
+	else
+	{
+		if(front == -1)
+			front = 0;
+		rear = rear + 1;
+		queue[rear] = vertex ;
+	}
+}
+ 
+int isEmpty_queue()
+{
+	if(front == -1 || front > rear)
+		return 1;
+	else
+		return 0;
+}
 
-    i = 0;
-    
-
+int delete_queue()
+{
+	int delete_item;
+	if(front == -1 || front > rear)
+	{
+		printf("Queue Underflow\n");
+		exit(1);
+	}
+	delete_item = queue[front];
+	front = front+1;
+	return delete_item;
+}
