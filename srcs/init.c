@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lem_in.c                                           :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: severi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -29,10 +29,16 @@ void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 void	lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2)
 {
 	t_link	*link;
+	t_room	*temp_1;
+	t_room	*temp_2;
 
 	link = (t_link *)malloc(sizeof(t_link));
-	link->name1 = name1;
-	link->name2 = name2;
+	temp_1 = get_room(lem_in, name1);
+	temp_2 = get_room(lem_in, name2);
+	if (temp_1 == NULL || temp_2 == NULL)
+		exit(-1);
+	link->room_1 = temp_1;
+	link->room_2 = temp_2;
 	link->next = lem_in->links;
 	lem_in->links = link;
 }
@@ -40,10 +46,14 @@ void	lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2)
 void	lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name)
 {
 	t_ant	*ant;
+	t_room	*temp;
 
 	ant = (t_ant *)malloc(sizeof(t_ant));
 	ant->ant_id = ant_id;
-	ant->room_name = room_name;
+	temp = get_room(lem_in, room_name);
+	if (temp == NULL)
+		exit(-1);
+	ant->room = temp;
 	ant->next = lem_in->ants;
 	lem_in->ants = ant;
 }
