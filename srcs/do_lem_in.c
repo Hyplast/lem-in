@@ -1,5 +1,16 @@
-#include "lem_in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   do_lem_in.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: severi <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/27 09:54:01 by severi            #+#    #+#             */
+/*   Updated: 2022/06/28 10:41:54 by severi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "lem_in.h"
 
 // /*
 // * Add to back of queue
@@ -20,30 +31,6 @@
 // 	}
 // 	queue->queue_item_count++;
 // }
-
-
-
-void	insert(t_queue **queue, t_room *room)
-{
-	t_queue	*temp;
-	t_queue	*new;
-
-	new = (t_queue *)malloc(sizeof(t_queue));
-	new->room = room;
-	new->next = NULL;
-	new->queue_item_count = (*queue)->queue_item_count;
-	if ((*queue)->next == NULL)
-		*queue = new;
-	else
-	{
-		temp = (*queue)->next;
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
-	}
-	(*queue)->queue_item_count++;
-}
-
 // {
 // 	t_queue	*temp;
 
@@ -56,8 +43,6 @@ void	insert(t_queue **queue, t_room *room)
 // 	temp->next->next = NULL;
 // 	queue->queue_item_count++;
 // }
-
-
 // /*
 // *	Functions to handel questions in lem-in format
 // */
@@ -102,12 +87,58 @@ void	insert(t_queue **queue, t_room *room)
 // 	return (-1);
 // }
 
+/*
+*	check if room is in the list
+*/
+// int	is_room_in_list(t_lem_in *lem_in, int room_number)
+// {
+// 	int	i;
 
+// 	i = 0;
+// 	while (i < lem_in->room_count)
+// 	{
+// 		if (lem_in->rooms[i] == room_number)
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
+{
+	t_link	*temp;
+
+	temp = lem_in->links;
+	while (temp->next != NULL)
+	{
+		if (temp->room_1 == (*queue)->room && temp->room_1->visited == 0)
+			insert(queue, temp->room_1);
+		temp->room_1->visited = 1;
+		temp = temp->next;
+	}
+}
+
+/*
+*	Bread first traversal to find the shortest path
+*/
 void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 {
-	// int i;
+	lem_in->start_room->visited = 1;
+	insert(queue, lem_in->start_room);
+	ft_printf("\nStack start: ");
+	ft_printf((*queue)->room->name);
+	ft_printf("\n");
+	while (!is_queue_empty(*queue))
+	{
+		go_to_linked_rooms(lem_in, queue);
+		queue_remove(queue);
 
-	insert(queue, lem_in->rooms);
+	}
+	while(!lem_in->rooms++)
+	{
+		lem_in->rooms->visited = 0;
+	}
+
 	// lem_in->state[lem_in->start] = waiting;
 	// while (!is_queue_empty(lem_in))
 	// {
@@ -126,22 +157,8 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 	ft_printf("\n");
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
-	ft_printf((*queue)->room->name);
-	ft_printf("\n");
-
-	printf("\n");
 }
 
-t_queue	*init_queue(void)
-{
-	t_queue	*queue;
-
-	queue = (t_queue *)malloc(sizeof(t_queue));
-	queue->room = NULL;
-	queue->next = NULL;
-	queue->queue_item_count = 0;
-	return (queue);
-}
 
 void	do_lem_in(t_lem_in *lem_in)
 {

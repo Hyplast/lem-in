@@ -12,16 +12,41 @@
 
 #include "lem_in.h"
 
-t_room	*get_room(t_lem_in *lem_in, char *room_name)
+void	free_lem_in(t_lem_in *lem_in)
 {
-	t_room	*temp;
+	free(lem_in->rooms);
+	free(lem_in->links);
+	free(lem_in->ants);
+	free(lem_in->moves);
+	free(lem_in);
+}
 
-	temp = lem_in->rooms;
-	while (temp != NULL)
+/*
+*	Calculate lenght of the string array
+*/
+int	lenght_of_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i] != NULL)
+		i++;
+	return (i);
+}
+
+/*
+*   Check if string is a number
+*/
+int	is_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
 	{
-		if (ft_strcmp(temp->name, room_name) == 0)
-			return (temp);
-		temp = temp->next;
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
 	}
-	return (NULL);
+	return (1);
 }

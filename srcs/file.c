@@ -287,3 +287,23 @@ int delete_queue()
 	front = front+1;
 	return delete_item;
 }
+
+/* Reverse the order of the elements in the array 
+*  of void * pointers.
+*  The array must be terminated by a NULL pointer.
+*/
+void	reverse_array(void **array)
+{
+	void	*temp;
+	int		i;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		temp = array[i];
+		array[i] = array[i + 1];
+		array[i + 1] = temp;
+		i++;
+	}
+}
+

@@ -14,7 +14,11 @@ NAME = lem-in
 
 SRC = lem_in.c \
 init.c \
+check_lem_in.c \
 do_lem_in.c \
+print.c \
+queue.c \
+util.c \
 
 SRCS = $(addprefix srcs/, $(SRC))
 

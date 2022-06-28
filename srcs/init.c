@@ -43,17 +43,13 @@ void	lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2)
 	lem_in->links = link;
 }
 
-void	lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name)
+void	lem_in_add_ant(t_lem_in *lem_in, int ant_id)
 {
 	t_ant	*ant;
-	t_room	*temp;
 
 	ant = (t_ant *)malloc(sizeof(t_ant));
 	ant->ant_id = ant_id;
-	temp = get_room(lem_in, room_name);
-	if (temp == NULL)
-		exit(-1);
-	ant->room = temp;
+	ant->room = lem_in->start_room;
 	ant->next = lem_in->ants;
 	lem_in->ants = ant;
 }

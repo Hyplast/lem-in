@@ -35,15 +35,15 @@ typedef struct s_room
 
 typedef struct s_link
 {
-	char			*name1;
-	char			*name2;
+	struct s_room	*room_1;
+	struct s_room	*room_2;
 	struct s_link	*next;
 }					t_link;
 
 typedef struct s_ant
 {
 	int				ant_id;
-	char			*room_name;
+	struct s_room	*room;
 	struct s_ant	*next;
 }					t_ant;
 
@@ -68,6 +68,8 @@ typedef struct s_lem_in
 	int			end;
 	t_room		*start_room;
 	t_room		*end_room;
+	char		*start_name;
+	char		*end_name;
 	int			start_x;
 	int			start_y;
 	int			end_x;
@@ -81,16 +83,23 @@ typedef struct s_lem_in
 }				t_lem_in;
 
 t_lem_in	*lem_in_init(void);
-void		lem_in_free(t_lem_in *lem_in);
+void		free_lem_in(t_lem_in *lem_in);
 void		lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y);
 void		lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2);
-void		lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name);
+void		lem_in_add_ant(t_lem_in *lem_in, int ant_id);
 void		lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name);
+int			is_number(char *str);
+void		check_lem_in(t_lem_in *lem_in);
+int			lenght_of_array(char **array);
 void		do_lem_in(t_lem_in *lem_in);
 void		print_rooms(t_lem_in *lem_in);
 void		print_links(t_lem_in *lem_in);
 void		print_moves(t_lem_in *lem_in);
 void		print_ants(t_lem_in *lem_in);
-
+int			handle_error(t_lem_in *lem_in, char *error_msg);
+t_queue		*init_queue(void);
+void		insert(t_queue **queue, t_room *room);
+void		queue_remove(t_queue **queue);
+int			is_queue_empty(t_queue *queue);
 
 #endif
