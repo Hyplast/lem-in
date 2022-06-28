@@ -308,6 +308,26 @@ void	reverse_array(void **array)
 }
 
 
+void	enqueue(t_queue *queue, t_room *room)
+{
+	t_queue_node	*node;
+	
+	node = (t_queue_node *)malloc(sizeof(t_queue_node));
+	node->room = room;
+	node->next = NULL;
+	if (queue->head == NULL)
+	{
+		queue->head = node;
+		queue->tail = node;
+	}
+	else
+	{
+		queue->tail->next = node;
+		queue->tail = node;
+	}
+}
+
+
 
 // /*
 // * Add to back of queue

@@ -12,16 +12,29 @@
 
 #include "lem_in.h"
 
+/*
+*	Check if the addresses point to the same memory location
+*/
 void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
 {
 	t_link	*temp;
 
 	temp = lem_in->links;
-	while (temp->next != NULL)
+	while (temp != NULL)
 	{
-		if ((ft_memcmp(temp->room_1, (*queue)->room, 8) == 0) && temp->room_1->visited == 0)
-			insert(queue, temp->room_1);
-		temp->room_1->visited = 1;
+		// ft_printf("temp->room_1 : %p : %s<-> (*queue)->room : %p : %s\n", temp->room_1, temp->room_1->name, (*queue)->room, (*queue)->room->name);
+		// ft_printf("sizeof(temp->room_1: %lu\n", sizeof(temp->room_1));
+		// ft_printf(sizeof(temp->room_1));
+		// ft_printf("\n");
+		if ((ft_memcmp(temp->room_1, (*queue)->room, sizeof(temp->room_1)) == 0))
+		{
+			if (temp->room_2->visited == 0)
+			{
+				temp->room_2->visited = 1;
+				// ft_printf("%s\n", temp->room_2->name);
+				insert(queue, temp->room_2);
+			}
+		}
 		temp = temp->next;
 	}
 }
@@ -40,15 +53,14 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 	while (!is_queue_empty(*queue))
 	{
 		go_to_linked_rooms(lem_in, queue);
-		ft_printf("\nStack: ");
-		ft_printf((*queue)->room->name);
+		// ft_printf("\nStack: %s and its distance %i", (*queue)->room->name, );
 		queue_remove(queue);
 	}
 	// while (!lem_in->rooms++)
 	// {
 	// 	lem_in->rooms->visited = 0;
 	// }
-	ft_printf("\n");
+	ft_printf("\nlem_in->rooms->name : ");
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
 }
@@ -68,6 +80,6 @@ void	do_lem_in(t_lem_in *lem_in)
 	ft_printf("\n");
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
-	ft_printf(queue->room->name);
+	// ft_printf(queue->room->name);
 	ft_printf("\n");
 }

@@ -34,15 +34,24 @@ void	insert(t_queue **queue, t_room *room)
 	new = (t_queue *)malloc(sizeof(t_queue));
 	new->room = room;
 	new->next = NULL;
-	new->queue_item_count = (*queue)->queue_item_count;
-	if ((*queue)->next == NULL)
+	// new->queue_item_count = (*queue)->queue_item_count;
+	if ((*queue)->room == NULL)
 		*queue = new;
 	else
 	{
-		temp = (*queue)->next;
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
+		if ((*queue)->next == NULL)
+			(*queue)->next = new;
+		else
+		{
+			temp = *queue;
+			while (temp->next != NULL)
+				temp = temp->next;
+			temp->next = new;
+		}
+		// temp = (*queue)->next;
+		// while (temp->next != NULL)
+		// 	temp = temp->next;
+		// temp->next = new;
 	}
 	(*queue)->queue_item_count++;
 }

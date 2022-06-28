@@ -29,6 +29,7 @@ typedef struct s_room
 	char			*name;
 	int				x;
 	int				y;
+	// int				distance;
 	int				visited;
 	struct s_room	*next;
 }					t_room;
