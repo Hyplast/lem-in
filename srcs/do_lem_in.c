@@ -18,7 +18,10 @@
 void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
 {
 	t_link	*temp;
+	static int	distance;
+	int			just_once;
 
+	just_once = 0;
 	temp = lem_in->links;
 	while (temp != NULL)
 	{
@@ -30,7 +33,13 @@ void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
 		{
 			if (temp->room_2->visited == 0)
 			{
+				if (just_once == 0)
+				{
+					distance++;
+					just_once = 1;
+				}
 				temp->room_2->visited = 1;
+				temp->room_2->distance = distance;
 				// ft_printf("%s\n", temp->room_2->name);
 				insert(queue, temp->room_2);
 			}
@@ -53,7 +62,7 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 	while (!is_queue_empty(*queue))
 	{
 		go_to_linked_rooms(lem_in, queue);
-		// ft_printf("\nStack: %s and its distance %i", (*queue)->room->name, );
+		ft_printf("\nStack: %s", (*queue)->room->name);
 		queue_remove(queue);
 	}
 	// while (!lem_in->rooms++)
@@ -64,6 +73,37 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
 }
+
+/*
+*	Find the shortest path between start and end rooms.
+*/
+void	find_shortest_path(t_lem_in *lem_in)
+{
+	t_link	*temp;
+	t_room	*room;
+	int		shortest_dist;
+
+	shortest_dist = INT32_MAX;
+	temp = lem_in->links;
+	while (temp != NULL)
+	{
+		if (ft_memcmp(temp->room_1, lem_in->end_room, sizeof(temp->room_1)) == 0)
+		{
+			if (temp->room_2->distance < shortest_dist)
+			{
+				shortest_dist = temp->room_2->distance;
+				room = temp->room_2;
+			}
+			// lem_in_add_move(lem_in, 1, temp->room_2);
+			
+		}
+		temp = temp->next;
+	}
+
+	// lem_in->end_room
+}
+	
+
 
 void	do_lem_in(t_lem_in *lem_in)
 {
@@ -80,6 +120,9 @@ void	do_lem_in(t_lem_in *lem_in)
 	ft_printf("\n");
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
+	print_rooms(lem_in);
+
+	find_shortest_path(lem_in);
 	// ft_printf(queue->room->name);
 	ft_printf("\n");
 }

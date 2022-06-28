@@ -29,7 +29,8 @@ void	print_rooms(t_lem_in *lem_in)
 	while (temp != NULL)
 	{
 		ft_printf("room_name : %10s ", temp->name);
-		ft_printf(" room_coord : %i %i\n", temp->x, temp->y);
+		ft_printf(" room_coord : %i %i", temp->x, temp->y);
+		ft_printf(" room_distance : %i\n", temp->distance);
 		len++;
 		temp = temp->next;
 	}
