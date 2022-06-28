@@ -1,0 +1,239 @@
+npimenof — 05.03.2021
+Does anybody know if there is a lem-in generator that can produce massive scale graphs ( > 1 GB)? 🧐
+
+seronen — 05.03.2021
+I can make you one with python 🙂
+
+npimenof — 05.03.2021
+Awesome, thanks in advance!😎 🤩
+
+tlouekar | Tuomas — 05.03.2021
+Jesus christ, what are you planning 😄
+
+seronen — 05.03.2021
+I think some type of parallel computing 😄
+
+npimenof — 05.03.2021
+Yeah, I recently became familiar with the concept of distributed computing and thought it would be fun to try it out with some graph processing algorithms 😄 Probably staring off with simpler path finding algorithms before moving on to max-flow related stuff 😄
+
+
+rkyttala — 18.03.2021
+hello! quick question regarding the input for lem_in:
+can room names have spaces and dashes?
+And to add to that, can there be rooms after the links? I am trying to figure out how much my parser is supposed to take edge cases into account.
+I suppose the format isn't correct if you get something after the links... so my main issue is how to discern when the input switches to the link part
+
+Levi_321 — 18.03.2021
+at least in my lem-in those would all be error cases
+
+cphillip — 18.03.2021
+No, it needs to follow ants -> room definitions -> links
+
+rkyttala — 18.03.2021
+k, did your lem_in pass?
+
+Levi_321 — 18.03.2021
+yes
+
+rkyttala — 18.03.2021
+nice, thank you!
+
+cphillip — 18.03.2021
+in mine, i discerned links started happening when the '-' is introduced
+
+rkyttala — 18.03.2021
+yeah, that's what I immediately thought as an easy method to implement. Then it struck me that there definitely will be some nasty business in the eval form 😄
+
+Levi_321 — 18.03.2021
+as I recall it got kinda nasty but for other reasons
+
+cphillip — 18.03.2021
+what do you mean? Nasty as in not allowed or people nitpicking?
+
+rkyttala — 18.03.2021
+nah, I can deal with nasty ppl but not with nasty test cases. I understood there's a map generator used in the evaluation. 
+
+When you're ready, i'd be happy to give it a pre-eval look and run some tests on yours
+
+rkyttala — 18.03.2021
+expect a call from me then hahah
+in the near future
+thanks in advance
+
+spentti — 18.03.2021
+From the subject i got the idea that if there is an error, you should still try if you can send the ants with the data you got before the error. So everything after the error would be ignored and you would try solving with the information you got so far. This was a bit unclear in the subject and could maybe be interpreted some other way too, so i don't think it's necessary
+Also, make sure to try with having a comment directly after ##start!
+
+damn! totally didn't think of that. kiitos!
+although this implies that the line after ##start or ##end has to be a valid room, otherwise there wouldn't be a start or an end!
+
+spentti — 18.03.2021
+Hm yeah true. Just make sure it doesn't segfault😁  ours did that
+
+rkyttala — 18.03.2021
+heheh, I'll do my best 🤖
+
+spentti — 18.03.2021
+Also things like two lines of ##start or ##start followed by ##end were tricky for us, even though they are clearly errors
+
+Recommend getting the generator asap when you start passin those maps in the subject.
+
+Its all about the super position maps
+
+U can find it from here for ex
+https://github.com/MikeyLHolm/Hive-lem-in
+
+malasalm — 19.03.2021
+Yikes! @lvasanoj let's check ours for this 😄
+
+skoskine | Satu — 13.04.2021
+I'm having a hard time wrapping my head around the flow network when the nodes as well as the edges have capacity contraints (trying to get started with max flow by implementing the edmonds-karp algorithm). 
+
+a bunch of googling suggested as the solution to replace the original node with two nodes and an edge between them that would have the node capacity as its capacity. then the network could  be treated as a "regular" max flow network. is this similar to what you have done or am I completely on the wrong track?
+
+
+cphillip — 13.04.2021
+That is how I treated mine. If the input map has n1-n2, I also added n2-n1 and whenever I manipulated the flow of one, the other was manipulated too
+
+npimenof — 14.04.2021
+Yeah, splitting a node to  in and out nodes with and edge, that represents the capacity of the actual node, between them would be the way to do it. The side effect will be that you're going to have a harder time dealing with outputting the result 🙂
+
+
+skoskine | Satu — 27.04.2021
+next question... 😄 have you applied some version of "k shortest simple paths" to find the optimal combination of paths to use? such as Yen's algorithm? I have not come across a source that would have explained it in an understandable manner so far...
+
+elindber | Eino — 27.04.2021
+Don't know if this helps, but at least we did it so that we had always two pathsets that we compared and then kept the one with less moves, and the formula to calculate that is very straightforward. But to form a pathset from random number of individual paths, that I don't know how to implement and don't know how many students have had that in their project.
+
+cphillip — 27.04.2021
+In mine I found an augmenting path, then built a path set based on the current flows. 
+
+Found another (if possible) augmented path, and built another set based on the new flows. 
+
+Each time I did that, I compared the nbr of moves each set had and always saved the lowest.
+
+What did you guys have as the worst case line differences in the big-superposition maps?
+
+cphillip — 27.04.2021
+most people i've had evaluate me were concerned with the overall average of the differences without a huge individual difference in the mix. My average was less than 10 without big differences over 15
+
+
+ffffjjjj — 09.05.2021
+What kind of speed people have gotten with gen_superposition_4 and do you remember what was the requirement in eval?
+
+
+cphillip — 09.05.2021
+which test platform is gen_superposition_4?
+
+
+cphillip — 09.05.2021
+my average is around 2s for that one. I can't remember the eval numbers exactly but I want to say full points on the speed was around 3s. Don't hold me to that though, it's been awhile
+
+ffffjjjj — 09.05.2021
+Ok we're good then. I get 1,8sec. Could probably squeeze it under 1 sec if I made some optimizations to our hash map implementation, but maybe will use that time to make a visualizer instead.
+Did you guys make a generic graph implementation or spesific to the project?
+
+
+
+cphillip — 09.05.2021
+I used a modified Edmond's Karp since this project is bi-directional
+I also used a hash table for quicker lookup which naturally can have the alternate directions built in as well. If you have A-B in the hash table, you'll also have B-A
+my printf is terribly slow so for the output I used a linked list where each node held 1000 chars. I got a huge speed improvement from that.
+
+osalmine — 09.05.2021
+It was 3s yeah to get full points
+
+
+ffffjjjj — 09.05.2021
+We have a weird situation in which I get a better speed (Linux PC and Intel Mac) with an implementation that doesn't store the prev nodes in a hash map, but rather returns a edge list from breadth first search and then backtracks the list. However my teammate who has M1 Mac is getting a better result the other way.
+
+
+cphillip — 09.05.2021
+that's interesting. Def do the eval on the faster result computer then 🙂
+
+
+IFF — 09.05.2021
+...or build different versions on different platforms
+
+
+I basically have all the diff version so I was thinking if I'd just check platform in header and use plat spesific. Would be cool to check how that works.
+Generally super interesting these differences between the ARM platform (M1) and x86. We are gonna do some performance profiling to see if we can find out why.
+
+
+./lem_in < test/gen_superposition_4  0,22s user 0,04s system 99% cpu 0,266 total
+
+
+
+npimenof — 18.05.2021
+Late to the discussion but had to try and I think I grew some gray hair as I read my old code😅  Just realised I have 3 write calls per ant movement... proof that all sanity was lost that far into the project 😆  The way I save path sets is also very inefficient as I am cloning and freeing lists of paths over and over. Always room for some improvement🧐
+
+
+
+ffffjjjj — 18.05.2021
+Great result! We got it down to 0.04 eventually. I doubt the path saving etc. would really show in performance that much. At least for us basically all the perf was in one hot loop in the algo itself.
+As a side note to all this perf measuring, it's of course nice to show a fast algo and good work but it's actually also very relevant since otherwise we don't have much reference apart from the eval form about how much there could be room for improvement in speed.
+
+
+@npimenof Do you have your repo on Github? I could run perf on it.
+
+
+npimenof — 18.05.2021
+Nice, thats awesome! 😄 Ye in my case the path set saving is quite shit, like really shit 😄
+And yeah, its fun to compare and there is always something we can learn from each other 🙂
+
+
+ffffjjjj — 18.05.2021
+Yeah deffo! I just hope it doesn't make anyone feel bad about their project if theirs is slower. Just finishing a project like Lem-in is already a huge accomplishement.
+
+
+npimenof — 18.05.2021
+https://github.com/nikunicke/lem_in.git
+GitHub
+nikunicke/lem_in
+Lem-In is a max-flow algorithmic project. In addition to learning algorithms, this project includes lexical analysis of input, implementations of graph and hash structures (adjacency lists). - niku...
+should be up to date ..?
+xD
+Are you using some cpu profiling program?
+
+Yes but one that only works on Linux. Mac has a different tool.
+Ha crap you haven't compiled the project on Linux. I need to do some compatibility changes
+
+
+npimenof — 18.05.2021
+oh shit xD
+you dont need to deal with it 🙂
+i can do it myself
+
+
+
+ffffjjjj — 18.05.2021
+On Linux the real gcc (on mac it's an alias to clang) is much more strict and will throw compile errors
+I don't unbderstand why the clang on mac doesn't throw errors on these tbh...
+
+
+ffffjjjj — 18.05.2021
+Ah the linker also works different. I removed all the -W flags but the submodule Makefiles still link incorrectly on Linux.
+
+
+npimenof — 18.05.2021
+Ohhhh yeah and those are quite poorly set up to be honest😅
+
+ffffjjjj — 18.05.2021
+I've recently updated the build system for my bigger lib and it was a total headache with several submodules with their own Makefiles. Now I have a setup that works and in which the linker doesn't get crazy everytime I add a new section, but it was close to impossible to find proper info for that from the GNU manual or other online resources.
+
+
+ffffjjjj — 24.06.2021
+Lem-in augmenting path visualization using python and rendered in the browser.
+
+
+
+
+
+
+
+
+
+
+
+
+

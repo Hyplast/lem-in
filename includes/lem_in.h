@@ -17,7 +17,7 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
-typedef struct		s_queue
+typedef struct s_queue
 {
 	struct s_room	*room;
 	int				queue_item_count;
@@ -89,6 +89,8 @@ void		lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2);
 void		lem_in_add_ant(t_lem_in *lem_in, int ant_id);
 void		lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name);
 int			is_number(char *str);
+int			is_printable(char *str);
+t_room		*get_room(t_lem_in *lem_in, char *room_name);
 void		check_lem_in(t_lem_in *lem_in);
 int			lenght_of_array(char **array);
 void		do_lem_in(t_lem_in *lem_in);

@@ -307,3 +307,212 @@ void	reverse_array(void **array)
 	}
 }
 
+
+
+// /*
+// * Add to back of queue
+// */
+// void	queue_addback(t_queue **queue, t_queue *new)
+// {
+// 	t_queue	*temp;
+
+// 	if (*alst == NULL)
+// 		*alst = new;
+// 	else
+// 	{
+// 		temp = *alst;
+// 		while (temp->next != NULL)
+// 			temp = temp->next;
+// 		temp->next = new;
+// 		new->next = NULL;
+// 	}
+// 	queue->queue_item_count++;
+// }
+// {
+// 	t_queue	*temp;
+
+// 	if (queue == NULL)
+// 		queue->room = room;
+// 	temp = queue;
+// 	while (temp->next != NULL)
+// 		temp = temp->next;
+// 	temp->next = room;
+// 	temp->next->next = NULL;
+// 	queue->queue_item_count++;
+// }
+// /*
+// *	Functions to handel questions in lem-in format
+// */
+// void	insert(t_queue *queue, int data) 
+// {
+// 	t_queue	*temp;
+
+// 	while (queue->next != NULL)
+// 	{
+// 		queue
+// 		queue = queue->next;
+// 		temp = queue;
+
+// 	}
+// 	queue->queue[++queue->rear] = data;
+//    queue[++rear] = data;
+//    queue->queue_item_count++;
+// }
+
+// int		remove_data(t_queue *queue)
+// {
+//    queue->queue_item_count--;
+//    return (queue[front++]);
+// }
+
+// int		is_queue_empty(t_queue *queue)
+// {
+//    return queue->queue_item_count == 0;
+// }
+
+// int	get_adj_unvisited_rooms(t_lem_in *lem_in, int	room_number)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < room_number)
+// 	{
+// 		if (lem_in->links[room_number][i] == 1 && lstVertices[i]->visited == 0)
+// 			return i;
+// 		i++;
+// 	}
+// 	return (-1);
+// }
+
+/*
+*	check if room is in the list
+*/
+// int	is_room_in_list(t_lem_in *lem_in, int room_number)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < lem_in->room_count)
+// 	{
+// 		if (lem_in->rooms[i] == room_number)
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+// /*
+// * Add to back of queue
+// */
+// void	queue_addback(t_queue **queue, t_queue *new)
+// {
+// 	t_queue	*temp;
+
+// 	if (*alst == NULL)
+// 		*alst = new;
+// 	else
+// 	{
+// 		temp = *alst;
+// 		while (temp->next != NULL)
+// 			temp = temp->next;
+// 		temp->next = new;
+// 		new->next = NULL;
+// 	}
+// 	queue->queue_item_count++;
+// }
+// {
+// 	t_queue	*temp;
+
+// 	if (queue == NULL)
+// 		queue->room = room;
+// 	temp = queue;
+// 	while (temp->next != NULL)
+// 		temp = temp->next;
+// 	temp->next = room;
+// 	temp->next->next = NULL;
+// 	queue->queue_item_count++;
+// }
+// /*
+// *	Functions to handel questions in lem-in format
+// */
+// void	insert(t_queue *queue, int data) 
+// {
+// 	t_queue	*temp;
+
+// 	while (queue->next != NULL)
+// 	{
+// 		queue
+// 		queue = queue->next;
+// 		temp = queue;
+
+// 	}
+// 	queue->queue[++queue->rear] = data;
+//    queue[++rear] = data;
+//    queue->queue_item_count++;
+// }
+
+// int		remove_data(t_queue *queue)
+// {
+//    queue->queue_item_count--;
+//    return (queue[front++]);
+// }
+
+// int		is_queue_empty(t_queue *queue)
+// {
+//    return queue->queue_item_count == 0;
+// }
+
+// int	get_adj_unvisited_rooms(t_lem_in *lem_in, int	room_number)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < room_number)
+// 	{
+// 		if (lem_in->links[room_number][i] == 1 && lstVertices[i]->visited == 0)
+// 			return i;
+// 		i++;
+// 	}
+// 	return (-1);
+// }
+
+/*
+*	check if room is in the list
+*/
+// int	is_room_in_list(t_lem_in *lem_in, int room_number)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < lem_in->room_count)
+// 	{
+// 		if (lem_in->rooms[i] == room_number)
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+	//queue variables
+
+	// int	*queue;
+	// int rear = -1;
+	// int front = 0;			
+	//int queueItemCount = 0;		//lem_in->rooms_count	
+
+
+
+	// lem_in->state[lem_in->start] = waiting;
+	// while (!is_queue_empty(lem_in))
+	// {
+	// 	int v = remove_data();
+	// 	lem_in->state[v] = visited;
+	// 	printf("%c ", v + 'A');
+	// 	for (i = 0; i < lem_io->rooms_count; i++)
+	// 	{
+	// 		if (lem_in->links[v][i] == 1 && lem_in->state[i] == initial)
+	// 		{
+	// 			insert(i);
+	// 			lem_in->state[i] = waiting;
+	// 		}
+	// 	}
+	// }

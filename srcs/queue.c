@@ -61,7 +61,7 @@ void	queue_remove(t_queue **queue)
 
 int	is_queue_empty(t_queue *queue)
 {
-	if (queue->next == NULL)
+	if (queue == NULL)
 		return (1);
 	return (0);
 }

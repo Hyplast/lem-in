@@ -53,11 +53,11 @@ void	check_lem_in(t_lem_in *lem_in)
 	int		i;
 
 	i = 0;
-	temp = get_room(lem_in, lem_in->start_room->name);
+	temp = get_room(lem_in, lem_in->start_name);
 	if (temp == NULL)
 		handle_error(lem_in, "start room not found\n");
 	lem_in->start_room = temp;
-	temp = get_room(lem_in, lem_in->end_room->name);
+	temp = get_room(lem_in, lem_in->end_name);
 	if (temp == NULL)
 		handle_error(lem_in, "end room not found\n");
 	lem_in->end_room = temp;

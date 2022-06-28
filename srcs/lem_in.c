@@ -21,7 +21,8 @@ void	add_to_lem_in(t_lem_in *lem_in, char *line)
 
 	temp = ft_strsplit(line, ' ');
 	if (lenght_of_array(temp) == 3)
-		lem_in_add_room(lem_in, ft_strdup(temp[0]), ft_atoi(temp[1]), ft_atoi(temp[2]));
+		lem_in_add_room(lem_in, ft_strdup(temp[0]), ft_atoi(temp[1]),
+			ft_atoi(temp[2]));
 	ft_free_array(temp);
 	temp = ft_strsplit(line, '-');
 	if (lenght_of_array(temp) == 2)
@@ -42,11 +43,15 @@ void	handle_start_end(t_lem_in *lem_in, char *line)
 	i = 0;
 	if (ft_strcmp(line, "##start") == 0)
 	{
+		if (lem_in->start_name != NULL)
+			handle_error(lem_in, "start room already defined\n");
 		lem_in->start = 1;
 		return ;
 	}
 	if (ft_strcmp(line, "##end") == 0)
 	{
+		if (lem_in->end_name != NULL)
+			handle_error(lem_in, "end room already defined\n");
 		lem_in->end = 1;
 		return ;
 	}
@@ -82,9 +87,9 @@ void	get_lem_in(t_lem_in *lem_in)
 	while (read != 0 && ft_strcmp("", buf) != 0)
 	{
 		handle_start_end(lem_in, buf);
-		add_to_lem_in(lem_in, buf); 
+		add_to_lem_in(lem_in, buf);
 		read = get_next_line(0, &buf);
-	} 
+	}
 	ft_strdel(&buf);
 }
 

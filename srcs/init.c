@@ -16,6 +16,8 @@ void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 {
 	t_room	*room;
 
+	if (!is_printable(name))
+		handle_error(lem_in, "room name is not printable\n");
 	room = (t_room *)malloc(sizeof(t_room));
 	room->name = name;
 	room->x = x;
@@ -74,6 +76,10 @@ t_lem_in	*lem_in_init(void)
 	lem_in->links = NULL;
 	lem_in->ants = NULL;
 	lem_in->moves = NULL;
+	lem_in->start_room = NULL;
+	lem_in->end_room = NULL;
+	lem_in->start_name = NULL;
+	lem_in->end_name = NULL;
 	lem_in->ants_count = 0;
 	lem_in->rooms_count = 0;
 	lem_in->links_count = 0;

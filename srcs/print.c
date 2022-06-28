@@ -44,7 +44,7 @@ void	print_links(t_lem_in *lem_in)
 	while (temp != NULL)
 	{
 		ft_printf("room      : %10s  linked with %10s\n",
-			temp->name1, temp->name2);
+			temp->room_1->name, temp->room_2->name);
 		temp = temp->next;
 	}
 }
@@ -70,7 +70,7 @@ void	print_ants(t_lem_in *lem_in)
 	while (temp != NULL)
 	{
 		ft_printf("ant_id : %i room_name : %s\n",
-			temp->ant_id, temp->room_name);
+			temp->ant_id, temp->room->name);
 		temp = temp->next;
 	}
 }
