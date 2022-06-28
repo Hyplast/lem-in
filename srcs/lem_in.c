@@ -13,17 +13,17 @@
 #include "lem_in.h"
 
 
-/*
-*	Bread first traversal to find the shortest path
-*/
-void	bfs_algorithm(t_lem_in *lem_in)
-{
-	lem_in->start_room->visited = 1;
-	lem_in->start_room->distance = 0;
-	lem_in->start_room->parent = NULL;
-	lem_in->queue = lem_in->start_room;
+// /*
+// *	Bread first traversal to find the shortest path
+// */
+// void	bfs_algorithm(t_lem_in *lem_in)
+// {
+// 	lem_in->start_room->visited = 1;
+// 	lem_in->start_room->distance = 0;
+// 	lem_in->start_room->parent = NULL;
+// 	lem_in->queue = lem_in->start_room;
 
-}
+// }
 
 
 

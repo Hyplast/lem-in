@@ -17,6 +17,12 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
+typedef struct		s_queue
+{
+	struct s_room	*room;
+	int				queue_item_count;
+	struct s_queue	*next;
+}					t_queue;
 
 typedef struct s_room
 {
@@ -60,8 +66,8 @@ typedef struct s_lem_in
 	int			moves_count;
 	int			start;
 	int			end;
-	char		*start_room;
-	char		*end_room;
+	t_room		*start_room;
+	t_room		*end_room;
 	int			start_x;
 	int			start_y;
 	int			end_x;
@@ -81,5 +87,10 @@ void		lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2);
 void		lem_in_add_ant(t_lem_in *lem_in, int ant_id, char *room_name);
 void		lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name);
 void		do_lem_in(t_lem_in *lem_in);
+void		print_rooms(t_lem_in *lem_in);
+void		print_links(t_lem_in *lem_in);
+void		print_moves(t_lem_in *lem_in);
+void		print_ants(t_lem_in *lem_in);
+
 
 #endif

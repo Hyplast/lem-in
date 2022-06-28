@@ -4,9 +4,9 @@
 
 #define MAX 5
 
-struct Vertex {
-   char label;
-   bool visited;
+struct Vertex {            // t_room
+   char label;             // *name
+   bool visited;           // visited
 };
 
 //queue variables
@@ -19,13 +19,13 @@ int queueItemCount = 0;
 //graph variables
 
 //array of vertices
-struct Vertex* lstVertices[MAX];
+struct Vertex* lstVertices[MAX];  // lem_in->rooms
 
 //adjacency matrix
-int adjMatrix[MAX][MAX];
+int adjMatrix[MAX][MAX];         // lem_in->links
 
 //vertex count
-int vertexCount = 0;
+int vertexCount = 0;             // lem_in->rooms_count
 
 //queue functions
 

@@ -20,8 +20,10 @@ void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 	room->name = name;
 	room->x = x;
 	room->y = y;
+	room->visited = 0;
 	room->next = lem_in->rooms;
 	lem_in->rooms = room;
+	lem_in->rooms_count++;
 }
 
 void	lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2)
