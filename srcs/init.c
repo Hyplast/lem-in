@@ -77,6 +77,7 @@ t_lem_in	*lem_in_init(void)
 	lem_in->links = NULL;
 	lem_in->ants = NULL;
 	lem_in->moves = NULL;
+	lem_in->paths = NULL;
 	lem_in->start_room = NULL;
 	lem_in->end_room = NULL;
 	lem_in->start_name = NULL;

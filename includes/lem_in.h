@@ -55,12 +55,19 @@ typedef struct s_move
 	struct s_move	*next;
 }					t_move;
 
+typedef struct s_path
+{
+	struct s_room	*room;
+	struct s_path	*next;
+}					t_path;
+
 typedef struct s_lem_in
 {
 	t_room		*rooms;
 	t_link		*links;
 	t_ant		*ants;
 	t_move		*moves;
+	t_path		*paths;
 	int			ants_count;
 	int			rooms_count;
 	int			links_count;
@@ -104,5 +111,6 @@ t_queue		*init_queue(void);
 void		insert(t_queue **queue, t_room *room);
 void		queue_remove(t_queue **queue);
 int			is_queue_empty(t_queue *queue);
+void		lem_in_add_path(t_lem_in *lem_in, t_room *room);
 
 #endif

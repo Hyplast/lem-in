@@ -50,3 +50,4 @@ int	is_number(char *str)
 	}
 	return (1);
 }
+

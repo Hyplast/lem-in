@@ -57,7 +57,7 @@ void	print_moves(t_lem_in *lem_in)
 	temp = lem_in->moves;
 	while (temp != NULL)
 	{
-		ft_printf("L%i-%s", temp->ant_id, temp->room_name);
+		ft_printf("L%i-%s ", temp->ant_id, temp->room_name);
 		temp = temp->next;
 	}
 	ft_printf("\n");

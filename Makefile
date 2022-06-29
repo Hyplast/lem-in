@@ -19,6 +19,7 @@ do_lem_in.c \
 print.c \
 queue.c \
 util.c \
+path.c \
 
 SRCS = $(addprefix srcs/, $(SRC))
 
