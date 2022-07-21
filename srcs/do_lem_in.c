@@ -12,6 +12,72 @@
 
 #include "lem_in.h"
 
+size_t		ft_lstlen(t_room **neighbors)
+{
+	size_t		len;
+
+	len = 0;
+    if (neighbors == NULL)
+		return (len);
+	while (neighbors[len] != NULL)
+		len++;
+	return (len);
+}
+
+
+void	print_neighbors(t_room *room)
+{
+	//t_room	*temp;
+	size_t	i;
+
+	i = 0;
+	ft_printf("room \"%s\" has %i neighbors and they are: ", room->name, ft_lstlen(room->neighbors));
+	if (room->neighbors == NULL)
+	{
+		ft_printf("\n");
+		return ;
+	}
+	//temp = room->neighbors[0];
+	while (room->neighbors[i] != NULL)
+	{
+		ft_printf("\"%s\" with %i distance, ", room->neighbors[i]->name, room->neighbors[i]->distance);
+		i++;
+		//temp = room->neighbors[i];
+	}
+	ft_printf("\n");
+}
+
+/*
+*	Add neighbors to the rooms. From shortest distance to longest.
+*/
+void    add_neighbors(t_room *room_1, t_room *room_2)
+{
+    t_room  **neighbors;
+    int i;
+    size_t len;
+
+    i = 0;
+    len = ft_lstlen(room_1->neighbors);
+    neighbors = (t_room **)malloc(sizeof(t_room *) * (len + 1 + 1 ));
+    if (len == 0)
+	{
+        neighbors[0] = room_2;
+		neighbors[1] = NULL;
+	}
+	else
+    {
+        while (i < (int)len)
+        {
+            neighbors[i] = room_1->neighbors[i];
+            i++;
+        }
+		neighbors[len] = room_2;
+		neighbors[len + 1] = NULL;
+    }
+    room_1->neighbors = neighbors;
+}
+
+
 /*
 *	Check if the addresses point to the same memory location
 */
@@ -41,6 +107,7 @@ void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
 				temp->room_2->visited = 1;
 				temp->room_2->distance = distance;
 				// ft_printf("%s\n", temp->room_2->name);
+				add_neighbors(temp->room_1, temp->room_2);
 				insert(queue, temp->room_2);
 			}
 		}
@@ -69,7 +136,7 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 	// {
 	// 	lem_in->rooms->visited = 0;
 	// }
-	ft_printf("\nlem_in->rooms->name : ");
+	ft_printf("\nKKK lem_in->rooms->name : ");
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
 }
@@ -124,8 +191,6 @@ void	find_shortest_path(t_lem_in *lem_in)
 		}
 	}
 }
-	
-
 
 void	do_lem_in(t_lem_in *lem_in)
 {
@@ -139,11 +204,13 @@ void	do_lem_in(t_lem_in *lem_in)
 	ft_printf("ants : %i\n", lem_in->ants->ant_id);
 	ft_printf("nextl line\n");
 	bread_first_search(lem_in, &queue);
-	ft_printf("\n");
+	ft_printf("\n $£€\n");
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
 	print_rooms(lem_in);
-
+	print_neighbors(lem_in->rooms);
+	print_neighbors(lem_in->rooms->next);
+	print_neighbors(lem_in->rooms->next->next);
 	find_shortest_path(lem_in);
 	// ft_printf(queue->room->name);
 	

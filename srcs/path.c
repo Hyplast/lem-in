@@ -18,14 +18,14 @@ void	lem_in_add_path(t_lem_in *lem_in, t_room *room)
 
 	path = (t_path *)malloc(sizeof(t_path));
 	path->room = room;
-	path->next = lem_in->path;
-	lem_in->path = path;
+	path->next = lem_in->paths;
+	lem_in->paths = path;
 }
 
 // 10 ants -> 10 paths -> 1 turn
 // distance 1 -< turn , distance 2 - 
-in the same amount of time distance 4 will take 9 turns to disport 5 ants
-distance 7 will take 7 turns and have transported 5/7*5 = 
+// in the same amount of time distance 4 will take 9 turns to disport 5 ants
+// distance 7 will take 7 turns and have transported 5/7*5 = 
 // 10 ants -> 5 paths -> 2 turns
 // 10 ants -> 4 paths -> 3 turns
 
@@ -57,6 +57,8 @@ distance 7 will take 7 turns and have transported 5/7*5 =
 //max (5_ants*dist_4, 4_ants*dist_5, 1_ants*dist_6) = 8 turns
 //max (4_ants*dist_4, 3_ants*dist_5, 3_ants*dist_6) = 8 turns
 
+//max (4_ants*dist_4, 3_ants*dist_5, 2_ants*dist_6, 1_ants*dist7) = 7 turns
+//max (4_ants*dist_4, 4_ants*dist_4, 1_ants*dist_5, 0_ants*dist7) = 7 turns
 
 
 

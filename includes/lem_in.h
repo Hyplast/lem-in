@@ -32,6 +32,7 @@ typedef struct s_room
 	int				distance;
 	int				visited;
 	struct s_room	*next;
+	struct s_room	**neighbors;
 }					t_room;
 
 typedef struct s_link

@@ -25,6 +25,7 @@ void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 	room->distance = 0;
 	room->visited = 0;
 	room->next = lem_in->rooms;
+	room->neighbors = NULL;
 	lem_in->rooms = room;
 	lem_in->rooms_count++;
 }
