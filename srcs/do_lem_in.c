@@ -107,7 +107,7 @@ void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
 				temp->room_2->visited = 1;
 				temp->room_2->distance = distance;
 				// ft_printf("%s\n", temp->room_2->name);
-				add_neighbors(temp->room_1, temp->room_2);
+				//add_neighbors(temp->room_1, temp->room_2);
 				insert(queue, temp->room_2);
 			}
 		}
@@ -192,6 +192,22 @@ void	find_shortest_path(t_lem_in *lem_in)
 	}
 }
 
+/*
+*	Find neighbors of the rooms.
+*/
+void	find_neighbors(t_lem_in *lem_in)
+{
+	t_link	*temp;
+
+	temp = lem_in->links;
+	while (temp != NULL)
+	{
+		add_neighbors(temp->room_1, temp->room_2);
+		temp = temp->next;
+	}
+}
+
+
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
@@ -204,6 +220,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	ft_printf("ants : %i\n", lem_in->ants->ant_id);
 	ft_printf("nextl line\n");
 	bread_first_search(lem_in, &queue);
+	find_neighbors(lem_in);
 	ft_printf("\n $£€\n");
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
@@ -211,6 +228,8 @@ void	do_lem_in(t_lem_in *lem_in)
 	print_neighbors(lem_in->rooms);
 	print_neighbors(lem_in->rooms->next);
 	print_neighbors(lem_in->rooms->next->next);
+	print_neighbors(lem_in->rooms->next->next->next);
+	print_neighbors(lem_in->rooms->next->next->next->next);
 	find_shortest_path(lem_in);
 	// ft_printf(queue->room->name);
 	
