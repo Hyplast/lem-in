@@ -114,6 +114,8 @@ int	main(int argc, char **argv)
 	if (!lem_in)
 		return (0);
 	get_lem_in(lem_in);
+	ft_printf("START ROOM in char: %s \n", lem_in->start_name);
+	ft_printf("END ROOM in char: %s \n", lem_in->end_name);
 	check_lem_in(lem_in);
 	do_lem_in(lem_in);
 	free_lem_in(lem_in);

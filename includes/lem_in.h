@@ -58,8 +58,10 @@ typedef struct s_move
 
 typedef struct s_path
 {
+	int				path_length;
 	struct s_room	*room;
-	struct s_path	*next;
+	struct s_room	*next_room;
+	struct s_path	*next_path;
 }					t_path;
 
 typedef struct s_lem_in

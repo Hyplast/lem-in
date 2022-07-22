@@ -141,38 +141,98 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 	ft_printf("\n");
 }
 
+// /*
+// *	Given room x, find the room y that is the shortest distance to x.
+// *	@return	the room that is the shortest distance to x.
+// *	@return NULL if no room is found.
+// */
+// t_room	*return_shortest_room(t_lem_in *lem_in, t_room *room_x)
+// {
+// 	t_room	*shortest_room;
+// 	t_link	*temp_link;
+// 	int		shortest_distance;
+
+// 	temp_link = lem_in->links;
+// 	shortest_distance = INT32_MAX;
+// 	shortest_room = NULL;
+// 	while (temp_link != NULL)
+// 	{
+// 		if (ft_memcmp(temp_link->room_1, room_x, sizeof(room_x)) == 0)
+// 		{
+// 			if (temp_link->room_2->distance < shortest_distance)
+// 			{
+// 				shortest_distance = temp_link->room_2->distance;
+// 				shortest_room = temp_link->room_2;
+// 			}
+// 		}
+// 		temp_link = temp_link->next;
+// 	}
+// 	return (shortest_room);
+// }
+
+t_room *return_shortest_room(t_room *room)
+{
+	t_room	*temp;
+	t_room	*shortest_room;
+	int		shortest_distance;
+	int		i;
+
+	i = 0;
+	temp = room->neighbors[i];
+	while (temp != NULL)
+	{
+		if (temp->distance < shortest_distance)
+		{
+			shortest_distance = temp->distance;
+			shortest_room = temp;
+		}
+		temp = room->neighbors[i];
+	}
+	return (shortest_room);	
+}
+
 /*
-*	Given room x, find the room y that is the shortest distance to x.
-*	@return	the room that is the shortest distance to x.
-*	@return NULL if no room is found.
+*	Find the shortest path between start and end rooms different than last path.
+*	@return	the shortest path between start and end rooms.
+*	@return NULL if no path is found.
 */
-t_room	*return_shortest_room(t_lem_in *lem_in, t_room *room_x)
+void	find_unique_path(t_lem_in *lem_in, t_path *path)
 {
 	t_room	*shortest_room;
-	t_link	*temp_link;
+	t_path	*temp_path;
 	int		shortest_distance;
 
-	temp_link = lem_in->links;
+	temp_path = path;
 	shortest_distance = INT32_MAX;
 	shortest_room = NULL;
-	while (temp_link != NULL)
+	while (temp_path != NULL)
 	{
-		if (ft_memcmp(temp_link->room_1, room_x, sizeof(room_x)) == 0)
+		if (temp_path->room->distance < shortest_distance)
 		{
-			if (temp_link->room_2->distance < shortest_distance)
-			{
-				shortest_distance = temp_link->room_2->distance;
-				shortest_room = temp_link->room_2;
-			}
+			shortest_distance = temp_path->room->distance;
+			shortest_room = temp_path->room;
 		}
-		temp_link = temp_link->next;
+		temp_path = temp_path->next;
 	}
-	return (shortest_room);
+	if (shortest_room != NULL)
+	{
+		temp_path = path;
+		while (temp_path != NULL)
+		{
+			if (ft_memcmp(temp_path->room, shortest_room, sizeof(shortest_room)) == 0)
+			{
+				temp_path->room->visited = 1;
+				break;
+			}
+			temp_path = temp_path->next;
+		}
+	}
 }
 
 
 /*
 *	Find the shortest path between start and end rooms.
+*	Find maxium of (distance + ants - 1) paths.
 */
 void	find_shortest_path(t_lem_in *lem_in)
 {
@@ -190,7 +250,33 @@ void	find_shortest_path(t_lem_in *lem_in)
 			exit(-1);
 		}
 	}
+	lem_in_add_path(lem_in, room);
 }
+
+/*
+*	Find maxium of (distance + ants - 1) paths from end to start
+*	using neihgboring distance.
+*	@return NULL if no path is found.
+*/
+void	find_paths(t_lem_in *lem_in)
+{
+	int	paths;
+
+	paths = lem_in->ants_count + lem_in->end_room->distance - 1;
+	find_shortest_path(lem_in);
+	if (lem_in->paths == NULL)
+	{
+		handle_error(lem_in, "No path found.");
+		exit(-1);
+	}
+	while(paths > 0)
+	{
+		find_unique_path(lem_in, lem_in->paths);
+		paths--;
+	}
+	find_unique_path(lem_in, lem_in->paths);
+}
+
 
 /*
 *	Find neighbors of the rooms.
@@ -225,12 +311,14 @@ void	do_lem_in(t_lem_in *lem_in)
 	ft_printf(lem_in->rooms->name);
 	ft_printf("\n");
 	print_rooms(lem_in);
+	ft_printf("START ROOM as t_room->name: %s \n", lem_in->start_room->name);
+	ft_printf("END ROOM as t_room->name: %s \n", lem_in->end_room->name);
 	print_neighbors(lem_in->rooms);
 	print_neighbors(lem_in->rooms->next);
 	print_neighbors(lem_in->rooms->next->next);
 	print_neighbors(lem_in->rooms->next->next->next);
 	print_neighbors(lem_in->rooms->next->next->next->next);
-	find_shortest_path(lem_in);
+	find_paths(lem_in);
 	// ft_printf(queue->room->name);
 	
 

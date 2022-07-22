@@ -49,18 +49,19 @@ int	is_printable(char *str)
 
 void	check_lem_in(t_lem_in *lem_in)
 {	
-	t_room	*temp;
+	t_room	*start;
+	t_room	*end;
 	int		i;
 
 	i = 0;
-	temp = get_room(lem_in, lem_in->start_name);
-	if (temp == NULL)
+	start = get_room(lem_in, lem_in->start_name);
+	if (start == NULL)
 		handle_error(lem_in, "start room not found\n");
-	lem_in->start_room = temp;
-	temp = get_room(lem_in, lem_in->end_name);
-	if (temp == NULL)
+	lem_in->start_room = start;
+	end = get_room(lem_in, lem_in->end_name);
+	if (end == NULL)
 		handle_error(lem_in, "end room not found\n");
-	lem_in->end_room = temp;
+	lem_in->end_room = end;
 	while (i++ < lem_in->ants_count)
 		lem_in_add_ant(lem_in, i);
 }
