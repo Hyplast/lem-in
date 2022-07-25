@@ -12,19 +12,31 @@
 
 #include "lem_in.h"
 
-void	lem_in_add_path(t_lem_in *lem_in, t_room *room)
+void	lem_in_add_to_path(t_lem_in *lem_in, t_room *room)
 {
 	t_path	*path;
 
 	path = (t_path *)malloc(sizeof(t_path));
 	path->room = room;
-	path->next = lem_in->paths;
+	path->next_room = lem_in->paths;
+	lem_in->paths = path;
+}
+
+void	lem_in_add_new_path(t_lem_in *lem_in, t_room *room)
+{
+	t_path	*path;
+
+	path = (t_path *)malloc(sizeof(t_path));
+	path->path_length = room->distance;
+	path->room = room;
+	path->next_room = NULL;
+	path->next_path = lem_in->paths;
 	lem_in->paths = path;
 }
 
 // 10 ants -> 10 paths -> 1 turn
 // distance 1 -< turn , distance 2 - 
-// in the same amount of time distance 4 will take 9 turns to disport 5 ants
+// in the same amount of time distance 4 will take 9 turns to transport 5 ants
 // distance 7 will take 7 turns and have transported 5/7*5 = 
 // 10 ants -> 5 paths -> 2 turns
 // 10 ants -> 4 paths -> 3 turns

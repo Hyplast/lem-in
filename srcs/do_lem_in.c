@@ -231,55 +231,64 @@ void	find_unique_path(t_lem_in *lem_in, t_path *path)
 
 
 /*
-*	Find the shortest path between start and end rooms.
-*	Find maxium of (distance + ants - 1) paths.
+*	Find the shortest path between start and given room.
+*	Add it to the path list.
+*	@return void
 */
-void	find_shortest_path(t_lem_in *lem_in)
+void	find_shortest_path(t_lem_in *lem_in, t_room *room)
 {
-	t_room	*room;
-
-	room = lem_in->end_room;
 	while (ft_memcmp(room, lem_in->start_room, sizeof(room)) != 0)
 	{
 		// lem_in_add_move(lem_in, 1, room->name);
-		lem_in_add_path(lem_in, room);
-		room = return_shortest_room(lem_in, room);
+		lem_in_add_to_path(lem_in, room);
+		room = return_shortest_room(room);
 		if (room == NULL)
 		{
 			handle_error(lem_in, "No path found.");
 			exit(-1);
 		}
 	}
-	lem_in_add_path(lem_in, room);
+	lem_in_add_to_path(lem_in, room);
 }
 
 /*
-*	Find maxium of (distance + ants - 1) paths from end to start
-*	using neihgboring distance.
+*	Find paths from end to start using neihgboring distance.
+*	Only add path if it's distance is less than (distance + ants - 1). 
 *	@return NULL if no path is found.
 */
 void	find_paths(t_lem_in *lem_in)
 {
-	int	paths;
+	int	threshold;
+	//int	end_neighbors;
+	int	i;
+	t_room	*room;
 
-	paths = lem_in->ants_count + lem_in->end_room->distance - 1;
-	find_shortest_path(lem_in);
+	i = 0;
+	room = lem_in->end_room->neighbors[i];
+	threshold = lem_in->ants_count + lem_in->end_room->distance - 1;
+	//end_neighbors = ft_lstlen(lem_in->end_room->neighbors);
+	find_shortest_path(lem_in, room);
 	if (lem_in->paths == NULL)
 	{
 		handle_error(lem_in, "No path found.");
 		exit(-1);
 	}
-	while(paths > 0)
+	room = lem_in->end_room->neighbors[++i];
+	while(room != NULL)
 	{
-		find_unique_path(lem_in, lem_in->paths);
-		paths--;
+		while (threshold > room->distance)
+		{
+			lem_in_add_new_path(lem_in, room);
+			find_shortest_path(lem_in, room);
+			room = lem_in->end_room->neighbors[i];
+		}
 	}
-	find_unique_path(lem_in, lem_in->paths);
+	//find_unique_path(lem_in, lem_in->paths);
 }
 
 
 /*
-*	Find neighbors of the rooms.
+*	Find neighbors of the rooms. From shortest distance to longest.
 */
 void	find_neighbors(t_lem_in *lem_in)
 {
