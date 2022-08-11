@@ -58,11 +58,10 @@ typedef struct s_move
 
 typedef struct s_path
 {
-	struct s_path	*path;
+	//struct s_path	*path;
 	struct s_path	*next_path;
 	int				path_length;
 	struct s_room	*room;
-	struct s_room	*next_room;
 }					t_path;
 
 typedef struct s_lem_in
@@ -71,11 +70,12 @@ typedef struct s_lem_in
 	t_link		*links;
 	t_ant		*ants;
 	t_move		*moves;
-	t_path		*paths;
+	t_path		**paths;
 	int			ants_count;
 	int			rooms_count;
 	int			links_count;
 	int			moves_count;
+	int			paths_count;
 	int			start;
 	int			end;
 	t_room		*start_room;
@@ -115,7 +115,7 @@ t_queue		*init_queue(void);
 void		insert(t_queue **queue, t_room *room);
 void		queue_remove(t_queue **queue);
 int			is_queue_empty(t_queue *queue);
-void		lem_in_add_path(t_lem_in *lem_in, t_room *room);
-void		lem_in_add_new_path(t_lem_in *lem_in, t_room *room);
+void		lem_in_add_to_path(t_path *path, t_room *room);
+t_path		*lem_in_add_new_path(t_room *room);
 
 #endif

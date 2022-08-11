@@ -195,7 +195,7 @@ t_room *return_shortest_room(t_room *room)
 *	Find the shortest path between start and end rooms different than last path.
 *	@return	the shortest path between start and end rooms.
 *	@return NULL if no path is found.
-*/
+*//*
 void	find_unique_path(t_lem_in *lem_in, t_path *path)
 {
 	t_room	*shortest_room;
@@ -228,6 +228,47 @@ void	find_unique_path(t_lem_in *lem_in, t_path *path)
 		}
 	}
 }
+*/
+
+
+t_path	*create_a_path(t_lem_in *lem_in, t_room *room)
+{
+	t_path	*path;
+
+	path = lem_in_add_new_path(room);
+
+	while (ft_memcmp(room, lem_in->start_room, sizeof(room)) != 0)
+	{
+		lem_in_add_to_path(path, room);
+		room = return_shortest_room(room);
+		if (room == NULL)
+		{
+			handle_error(lem_in, "No path found.");
+			exit(-1);
+		}
+	}
+	lem_in_add_to_path(path, room);
+	return (path);
+}
+
+
+
+
+void		ft_lstadd(t_path **alst, t_path *new)
+{
+	if (new == NULL)
+		return ;
+	if (*alst != NULL)
+	{
+		new->next_path = *alst;
+		*alst = new;
+	}
+	else
+	{
+		new->next_path = NULL;
+		*alst = new;
+	}
+}
 
 
 /*
@@ -237,19 +278,42 @@ void	find_unique_path(t_lem_in *lem_in, t_path *path)
 */
 void	find_shortest_path(t_lem_in *lem_in, t_room *room)
 {
-	while (ft_memcmp(room, lem_in->start_room, sizeof(room)) != 0)
-	{
-		// lem_in_add_move(lem_in, 1, room->name);
-		lem_in_add_to_path(lem_in, room);
-		room = return_shortest_room(room);
-		if (room == NULL)
-		{
-			handle_error(lem_in, "No path found.");
-			exit(-1);
-		}
-	}
-	lem_in_add_to_path(lem_in, room);
+	t_path	**paths;
+	t_path	*path;
+
+    paths = (t_path **)malloc(sizeof(t_path *) * (1 + 1));
+	path = create_a_path(lem_in, room);
+    paths[0] = path;
+	paths[1] = NULL;
+	lem_in->paths = paths;
 }
+
+void	find_n_shortest_path(t_lem_in *lem_in, t_room *room)
+{
+	t_path	**paths;
+	t_path	*path;
+
+    paths = (t_path **)malloc(sizeof(t_path *) * (1 + 1));
+	path = create_a_path(lem_in, room);
+    paths[0] = path;
+	paths[1] = NULL;
+	lem_in->paths = paths;
+}
+
+
+/*
+	path = create_a_path
+
+        while (i < (int)len)
+        {
+            paths[i] = room_1->neighbors[i];
+            i++;
+        }
+		paths[len] = room_2;
+		paths[len + 1] = NULL;
+    room_1->paths = neighbors;
+
+	*/
 
 /*
 *	Find paths from end to start using neihgboring distance.
@@ -259,13 +323,15 @@ void	find_shortest_path(t_lem_in *lem_in, t_room *room)
 void	find_paths(t_lem_in *lem_in)
 {
 	int	threshold;
-	//int	end_neighbors;
+	size_t	start_neighbors;
 	int	i;
+
 	t_room	*room;
 
 	i = 0;
 	room = lem_in->end_room->neighbors[i];
 	threshold = lem_in->ants_count + lem_in->end_room->distance - 1;
+	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
 	//end_neighbors = ft_lstlen(lem_in->end_room->neighbors);
 	find_shortest_path(lem_in, room);
 	if (lem_in->paths == NULL)
@@ -274,15 +340,23 @@ void	find_paths(t_lem_in *lem_in)
 		exit(-1);
 	}
 	room = lem_in->end_room->neighbors[++i];
-	while(room != NULL)
+	while(room != NULL && start_neighbors > 1)
 	{
-		while (threshold > room->distance)
+		if (room->distance < threshold)
 		{
-			lem_in_add_new_path(lem_in, room);
-			find_shortest_path(lem_in, room);
-			room = lem_in->end_room->neighbors[i];
+			find_n_shortest_path(lem_in, room);
+			start_neighbors--;
 		}
+		room = lem_in->end_room->neighbors[++i];
 	}
+	// {
+	// 	while (threshold > room->distance)
+	// 	{
+	// 		lem_in_add_new_path(lem_in, room);
+	// 		find_shortest_path(lem_in, room);
+	// 		room = lem_in->end_room->neighbors[i];
+	// 	}
+	// }
 	//find_unique_path(lem_in, lem_in->paths);
 }
 

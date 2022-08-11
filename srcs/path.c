@@ -12,27 +12,28 @@
 
 #include "lem_in.h"
 
-void	lem_in_add_to_path(t_lem_in *lem_in, t_room *room)
+void	lem_in_add_to_path(t_path *path, t_room *room)
 {
-	t_path	*path;
+	t_path	*new_path;
 
-	path = (t_path *)malloc(sizeof(t_path));
-	path->room = room;
-	path->next_room = lem_in->paths;
-	lem_in->paths = path;
+	new_path = (t_path *)malloc(sizeof(t_path));
+	new_path->room = room;
+	new_path->path_length = path->path_length;
+	new_path->next_path = NULL;
+	path->next_path = new_path;
 }
 
-void	lem_in_add_new_path(t_lem_in *lem_in, t_room *room)
+
+t_path	*lem_in_add_new_path(t_room *room)
 {
 	t_path	*path;
 
 	path = (t_path *)malloc(sizeof(t_path));
 	path->path_length = room->distance;
 	path->room = room;
-	path->next_room = NULL;
-	path->next_path = lem_in->paths;
-	lem_in->paths = path;
+	return (path);
 }
+
 
 // 10 ants -> 10 paths -> 1 turn
 // distance 1 -< turn , distance 2 - 
