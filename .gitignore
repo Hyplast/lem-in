@@ -51,6 +51,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+*.json
 *.swp
 lem-in
 .vscode/c_cpp_properties.json
