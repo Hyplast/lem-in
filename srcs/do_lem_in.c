@@ -396,7 +396,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	// ft_printf(queue->room->name);
 	print_paths(lem_in);
 	
-
+	move_ants(lem_in);
 	print_moves(lem_in);
 	ft_printf("\n");
 }

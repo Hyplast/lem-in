@@ -52,12 +52,12 @@ void	print_links(t_lem_in *lem_in)
 
 void	print_moves(t_lem_in *lem_in)
 {
-	t_move	*temp;
+	t_ant	*temp;
 
-	temp = lem_in->moves;
+	temp = lem_in->ants;
 	while (temp != NULL)
 	{
-		ft_printf("L%i-%s ", temp->ant_id, temp->room_name);
+		ft_printf("L%i-%s ", temp->ant_id, temp->room->name);
 		temp = temp->next;
 	}
 	ft_printf("\n");

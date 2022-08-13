@@ -20,6 +20,8 @@ void	lem_in_add_to_path(t_path *path, t_room *room)
 	new_path->room = room;
 	new_path->path_length = path->path_length;
 	new_path->next_path = NULL;
+	while (path->next_path != NULL)
+		path = path->next_path;
 	path->next_path = new_path;
 }
 

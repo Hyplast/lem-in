@@ -20,6 +20,7 @@ print.c \
 queue.c \
 util.c \
 path.c \
+move_ants.c \
 
 SRCS = $(addprefix srcs/, $(SRC))
 
