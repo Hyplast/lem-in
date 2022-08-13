@@ -186,7 +186,7 @@ t_room *return_shortest_room(t_room *room)
 			shortest_distance = temp->distance;
 			shortest_room = temp;
 		}
-		temp = room->neighbors[i];
+		temp = room->neighbors[++i];
 	}
 	return (shortest_room);	
 }
@@ -246,7 +246,7 @@ t_path	*create_a_path(t_lem_in *lem_in, t_room *room)
 			exit(-1);
 		}
 	}
-	lem_in_add_to_path(path, room);
+	// lem_in_add_to_path(path, room);
 	return (path);
 }
 
@@ -272,8 +272,10 @@ void	find_n_shortest_path(t_lem_in *lem_in, t_room *room)
 	t_path	**paths;
 	t_path	*path;
 	int		len;
+	int		i;
 
 	len = 0;
+	i = 0;
 	if (lem_in->paths != NULL)
 	{
 		while (lem_in->paths[len] != NULL)
@@ -281,6 +283,11 @@ void	find_n_shortest_path(t_lem_in *lem_in, t_room *room)
 	}
 	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)len + 1 + 1));
 	path = create_a_path(lem_in, room);
+	while (i < len)
+	{
+		paths[i] = lem_in->paths[i];
+		i++;
+	}
     paths[len] = path;
 	paths[len + 1] = NULL;
 	lem_in->paths = paths;
@@ -326,6 +333,7 @@ void	find_paths(t_lem_in *lem_in)
 		exit(-1);
 	}
 	room = lem_in->end_room->neighbors[++i];
+	print_paths(lem_in);
 	while(room != NULL && start_neighbors > 1 && room->distance < threshold)
 	{
 		find_n_shortest_path(lem_in, room);
@@ -386,6 +394,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	print_neighbors(lem_in->rooms->next->next->next->next);
 	find_paths(lem_in);
 	// ft_printf(queue->room->name);
+	print_paths(lem_in);
 	
 
 	print_moves(lem_in);

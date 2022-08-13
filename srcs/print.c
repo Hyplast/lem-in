@@ -68,10 +68,33 @@ void	print_ants(t_lem_in *lem_in)
 	t_ant	*temp;
 
 	temp = lem_in->ants;
-	while (temp != NULL)
+	while (temp != NULL )
 	{
 		ft_printf("ant_id : %i room_name : %s\n",
 			temp->ant_id, temp->room->name);
 		temp = temp->next;
 	}
+}
+
+void	print_paths(t_lem_in *lem_in)
+{
+	t_path	*temp;
+	t_path	*path;
+	int		i;
+
+	i = 0;
+	temp = lem_in->paths[i++];
+	while (temp != NULL)
+	{
+		path = temp;
+		while (path != NULL)
+		{
+			ft_printf("%s ->", path->room->name);
+			path = path->next_path;
+		}
+		// ft_printf("%s ->", path->room->name);
+		ft_printf("path_length : %i\n", temp->path_length);
+		temp = lem_in->paths[i++];
+	}
+	ft_printf("\n");
 }

@@ -29,6 +29,7 @@ t_path	*lem_in_add_new_path(t_room *room)
 	t_path	*path;
 
 	path = (t_path *)malloc(sizeof(t_path));
+	path->next_path = NULL;
 	path->path_length = room->distance;
 	path->room = room;
 	return (path);
