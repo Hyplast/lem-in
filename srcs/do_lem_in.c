@@ -179,6 +179,7 @@ t_room *return_shortest_room(t_room *room)
 
 	i = 0;
 	temp = room->neighbors[i];
+	shortest_distance = 2147483647;
 	while (temp != NULL)
 	{
 		if (temp->distance < shortest_distance)
@@ -234,11 +235,11 @@ t_path	*create_a_path(t_lem_in *lem_in, t_room *room)
 {
 	t_path	*path;
 
-	path = lem_in_add_new_path(room);
+	path = lem_in_add_new_path(lem_in->end_room);
 
 	while (ft_memcmp(room, lem_in->start_room, sizeof(room)) != 0)
 	{
-		lem_in_add_to_path(path, room);
+		lem_in_add_to_path(&path, room);
 		room = return_shortest_room(room);
 		if (room == NULL)
 		{
@@ -246,7 +247,7 @@ t_path	*create_a_path(t_lem_in *lem_in, t_room *room)
 			exit(-1);
 		}
 	}
-	// lem_in_add_to_path(path, room);
+	lem_in_add_to_path(&path, lem_in->start_room);
 	return (path);
 }
 
@@ -372,13 +373,21 @@ void	find_neighbors(t_lem_in *lem_in)
 */
 void	set_visited_to_zero(t_lem_in *lem_in)
 {
-	t_room	*room;
+	t_path	*path;
+	t_path	*temp;
+	int		i;
 
-	room = lem_in->rooms;
-	while (room != NULL)
+	i = 0;
+	path = lem_in->paths[i];
+	while (path)
 	{
-		room->visited = 0;
-		room = room->next;
+		temp = path;
+		while(temp)
+		{
+			temp->room->visited = 0;
+			temp = temp->next_path;
+		}
+		path = lem_in->paths[++i];
 	}
 }
 

@@ -63,5 +63,5 @@ void	check_lem_in(t_lem_in *lem_in)
 		handle_error(lem_in, "end room not found\n");
 	lem_in->end_room = end;
 	while (i++ < lem_in->ants_count)
-		lem_in_add_ant(lem_in, i);
+		lem_in_add_ant(lem_in, lem_in->ants_count - i + 1);
 }

@@ -51,22 +51,29 @@ void	ant_is_in_goal(t_lem_in *lem_in)
 void	move_all_ants_on_one_path_by_one(t_lem_in *lem_in, t_path *path)
 {
 	t_ant *ant;
+	t_path	*temp;
 
+	temp = path;
 	ant = lem_in->ants;
 	while(ant != NULL)
 	{
 		while(path && path->room != ant->room)
 			path = path->next_path;
-		if (path->next_path->room->visited == 0)
+		if (path)
 		{
-			ant->room = path->next_path->room;
-			ant->room->visited = 1;
-			ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
+			if (path->room == lem_in->end_room)
+				ft_printf("L%i-%s ", ant->ant_id, path->room->name);
+			else if (path->next_path->room->visited == 0)
+			{
+				ant->room = path->next_path->room;
+				ant->room->visited = 1;
+				ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
+			}
+			// path = path->next_path;
 		}
-		// path = path->next_path;
+		path = temp;
 		ant = ant->next;
 	}
-	set_visited_to_zero(lem_in);
 }
 
 // void	traverse_ants_throught_path(t_lem_in *lem_in, t_path *path)
@@ -94,7 +101,7 @@ void    move_ants(t_lem_in *lem_in)
    
 	int		i;
 	i = 0;
-	path = lem_in->paths[i++];
+	path = lem_in->paths[i];
     // init_ants(lem_in);
 	// lem_in->paths_count;
 	
@@ -106,9 +113,27 @@ void    move_ants(t_lem_in *lem_in)
 	*	if ant = end room, remove from the ant list.
 	*	Continue until all ants are in end room.
 	*/
-	move_all_ants_on_one_path_by_one(lem_in, path);
+	while(lem_in->ants)
+	{
+		while (path)
+		{
+			move_all_ants_on_one_path_by_one(lem_in, path);
+			path = lem_in->paths[++i];
+		}
+		set_visited_to_zero(lem_in);
+		i = 0;
+		path = lem_in->paths[i];
+		if (lem_in->ants->room == lem_in->end_room)
+			ant_is_in_goal(lem_in);
+		ft_printf("\n");
+	}
+	// move_all_ants_on_one_path_by_one(lem_in, path);
 	// path = lem_in->paths[i++];
-	move_all_ants_on_one_path_by_one(lem_in, path);
+	// move_all_ants_on_one_path_by_one(lem_in, path);
+	// ft_printf("\n");
+	// // path = lem_in->paths[i++];
+	// move_all_ants_on_one_path_by_one(lem_in, path);
+
 	/*
 	while (lem_in->ants)
 	{

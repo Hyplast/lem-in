@@ -12,17 +12,25 @@
 
 #include "lem_in.h"
 
-void	lem_in_add_to_path(t_path *path, t_room *room)
+void	lem_in_add_to_path(t_path **path, t_room *room)
 {
 	t_path	*new_path;
 
 	new_path = (t_path *)malloc(sizeof(t_path));
 	new_path->room = room;
-	new_path->path_length = path->path_length;
-	new_path->next_path = NULL;
-	while (path->next_path != NULL)
-		path = path->next_path;
-	path->next_path = new_path;
+	new_path->path_length = (*path)->path_length + 1;
+	new_path->next_path = *path;
+	*path = new_path;
+
+	// t_path	*new_path;
+
+	// new_path = (t_path *)malloc(sizeof(t_path));
+	// new_path->room = room;
+	// new_path->path_length = path->path_length;
+	// new_path->next_path = NULL;
+	// while (path->next_path != NULL)
+	// 	path = path->next_path;
+	// path->next_path = new_path;
 }
 
 
@@ -32,7 +40,7 @@ t_path	*lem_in_add_new_path(t_room *room)
 
 	path = (t_path *)malloc(sizeof(t_path));
 	path->next_path = NULL;
-	path->path_length = room->distance;
+	path->path_length = 0;
 	path->room = room;
 	return (path);
 }
