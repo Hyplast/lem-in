@@ -367,6 +367,20 @@ void	find_neighbors(t_lem_in *lem_in)
 	}
 }
 
+/*
+*	Set visited rooms to zero in order to keep count which rooms are occupied by ants.
+*/
+void	set_visited_to_zero(t_lem_in *lem_in)
+{
+	t_room	*room;
+
+	room = lem_in->rooms;
+	while (room != NULL)
+	{
+		room->visited = 0;
+		room = room->next;
+	}
+}
 
 void	do_lem_in(t_lem_in *lem_in)
 {
@@ -395,8 +409,8 @@ void	do_lem_in(t_lem_in *lem_in)
 	find_paths(lem_in);
 	// ft_printf(queue->room->name);
 	print_paths(lem_in);
-	
+	set_visited_to_zero(lem_in);
 	move_ants(lem_in);
-	print_moves(lem_in);
+	// print_moves(lem_in);
 	ft_printf("\n");
 }

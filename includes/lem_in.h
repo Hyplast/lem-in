@@ -119,5 +119,6 @@ void		lem_in_add_to_path(t_path *path, t_room *room);
 t_path		*lem_in_add_new_path(t_room *room);
 void		print_paths(t_lem_in *lem_in);
 void		move_ants(t_lem_in *lem_in);
+void		set_visited_to_zero(t_lem_in *lem_in);
 
 #endif
