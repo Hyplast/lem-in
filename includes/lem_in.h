@@ -72,6 +72,7 @@ typedef struct s_lem_in
 	t_move		*moves;
 	t_path		**paths;
 	int			ants_count;
+	int			ants_in_start;
 	int			rooms_count;
 	int			links_count;
 	int			moves_count;

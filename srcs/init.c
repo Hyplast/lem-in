@@ -56,6 +56,7 @@ void	lem_in_add_ant(t_lem_in *lem_in, int ant_id)
 	ant->room = lem_in->start_room;
 	ant->next = lem_in->ants;
 	lem_in->ants = ant;
+	lem_in->ants_in_start++;
 }
 
 void	lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name)
@@ -84,6 +85,7 @@ t_lem_in	*lem_in_init(void)
 	lem_in->start_name = NULL;
 	lem_in->end_name = NULL;
 	lem_in->ants_count = 0;
+	lem_in->ants_in_start = 0;
 	lem_in->rooms_count = 0;
 	lem_in->links_count = 0;
 	lem_in->moves_count = 0;

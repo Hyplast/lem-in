@@ -117,14 +117,17 @@ void    move_ants(t_lem_in *lem_in)
 	{
 		while (path)
 		{
-			move_all_ants_on_one_path_by_one(lem_in, path);
+			if (path->path_length < lem_in->ants_count - 1)
+				move_ants_by_path_from_start(lem_in, path);
+			move_ants_by_path_from_other_rooms(lem_in, path);
+			ant_is_in_goal(lem_in);
 			path = lem_in->paths[++i];
 		}
 		set_visited_to_zero(lem_in);
 		i = 0;
 		path = lem_in->paths[i];
-		if (lem_in->ants->room == lem_in->end_room)
-			ant_is_in_goal(lem_in);
+		// if (lem_in->ants->room == lem_in->end_room)
+		// 	ant_is_in_goal(lem_in);
 		ft_printf("\n");
 	}
 	// move_all_ants_on_one_path_by_one(lem_in, path);
