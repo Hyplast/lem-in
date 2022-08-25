@@ -33,6 +33,7 @@ void	free_paths(t_lem_in *lem_in)
 		free(paths);
 		paths = lem_in->paths[++i];
 	}
+	free(lem_in->paths);
 	lem_in->paths = NULL;
 }
 

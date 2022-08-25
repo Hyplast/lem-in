@@ -36,7 +36,10 @@ void	insert(t_queue **queue, t_room *room)
 	new->next = NULL;
 	// new->queue_item_count = (*queue)->queue_item_count;
 	if ((*queue)->room == NULL)
+	{
+		free(*queue);
 		*queue = new;
+	}
 	else
 	{
 		if ((*queue)->next == NULL)

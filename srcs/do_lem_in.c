@@ -74,6 +74,7 @@ void    add_neighbors(t_room *room_1, t_room *room_2)
 		neighbors[len] = room_2;
 		neighbors[len + 1] = NULL;
     }
+	free(room_1->neighbors);
     room_1->neighbors = neighbors;
 }
 
@@ -140,6 +141,7 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 	// ft_printf("\nKKK lem_in->rooms->name : ");
 	// ft_printf(lem_in->rooms->name);
 	// ft_printf("\n");
+	// free(*queue);
 }
 
 // /*
@@ -405,6 +407,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	// ft_printf("ants : %i\n", lem_in->ants->ant_id);
 	// ft_printf("nextl line\n");
 	bread_first_search(lem_in, &queue);
+	// free(queue);
 	find_neighbors(lem_in);
 	// ft_printf("\n $£€\n");
 	// ft_printf(lem_in->rooms->name);
