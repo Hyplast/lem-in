@@ -19,7 +19,7 @@ void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 	if (!is_printable(name))
 		handle_error(lem_in, "room name is not printable\n");
 	room = (t_room *)malloc(sizeof(t_room));
-	room->name = name;
+	room->name = ft_strdup(name);
 	room->x = x;
 	room->y = y;
 	room->distance = 0;

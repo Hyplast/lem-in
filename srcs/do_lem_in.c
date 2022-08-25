@@ -123,22 +123,23 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 {
 	lem_in->start_room->visited = 1;
 	insert(queue, lem_in->start_room);
-	ft_printf("\nStack start: ");
-	ft_printf((*queue)->room->name);
-	ft_printf("\n");
+	// ft_printf("\nStack start: ");
+	// ft_printf((*queue)->room->name);
+	// ft_printf("\n");
 	while (!is_queue_empty(*queue))
 	{
 		go_to_linked_rooms(lem_in, queue);
-		ft_printf("\nStack: %s", (*queue)->room->name);
+		// ft_printf("\nStack: %s", (*queue)->room->name);
 		queue_remove(queue);
 	}
+	
 	// while (!lem_in->rooms++)
 	// {
 	// 	lem_in->rooms->visited = 0;
 	// }
-	ft_printf("\nKKK lem_in->rooms->name : ");
-	ft_printf(lem_in->rooms->name);
-	ft_printf("\n");
+	// ft_printf("\nKKK lem_in->rooms->name : ");
+	// ft_printf(lem_in->rooms->name);
+	// ft_printf("\n");
 }
 
 // /*

@@ -45,6 +45,7 @@ void	free_rooms(t_lem_in *lem_in)
 	while (room)
 	{
 		temp = room->next;
+		ft_strdel(&room->name);
 		free(room);
 		room = temp;
 	}
@@ -87,6 +88,8 @@ void	free_lem_in(t_lem_in *lem_in)
 	free_ants(lem_in);
 	free_paths(lem_in);
 	free_rooms(lem_in);
+	ft_strdel(&lem_in->start_name);
+	ft_strdel(&lem_in->end_name);
 	free(lem_in);
 	lem_in = NULL;
 }

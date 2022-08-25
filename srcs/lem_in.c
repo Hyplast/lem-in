@@ -21,14 +21,14 @@ void	add_to_lem_in(t_lem_in *lem_in, char *line)
 
 	temp = ft_strsplit(line, ' ');
 	if (lenght_of_array(temp) == 3)
-		lem_in_add_room(lem_in, ft_strdup(temp[0]), ft_atoi(temp[1]),
+		lem_in_add_room(lem_in, temp[0], ft_atoi(temp[1]),
 			ft_atoi(temp[2]));
 	ft_free_array(temp);
 	temp = ft_strsplit(line, '-');
 	if (lenght_of_array(temp) == 2)
 	{
-		lem_in_add_link(lem_in, ft_strdup(temp[0]), ft_strdup(temp[1]));
-		lem_in_add_link(lem_in, ft_strdup(temp[1]), ft_strdup(temp[0]));
+		lem_in_add_link(lem_in, temp[0], temp[1]);
+		lem_in_add_link(lem_in, temp[1], temp[0]);
 	}
 	ft_free_array(temp);
 }
@@ -83,11 +83,13 @@ void	get_lem_in(t_lem_in *lem_in)
 		lem_in->ants_count = ft_atoi(buf);
 	else
 		exit(-1);
+	ft_strdel(&buf);
 	read = get_next_line(0, &buf);
 	while (read != 0 && ft_strcmp("", buf) != 0)
 	{
 		handle_start_end(lem_in, buf);
 		add_to_lem_in(lem_in, buf);
+		ft_strdel(&buf);
 		read = get_next_line(0, &buf);
 	}
 	ft_strdel(&buf);
