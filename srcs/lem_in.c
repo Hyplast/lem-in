@@ -99,16 +99,10 @@ int	main(int argc, char **argv)
 
 	if (argc != 1)
 	{
-		ft_printf("Usage: ./lem_in\n");
-		return (0);
-	}
-	else if (argc == 2)
-	{
-		if (ft_strncmp("-v", argv[2], 2))
-		{
-			ft_printf("Using visualizer\n");
+		ft_printf("Usage: ./lem_in \"stdin\"\n");
+		if (argv[0] == NULL)
 			return (0);
-		}
+		return (0);
 	}
 	lem_in = lem_in_init();
 	if (!lem_in)
