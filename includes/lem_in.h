@@ -83,16 +83,6 @@ typedef struct s_lem_in
 	t_room		*end_room;
 	char		*start_name;
 	char		*end_name;
-	int			start_x;
-	int			start_y;
-	int			end_x;
-	int			end_y;
-	int			start_index;
-	int			end_index;
-	int			*path;
-	int			*path_len;
-	int			*path_index;
-	int			*path_index_len;
 }				t_lem_in;
 
 t_lem_in	*lem_in_init(void);

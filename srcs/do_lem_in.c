@@ -132,7 +132,7 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 		// ft_printf("\nStack: %s", (*queue)->room->name);
 		queue_remove(queue);
 	}
-	
+	// free(queue);
 	// while (!lem_in->rooms++)
 	// {
 	// 	lem_in->rooms->visited = 0;
@@ -292,6 +292,7 @@ void	find_n_shortest_path(t_lem_in *lem_in, t_room *room)
 	}
     paths[len] = path;
 	paths[len + 1] = NULL;
+	free(lem_in->paths);
 	lem_in->paths = paths;
 }
 
@@ -335,7 +336,7 @@ void	find_paths(t_lem_in *lem_in)
 		exit(-1);
 	}
 	room = lem_in->end_room->neighbors[++i];
-	print_paths(lem_in);
+	// print_paths(lem_in);
 	while(room != NULL && start_neighbors > 1 && room->distance < threshold)
 	{
 		find_n_shortest_path(lem_in, room);

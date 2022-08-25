@@ -40,12 +40,30 @@ void	free_rooms(t_lem_in *lem_in)
 {
 	t_room	*room;
 	t_room	*temp;
+	// t_room	*neighbor;
+	// t_room	*neighbor_temp;
+	// int		i;
 
+	// i = 0;
 	room = lem_in->rooms;
 	while (room)
 	{
 		temp = room->next;
 		ft_strdel(&room->name);
+		// neighbor = room->neighbors[i];
+		// while (neighbor)
+		// {
+		// 	neighbor_temp = room->neighbors[++i];
+		// 	free(neighbor);
+		// 	neighbor = neighbor_temp;
+		// }
+		// room->neighbors = NULL;
+		// while (room->neighbors[i])
+		// {
+		// 	free(room->neighbors[i++]);
+		// }
+		free(room->neighbors);
+		room->neighbors = NULL;
 		free(room);
 		room = temp;
 	}
