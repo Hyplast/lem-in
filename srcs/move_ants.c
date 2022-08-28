@@ -6,7 +6,7 @@
 /*   By: severi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 09:54:01 by severi            #+#    #+#             */
-/*   Updated: 2022/08/13 10:41:54 by severi           ###   ########.fr       */
+/*   Updated: 2022/08/29 00:54:39 by severi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant)
 			temp->next = temp->next->next;
 	}
 	free(ant);
-	ant = NULL;
+	ant = lem_in->ants;
 }
 
 /*
@@ -69,7 +69,10 @@ void	remove_ants_in_goal(t_lem_in *lem_in)
 	while (ant)
 	{
 		if (ant->room == lem_in->end_room)
+		{
 			remove_ant_from_lem_in(lem_in, ant);
+			ant = lem_in->ants;
+		}
 		else
 			ant = ant->next;
 	}
