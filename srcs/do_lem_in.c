@@ -62,9 +62,16 @@ void	do_lem_in(t_lem_in *lem_in)
 	// ft_printf("room_name : %s\n", lem_in->rooms->name);
 	// ft_printf("ants : %i\n", lem_in->ants->ant_id);
 	// ft_printf("nextl line\n");
+	clock_t stop_2 = clock();
 	bread_first_search(lem_in, &queue);
+	clock_t stop_3 = clock();
+	double elapsed = (double)(stop_3 - stop_2) * 1000.0 / CLOCKS_PER_SEC;
+    printf("bread_first_search elapsed in ms: %f\n", elapsed);
 	// free(queue);
 	find_neighbors(lem_in);
+	clock_t stop_4 = clock();
+	double elapsed_2 = (double)(stop_4 - stop_3) * 1000.0 / CLOCKS_PER_SEC;
+    printf("find_neighbors elapsed in ms: %f\n", elapsed_2);
 	// ft_printf("\n $£€\n");
 	// ft_printf(lem_in->rooms->name);
 	// ft_printf("\n");
@@ -77,10 +84,20 @@ void	do_lem_in(t_lem_in *lem_in)
 	// print_neighbors(lem_in->rooms->next->next->next);
 	// print_neighbors(lem_in->rooms->next->next->next->next);
 	find_paths(lem_in);
+	clock_t stop_5 = clock();
+	double elapsed_3;
+	elapsed_3 = (double) (stop_5 - stop_4);
+	elapsed_3 = elapsed_3 * 1000.0;
+	elapsed_3 = elapsed_3 / CLOCKS_PER_SEC;
+    printf("find_paths elapsed in ms: %f\n", elapsed_3);
 	// ft_printf(queue->room->name);
 	print_paths(lem_in);
 	set_visited_to_zero(lem_in);
+	clock_t stop_6 = clock();
 	move_ants(lem_in);
+	clock_t stop_7 = clock();
+	double elapsed_4 = (double)(stop_7 - stop_6) * 1000.0 / CLOCKS_PER_SEC;
+    printf("find_paths elapsed in ms: %f\n", elapsed_4);
 	// print_moves(lem_in);
-	ft_printf("\n");
+	printf("\n");
 }
