@@ -92,9 +92,29 @@ void	print_paths(t_lem_in *lem_in)
 			ft_printf("%s ->", path->room->name);
 			path = path->next_path;
 		}
-		// ft_printf("%s ->", path->room->name);
 		ft_printf("path_length : %i\n", temp->path_length);
 		temp = lem_in->paths[i++];
+	}
+	ft_printf("\n");
+}
+
+void	print_neighbors(t_room *room)
+{
+	size_t	i;
+
+	i = 0;
+	ft_printf("room \"%s\" has %i neighbors and they are: ",
+		room->name, ft_lstlen(room->neighbors));
+	if (room->neighbors == NULL)
+	{
+		ft_printf("\n");
+		return ;
+	}
+	while (room->neighbors[i] != NULL)
+	{
+		ft_printf("\"%s\" with %i distance, ", room->neighbors[i]->name,
+			room->neighbors[i]->distance);
+		i++;
 	}
 	ft_printf("\n");
 }

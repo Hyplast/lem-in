@@ -34,7 +34,6 @@ void	insert(t_queue **queue, t_room *room)
 	new = (t_queue *)malloc(sizeof(t_queue));
 	new->room = room;
 	new->next = NULL;
-	// new->queue_item_count = (*queue)->queue_item_count;
 	if ((*queue)->room == NULL)
 	{
 		free(*queue);
@@ -51,10 +50,6 @@ void	insert(t_queue **queue, t_room *room)
 				temp = temp->next;
 			temp->next = new;
 		}
-		// temp = (*queue)->next;
-		// while (temp->next != NULL)
-		// 	temp = temp->next;
-		// temp->next = new;
 	}
 	(*queue)->queue_item_count++;
 }
@@ -76,4 +71,35 @@ int	is_queue_empty(t_queue *queue)
 	if (queue == NULL)
 		return (1);
 	return (0);
+}
+
+/*
+*	Check if the addresses point to the same memory location
+*/
+void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
+{
+	t_link		*temp;
+	static int	distance;
+	int			just_once;
+
+	just_once = 0;
+	temp = lem_in->links;
+	while (temp != NULL)
+	{
+		if (temp->room_1 == (*queue)->room)
+		{
+			if (temp->room_2->visited == 0)
+			{
+				if (just_once == 0)
+				{
+					distance++;
+					just_once = 1;
+				}
+				temp->room_2->visited = 1;
+				temp->room_2->distance = distance;
+				insert(queue, temp->room_2);
+			}
+		}
+		temp = temp->next;
+	}
 }

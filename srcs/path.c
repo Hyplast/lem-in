@@ -21,18 +21,7 @@ void	lem_in_add_to_path(t_path **path, t_room *room)
 	new_path->path_length = (*path)->path_length + 1;
 	new_path->next_path = *path;
 	*path = new_path;
-
-	// t_path	*new_path;
-
-	// new_path = (t_path *)malloc(sizeof(t_path));
-	// new_path->room = room;
-	// new_path->path_length = path->path_length;
-	// new_path->next_path = NULL;
-	// while (path->next_path != NULL)
-	// 	path = path->next_path;
-	// path->next_path = new_path;
 }
-
 
 t_path	*lem_in_add_new_path(t_room *room)
 {
@@ -45,44 +34,89 @@ t_path	*lem_in_add_new_path(t_room *room)
 	return (path);
 }
 
+/*
+*	Find the shortest path between start and end rooms different than last path.
+*	@return	the shortest path between start and end rooms.
+*	@return NULL if no path is found.
+*/
+t_path	*create_a_path(t_lem_in *lem_in, t_room *room)
+{
+	t_path	*path;
 
-// 10 ants -> 10 paths -> 1 turn
-// distance 1 -< turn , distance 2 - 
-// in the same amount of time distance 4 will take 9 turns to transport 5 ants
-// distance 7 will take 7 turns and have transported 5/7*5 = 
-// 10 ants -> 5 paths -> 2 turns
-// 10 ants -> 4 paths -> 3 turns
+	path = lem_in_add_new_path(lem_in->end_room);
+	while (ft_memcmp(room, lem_in->start_room, sizeof(room)) != 0)
+	{
+		lem_in_add_to_path(&path, room);
+		room = return_shortest_room(room);
+		if (room == NULL)
+		{
+			handle_error(lem_in, "No path found.");
+			exit(-1);
+		}
+	}
+	lem_in_add_to_path(&path, lem_in->start_room);
+	return (path);
+}
 
-// distance + ants - 1 = turns
+/*
+*	Find the shortest path between start and given room.
+*	Add it to the path list.
+*	@return void
+*/
+void	find_n_shortest_path(t_lem_in *lem_in, t_room *room)
+{
+	t_path	**paths;
+	t_path	*path;
+	int		len;
+	int		i;
 
-// 10 ants
-// 3 paths
+	len = 0;
+	i = 0;
+	if (lem_in->paths != NULL)
+	{
+		while (lem_in->paths[len] != NULL)
+			len++;
+	}
+	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)len + 1 + 1));
+	path = create_a_path(lem_in, room);
+	while (i < len)
+	{
+		paths[i] = lem_in->paths[i];
+		i++;
+	}
+	paths[len] = path;
+	paths[len + 1] = NULL;
+	free(lem_in->paths);
+	lem_in->paths = paths;
+}
 
-// 10 ants * distance 4 = 13 turns
-// max (9_ants*dist_4, 1_ants*dist_5) = 12 turns
-// max (8_ants*dist_4, 2_ants*dist_5) = 11 turns
-// max (7_ants*dist_4, 3_ants*dist_5) = 10 turns
-// max (6_ants*dist_4, 4_ants*dist_5) = 9 turns
-// max (5_ants*dist_4, 5_ants*dist_5) = 9 turns
-// max (4_ants*dist_4, 6_ants*dist_5) = 10 turns
+/*
+*	Find paths from end to start using neihgboring distance.
+*	Only add path if it's distance is less than (distance + ants - 1). 
+*	@return NULL if no path is found.
+*/
+void	find_paths(t_lem_in *lem_in)
+{
+	int		threshold;
+	int		i;
+	size_t	start_neighbors;
+	t_room	*room;
 
-//max (9_ants*dist_4, 1_ants*dist_5, 0_ants*dist_6) = 12 turns
-//max (8_ants*dist_4, 2_ants*dist_5, 0_ants*dist_6) = 11 turns
-//max (7_ants*dist_4, 3_ants*dist_5, 0_ants*dist_6) = 10 turns
-//max (6_ants*dist_4, 4_ants*dist_5, 0_ants*dist_6) = 9 turns
-//max (5_ants*dist_4, 5_ants*dist_5, 0_ants*dist_6) = 9 turns
-//max (4_ants*dist_4, 6_ants*dist_5, 0_ants*dist_6) = 10 turns
-//max (8_ants*dist_4, 1_ants*dist_5, 1_ants*dist_6) = 11 turns
-//max (7_ants*dist_4, 2_ants*dist_5, 1_ants*dist_6) = 10 turns
-//max (7_ants*dist_4, 2_ants*dist_5, 2_ants*dist_6) = 10 turns
-//max (6_ants*dist_4, 3_ants*dist_5, 1_ants*dist_6) = 9 turns
-//max (6_ants*dist_4, 3_ants*dist_5, 2_ants*dist_6) = 9 turns
-//max (5_ants*dist_4, 3_ants*dist_5, 2_ants*dist_6) = 8 turns
-//max (5_ants*dist_4, 4_ants*dist_5, 1_ants*dist_6) = 8 turns
-//max (4_ants*dist_4, 3_ants*dist_5, 3_ants*dist_6) = 8 turns
-
-//max (4_ants*dist_4, 3_ants*dist_5, 2_ants*dist_6, 1_ants*dist7) = 7 turns
-//max (4_ants*dist_4, 4_ants*dist_4, 1_ants*dist_5, 0_ants*dist7) = 7 turns
-
-
-
+	i = 0;
+	room = lem_in->end_room->neighbors[i];
+	threshold = lem_in->ants_count + lem_in->end_room->distance - 1;
+	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
+	find_n_shortest_path(lem_in, room);
+	if (lem_in->paths == NULL)
+	{
+		handle_error(lem_in, "No path found.");
+		exit(-1);
+	}
+	room = lem_in->end_room->neighbors[++i];
+	while (room != NULL && start_neighbors > 1 && room->distance < threshold)
+	{
+		find_n_shortest_path(lem_in, room);
+		start_neighbors--;
+		room = lem_in->end_room->neighbors[++i];
+	}
+}

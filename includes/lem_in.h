@@ -58,7 +58,6 @@ typedef struct s_move
 
 typedef struct s_path
 {
-	//struct s_path	*path;
 	struct s_path	*next_path;
 	int				path_length;
 	struct s_room	*room;
@@ -96,21 +95,28 @@ int			is_printable(char *str);
 t_room		*get_room(t_lem_in *lem_in, char *room_name);
 void		check_lem_in(t_lem_in *lem_in);
 int			lenght_of_array(char **array);
+size_t		ft_lstlen(t_room **neighbors);
 void		do_lem_in(t_lem_in *lem_in);
 void		print_rooms(t_lem_in *lem_in);
 void		print_links(t_lem_in *lem_in);
 void		print_moves(t_lem_in *lem_in);
 void		print_ants(t_lem_in *lem_in);
+void		print_paths(t_lem_in *lem_in);
 int			handle_error(t_lem_in *lem_in, char *error_msg);
 t_queue		*init_queue(void);
 void		insert(t_queue **queue, t_room *room);
 void		queue_remove(t_queue **queue);
 int			is_queue_empty(t_queue *queue);
+void		go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue);
 void		lem_in_add_to_path(t_path **path, t_room *room);
 t_path		*lem_in_add_new_path(t_room *room);
-void		print_paths(t_lem_in *lem_in);
+void		find_paths(t_lem_in *lem_in);
+void		find_n_shortest_path(t_lem_in *lem_in, t_room *room);
+void		free_paths(t_lem_in *lem_in);
 void		move_ants(t_lem_in *lem_in);
 void		set_visited_to_zero(t_lem_in *lem_in);
-void		free_paths(t_lem_in *lem_in);
+void		add_neighbors(t_room *room_1, t_room *room_2);
+void		find_neighbors(t_lem_in *lem_in);
+t_room		*return_shortest_room(t_room *room);
 
 #endif
