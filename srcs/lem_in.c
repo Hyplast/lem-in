@@ -19,6 +19,8 @@ void	add_to_lem_in(t_lem_in *lem_in, char *line)
 {
 	char	**temp;
 
+	if (line[0] == '#')
+		return ;
 	temp = ft_strsplit(line, ' ');
 	if (lenght_of_array(temp) == 3)
 		lem_in_add_room(lem_in, temp[0], ft_atoi(temp[1]),

@@ -242,7 +242,9 @@ void	move_ants(t_lem_in *lem_in)
 {
 	t_path	*path;
 	int		i;
+	int		counter;
 
+	counter = 0;
 	i = 0;
 	path = lem_in->paths[i];
 	while (lem_in->ants)
@@ -262,5 +264,8 @@ void	move_ants(t_lem_in *lem_in)
 		path = lem_in->paths[i];
 		remove_ants_in_goal(lem_in);
 		ft_printf("\n");
+		counter++;
 	}
+	ft_printf("Number of lines: %d\n", counter);
+
 }
