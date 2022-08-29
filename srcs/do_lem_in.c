@@ -14,12 +14,11 @@
 
 /*
 *	Bread first traversal to find path lenghts between start and end rooms.
-*	Stop if more paths are found than ants exist.
 */
-void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
+void	bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room)
 {
-	lem_in->start_room->visited = 1;
-	insert(queue, lem_in->start_room);
+	room->visited = 1;
+	insert(queue, room);
 	while (!is_queue_empty(*queue))
 	{
 		go_to_linked_rooms(lem_in, queue);
@@ -28,7 +27,22 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue)
 }
 
 /*
-*	Set visited rooms to zero in order to keep count which rooms are 
+*	Set visited rooms to zero.
+*/
+void	set_all_visited_to_zero(t_lem_in *lem_in)
+{
+	t_room	*temp;
+
+	temp = lem_in->rooms;
+	while (temp)
+	{
+		temp->visited = 0;
+		temp = temp->next;
+	}
+}
+
+/*
+*	Set visited rooms in paths to zero in order to keep count which rooms are 
 *	occupied by ants.
 */
 void	set_visited_to_zero(t_lem_in *lem_in)
@@ -63,7 +77,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	// ft_printf("ants : %i\n", lem_in->ants->ant_id);
 	// ft_printf("nextl line\n");
 	clock_t stop_2 = clock();
-	bread_first_search(lem_in, &queue);
+	bread_first_search(lem_in, &queue, lem_in->start_room);
 	clock_t stop_3 = clock();
 	double elapsed = (double)(stop_3 - stop_2) * 1000.0 / CLOCKS_PER_SEC;
     printf("bread_first_search elapsed in ms: %f\n", elapsed);
@@ -91,8 +105,12 @@ void	do_lem_in(t_lem_in *lem_in)
 	elapsed_3 = elapsed_3 / CLOCKS_PER_SEC;
     printf("find_paths elapsed in ms: %f\n", elapsed_3);
 	// ft_printf(queue->room->name);
-	print_paths(lem_in);
+	// print_paths(lem_in);
+	// set_all_visited_to_zero(lem_in);
+	// bread_first_search(lem_in, &queue, lem_in->end_room);
+
 	set_visited_to_zero(lem_in);
+	print_paths(lem_in);
 	clock_t stop_6 = clock();
 	move_ants(lem_in);
 	clock_t stop_7 = clock();

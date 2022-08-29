@@ -58,3 +58,4 @@ and
 read and write data must also be fairly fast."
 
 
+After making the program run on simpler maps and everything seeming fine, I gave it some harder maps and to no one's surprise the algorithm will need fine tuning. It seems problems arise when different paths cross and taking simply the shortest path will block other paths from functioning. This made me to look for scenerarios where the end can receive from more than one path but if taking the shortest path will prevent to less than ideal paths working. So to overcome this problem, the following solution exists. Look how many ants the end room can receive, look for shortest path on the neigbors of the start room and end room and rule out
