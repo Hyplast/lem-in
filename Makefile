@@ -23,6 +23,7 @@ free.c \
 neigbors.c \
 path.c \
 path_reversed.c \
+calc_paths.c \
 move_ants.c \
 
 SRCS = $(addprefix srcs/, $(SRC))

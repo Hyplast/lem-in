@@ -121,5 +121,6 @@ void		set_visited_to_zero(t_lem_in *lem_in);
 void		add_neighbors(t_room *room_1, t_room *room_2);
 void		find_neighbors(t_lem_in *lem_in);
 t_room		*return_shortest_room(t_room *room);
+void		calculate_optimal_paths(t_lem_in *lem_in);
 
 #endif
