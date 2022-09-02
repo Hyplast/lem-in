@@ -69,6 +69,68 @@ void	find_n_shortest_path(t_lem_in *lem_in, t_room *room)
 }
 */
 
+void	end_to_start(t_lem_in *lem_in, t_path *path)
+{
+	while (path)
+	{
+		if (path->room == lem_in->end_room)
+			path->room = lem_in->start_room;
+		else if(path->room == lem_in->start_room)
+			path->room = lem_in->end_room;
+		path = path->next_path;
+	}
+}
+
+void	start_to_end(t_lem_in *lem_in, t_path **path)
+{
+	t_path	*temp;
+	// t_room	*compare;
+	t_path	*new_path;
+
+	// temp = path->next_path;
+	// compare = lem_in->end_room;
+	temp = *path;
+	new_path = lem_in_add_new_path(lem_in->end_room);
+	temp = temp->next_path;
+	while(temp->next_path)
+	{
+		lem_in_add_to_path(&new_path, temp->room);
+		temp = temp->next_path; 
+	}
+	lem_in_add_to_path(&new_path, lem_in->start_room);
+	// lem_in_add_to_path(&new_path, lem_in->start_room);
+	// new_path = lem_in_add_new_path(lem_in->start_room);
+	
+	// while (new_path->room != path->next_path->room)
+	// {
+	// 	while(temp->next_path->room != compare)
+	// 		temp = temp->next_path;
+	// 	lem_in_add_to_path(&new_path, temp->room);
+	// 	compare = temp->room;
+	// 	temp = path->next_path;
+	// }
+	// lem_in_add_to_path(&new_path, lem_in->end_room);
+	
+	// temp = path;
+	// while (path)
+	// {
+	// 	temp = path->next_path;
+	// 	free(path);
+	// 	path = temp;
+	// }
+	// path = new_path;
+	// end_to_start(lem_in, new_path);
+
+	while(*path)
+	{
+		(*path)->room = new_path->room;
+		*path = (*path)->next_path;
+		new_path = new_path->next_path;
+	}
+	// *path = new_path;
+}
+
+
 void	change_paths_order(t_lem_in *lem_in)
 {
 	t_path	*path;
@@ -78,6 +140,12 @@ void	change_paths_order(t_lem_in *lem_in)
 	path = lem_in->paths[i];
 	while (path)
 	{
+		if (path->room == lem_in->start_room)
+			start_to_end(lem_in, &path);
+		else if (path->room == lem_in->end_room)
+			end_to_start(lem_in, path);
+		// printf("round %d ongoing\n", i);
+		// print_paths(lem_in);
 		path = lem_in->paths[++i];
 	}
 }

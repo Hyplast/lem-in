@@ -110,11 +110,13 @@ void	do_lem_in(t_lem_in *lem_in)
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->end_room);
 	find_paths_reverse_order(lem_in);
+	print_paths(lem_in);
 	change_paths_order(lem_in);
 
 	set_visited_to_zero(lem_in);
 	print_paths(lem_in);
 	clock_t stop_6 = clock();
+	calculate_optimal_paths(lem_in);
 	move_ants(lem_in);
 	clock_t stop_7 = clock();
 	double elapsed_4 = (double)(stop_7 - stop_6) * 1000.0 / CLOCKS_PER_SEC;
