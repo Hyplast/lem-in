@@ -56,6 +56,7 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 {
 	size_t	start_neigbors;
 	size_t	end_neigbors;
+	t_path	**paths;
 	t_path	*path;
 	t_path	*temp;
 
@@ -63,5 +64,7 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 	end_neigbors = ft_lstlen(lem_in->end_room);
 	if (start_neigbors > end_neigbors)
 		start_neigbors = end_neigbors;
+	paths = (t_path **)malloc(sizeof(t_path *) * (start_neigbors + 1));
 	path = get_shortest_path(lem_in);
+	paths[0] = path;
 }
