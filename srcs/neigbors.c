@@ -12,6 +12,11 @@
 
 #include "lem_in.h"
 
+/*
+*	Count the amount of neigboring rooms
+*	@param	Room **neighbors
+*	@return	amount of neighbors
+*/
 size_t	ft_lstlen(t_room **neighbors)
 {
 	size_t		len;
