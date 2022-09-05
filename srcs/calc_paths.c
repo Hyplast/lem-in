@@ -12,6 +12,11 @@
 
 #include "lem_in.h"
 
+/*
+*	Check whether paths have matching rooms excluding start and end rooms.
+*	@param1 path 1
+*	@param2 path 2
+*/
 int		is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2)
 {
 	t_path	*temp_1;
@@ -33,7 +38,9 @@ int		is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2)
 	return (1);
 }
 
-
+/*
+*	@return Shortest path from lem-in paths.
+*/
 t_path	*get_shortest_path(t_lem_in *lem_in)
 {
 	t_path	*path;
@@ -52,16 +59,20 @@ t_path	*get_shortest_path(t_lem_in *lem_in)
 	return (path);
 }
 
+/*
+*	Calculate shortest paths for ants. Max paths is whichever is lower, amount of 
+*	neighbors of start or end rooms. Replace paths in ascending order into lem-in.
+*/
 void 	calculate_optimal_paths(t_lem_in *lem_in)
 {
 	size_t	start_neigbors;
 	size_t	end_neigbors;
 	t_path	**paths;
 	t_path	*path;
-	t_path	*temp;
+	// t_path	*temp;
 
-	start_neigbors = ft_lstlen(lem_in->start_room);
-	end_neigbors = ft_lstlen(lem_in->end_room);
+	start_neigbors = ft_lstlen(lem_in->start_room->neighbors);
+	end_neigbors = ft_lstlen(lem_in->end_room->neighbors);
 	if (start_neigbors > end_neigbors)
 		start_neigbors = end_neigbors;
 	paths = (t_path **)malloc(sizeof(t_path *) * (start_neigbors + 1));
