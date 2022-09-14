@@ -12,12 +12,30 @@
 
 #include "lem_in.h"
 
+
 /*
-*	Count the amount of pathss
+*	Count the length of the path.
+*	@param	t_paths *path
+*	@return	length of the path.
+*//*
+size_t	path_len(t_path *path)
+{
+	size_t		len;
+
+	len = 0;
+	if (paths == NULL)
+		return (len);
+	while (paths[len] != NULL)
+		len++;
+	return (len);
+}
+*/
+/*
+*	Count the amount of paths
 *	@param	t_paths **paths
 *	@return	amount of paths
 */
-size_t	ft_pathlen(t_path **paths)
+size_t	count_paths(t_path **paths)
 {
 	size_t		len;
 
@@ -80,8 +98,15 @@ t_path	*get_shortest_path(t_lem_in *lem_in)
 void	add_a_path(t_lem_in *lem_in, t_path **paths)
 {
 	size_t	path_length;
+	size_t	paths_count;
 
-	path_length = ft_pathlen(paths);
+	// path_length = path_len(paths);
+	paths_count = count_paths(paths);
+	path_length = paths[0]->path_length;
+	
+
+
+
 	
 }
 
