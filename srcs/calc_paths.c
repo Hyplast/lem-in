@@ -75,6 +75,29 @@ int		is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2)
 }
 
 /*
+*	Check whether path and paths have matching rooms excluding start and end rooms.
+*	@param1 path 1
+*	@param2 paths
+*	@return 1 no match, 0 if matching rooms
+*/
+int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
+{
+	int	i;
+	int	result;
+
+	i = 0;
+	while(paths[i])
+	{
+		result = is_path_unique(lem_in, path_1, paths[i]);
+		if (result == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
+/*
 *	@return Shortest path from lem-in paths.
 */
 t_path	*get_shortest_path(t_lem_in *lem_in)
@@ -103,20 +126,37 @@ t_path	*get_a_new_path(t_lem_in *lem_in, t_path **paths)
 {
 	t_path	*path;
 	t_path	*temp;
-	int		i;
+	int		found;
+	int		j;
 
-	i = 0;
+	found = -1;
+	j = 0;
 	temp = lem_in->paths[i];
-	path = temp;
-	while (temp)
+	path = paths[j];
+
+
+
+	while (paths[j])
 	{
-		if (path->path_length < temp->path_length)
-			path = temp;
-		temp = lem_in->paths[++i];
+		if (temp == paths[j])
+			found = j;
+		j++;
 	}
+
+
+		while (lem_in->paths[i] != paths[j])
+		{
+			j++;
+		}
+	}
+
 	return (path);
 }
 
+
+//	3	->	2
+//	2	->	3
+//	4	->	4
 /*
 *	Add a new path to new paths array and make sure that it doesn't
 *	have overlapping rooms with previous paths.
@@ -127,10 +167,9 @@ void	add_a_path(t_lem_in *lem_in, t_path **paths)
 	size_t	paths_count;
 	t_path	*new_path;
 	int		i;
-
+	int		unique;
 
 	i = 0;
-
 	// path_length = path_len(paths);
 	paths_count = count_paths(paths);
 	path_length = paths[0]->path_length;
@@ -138,10 +177,15 @@ void	add_a_path(t_lem_in *lem_in, t_path **paths)
 	
 	while(paths[i])
 	{
-
 		while(new_path != paths[paths_count])
 		{
-			get_a_new_path(lem_in, paths);
+			new_path = get_a_new_path(lem_in, paths);
+			unique = check_all_paths_uniq(lem_in, new_path, paths);
+			if (unique == 1)
+			{
+				add_to_paths(lem_in, paths);
+			}
+			
 		}
 		i++;
 	}
