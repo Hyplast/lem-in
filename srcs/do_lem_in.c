@@ -116,6 +116,8 @@ void	do_lem_in(t_lem_in *lem_in)
 	set_visited_to_zero(lem_in);
 	print_paths(lem_in);
 	clock_t stop_6 = clock();
+	bubble_sort_paths(lem_in);
+	print_paths(lem_in);
 	calculate_optimal_paths(lem_in);
 	move_ants(lem_in);
 	clock_t stop_7 = clock();

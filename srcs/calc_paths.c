@@ -95,19 +95,87 @@ t_path	*get_shortest_path(t_lem_in *lem_in)
 	return (path);
 }
 
+
+/*
+*	@return Get a different shortest path from lem-in paths.
+*/
+t_path	*get_a_new_path(t_lem_in *lem_in, t_path **paths)
+{
+	t_path	*path;
+	t_path	*temp;
+	int		i;
+
+	i = 0;
+	temp = lem_in->paths[i];
+	path = temp;
+	while (temp)
+	{
+		if (path->path_length < temp->path_length)
+			path = temp;
+		temp = lem_in->paths[++i];
+	}
+	return (path);
+}
+
+/*
+*	Add a new path to new paths array and make sure that it doesn't
+*	have overlapping rooms with previous paths.
+*/
 void	add_a_path(t_lem_in *lem_in, t_path **paths)
 {
-	size_t	path_length;
+	int		path_length;
 	size_t	paths_count;
+	t_path	*new_path;
+	int		i;
+
+
+	i = 0;
 
 	// path_length = path_len(paths);
 	paths_count = count_paths(paths);
 	path_length = paths[0]->path_length;
+	new_path = get_shortest_path(lem_in);
 	
+	while(paths[i])
+	{
 
+		while(new_path != paths[paths_count])
+		{
+			get_a_new_path(lem_in, paths);
+		}
+		i++;
+	}
 
+}
 
-	
+/*
+*	Use bubble sorting to sort the paths in length ascending order.
+*/
+void 	bubble_sort_paths(t_lem_in *lem_in)
+{
+	t_path	**paths;
+	t_path	*temp;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	paths = lem_in->paths;
+	while(lem_in->paths[i])
+	{
+		while (paths[j])
+		{
+			if (lem_in->paths[i]->path_length < paths[j]->path_length)
+			{
+				temp = paths[j]->path_length;
+				paths[j]->path_length = lem_in->paths[i];
+				lem_in->paths[i] = temp;
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
 }
 
 /*
@@ -130,9 +198,10 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 	path = get_shortest_path(lem_in);
 	paths[0] = path;
 	paths[1] = NULL;
-	while (ft_pathlen(paths) < start_neigbors)
+	while (count_paths(paths) < start_neigbors)
 	{
 		add_a_path(lem_in, paths);
+
 	}
 	lem_in->paths = paths;
 
