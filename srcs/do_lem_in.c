@@ -119,6 +119,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	bubble_sort_paths(lem_in);
 	print_paths(lem_in);
 	calculate_optimal_paths(lem_in);
+	print_paths(lem_in);
 	move_ants(lem_in);
 	clock_t stop_7 = clock();
 	double elapsed_4 = (double)(stop_7 - stop_6) * 1000.0 / CLOCKS_PER_SEC;
