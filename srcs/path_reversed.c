@@ -131,6 +131,9 @@ void	start_to_end(t_lem_in *lem_in, t_path **path)
 }
 
 
+/*
+*	Fix starting path to lem_in->start and ending path to lem_in->end.
+*/
 void	change_paths_order(t_lem_in *lem_in)
 {
 	t_path	*path;

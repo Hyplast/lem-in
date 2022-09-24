@@ -126,39 +126,54 @@ t_path	*get_shortest_path(t_lem_in *lem_in)
 /*
 *	@return Get a different shortest path from lem-in paths.
 */
-t_path	*swap_old_path(t_lem_in *lem_in, t_path **paths)
+void	swap_old_path(t_lem_in *lem_in, t_path **paths)
 {
-	t_path	*path;
-	t_path	*temp;
-	int		found;
-	int		j;
+
 	int		i;
+	int		j;
+	// t_path	*replace;
+	int		unique;
 
 	i = 0;
-
-	found = -1;
 	j = 0;
-	temp = lem_in->paths[i];
-	path = paths[j];
-
-
-/*
-	while (paths[j])
+	// replace = paths[j];
+	
+	while (lem_in->paths[i])
 	{
-		if (temp == paths[j])
-			found = j;
-		j++;
-	}
-
-
-		while (lem_in->paths[i] != paths[j])
+		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+		if (unique == 1)
 		{
-			j++;
+			paths[j] = lem_in->paths[i];
+			return ;
 		}
+		i++;
 	}
-*/
 
-	return (path);
+	// t_path	*path;
+	// int		found;
+	// int		j;
+	// int		i;
+
+	// i = 0;
+	// found = -1;
+	// j = 0;
+	// temp = lem_in->paths[];
+	// path = paths[j];
+
+	// while (paths[j])
+	// {
+	// 	if (temp == paths[j])
+	// 		found = j;
+	// 	j++;
+	// }
+
+	// 	while (lem_in->paths[i] != paths[j])
+	// 	{
+	// 		j++;
+	// 	}
+	// }
+
+	// return (path);
 }
 
 
@@ -172,8 +187,8 @@ t_path	*swap_old_path(t_lem_in *lem_in, t_path **paths)
 */
 void	add_a_path(t_lem_in *lem_in, t_path **paths)
 {
-	int		path_length;
-	size_t	paths_count;
+	// int		path_length;
+	// size_t	paths_count;
 	t_path	*new_path;
 	int		i;
 	int		j;
@@ -182,8 +197,8 @@ void	add_a_path(t_lem_in *lem_in, t_path **paths)
 	i = 0;
 	j = 0;
 	// path_length = path_len(paths);
-	paths_count = count_paths(paths);
-	path_length = paths[0]->path_length;
+	// paths_count = count_paths(paths);
+	// path_length = paths[0]->path_length;
 	//get_shortest_path(lem_in);
 	// new_path = lem_in->paths[0];
 	while(lem_in->paths[i])

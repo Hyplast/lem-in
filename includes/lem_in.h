@@ -123,5 +123,6 @@ void		find_neighbors(t_lem_in *lem_in);
 t_room		*return_shortest_room(t_room *room);
 void		calculate_optimal_paths(t_lem_in *lem_in);
 void		bubble_sort_paths(t_lem_in *lem_in);
+size_t		count_paths(t_path **paths);
 
 #endif

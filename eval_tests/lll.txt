@@ -1,0 +1,13 @@
+paths		starting rooms 3
+
+
+5		-> add lowest 5
+5		-> check if sec lowest is unique, if not move to the next one, 
+if cannot find unique, remove first, and take sec lowest.
+
+7		-> check if third lowest if unique, add it to paths
+if not, move onto next one.
+
+7
+8
+9
