@@ -91,9 +91,9 @@ void	remove_paths(t_lem_in *lem_in, int to_be_removed[500])
 	k = 0;
 	num_removed = 0;
 	num_paths = (int)count_paths(lem_in->paths);
-	while (to_be_removed[num_removed] != 0)
+	while (to_be_removed[num_removed] != -1)
 		num_removed++;
-	num_paths = num_removed - num_paths;
+	num_paths = num_paths - num_removed;
 	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)num_paths + 1));
 	while (lem_in->paths[i])
 	{
@@ -115,16 +115,15 @@ void	remove_duplicates(t_lem_in *lem_in)
 	int		result;
 	int		to_be_removed[500];
 
-	
 	i = 0;
 	j = 0;
 	while (i < 500)
-		to_be_removed[i++] = 0;
+		to_be_removed[i++] = -1;
 	i = 0;
 	path = lem_in->paths[i];
 	while (path)
 	{
-		temp = path;
+		temp = lem_in->paths[i + 1];
 		while (temp)
 		{
 			if (path->path_length == temp->path_length)
@@ -193,7 +192,9 @@ void	do_lem_in(t_lem_in *lem_in)
 	clock_t stop_6 = clock();
 	bubble_sort_paths(lem_in);
 	print_paths(lem_in);
+	printf("Before remove duplicants\n");
 	remove_duplicates(lem_in);
+	printf("After remove duplicants\n");
 	print_paths(lem_in);
 	calculate_optimal_paths(lem_in);
 	print_paths(lem_in);
