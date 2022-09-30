@@ -90,7 +90,7 @@ int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
 	while(paths[i])
 	{
 		if (path_1 == paths[i])
-			result = 1;
+			result = 0;
 		else
 			result = is_path_unique(lem_in, path_1, paths[i]);
 		if (result == 0)
@@ -125,18 +125,22 @@ t_path	*get_shortest_path(t_lem_in *lem_in)
 
 /*
 *	@return Get a different shortest path from lem-in paths.
+*	@return 1 if swap succesfull
+*	@return 0 if swap not succesfull
 */
-void	swap_old_path(t_lem_in *lem_in, t_path **paths)
+int	swap_old_path(t_lem_in *lem_in, t_path **paths, int j)
 {
 
 	int		i;
-	int		j;
-	// t_path	*replace;
+	// int		j;
+	t_path	*replace;
 	int		unique;
 
 	i = 0;
-	j = 0;
-	// replace = paths[j];
+	// j = 0;
+	// replace = paths[j];,
+	replace = paths[j];
+	paths[j] = NULL;
 	
 	while (lem_in->paths[i])
 	{
@@ -144,10 +148,12 @@ void	swap_old_path(t_lem_in *lem_in, t_path **paths)
 		if (unique == 1)
 		{
 			paths[j] = lem_in->paths[i];
-			return ;
+			return 1;
 		}
 		i++;
 	}
+	paths[j] = replace;
+	return (0);
 
 	// t_path	*path;
 	// int		found;
@@ -185,7 +191,7 @@ void	swap_old_path(t_lem_in *lem_in, t_path **paths)
 *	have overlapping rooms with previous paths. If it has, go to next path until
 * 	new path is found. TODO: Check what combinations of path length lead to lowest
 */
-void	add_a_path(t_lem_in *lem_in, t_path **paths)
+int	add_a_path(t_lem_in *lem_in, t_path **paths)
 {
 	// int		path_length;
 	// size_t	paths_count;
@@ -201,18 +207,33 @@ void	add_a_path(t_lem_in *lem_in, t_path **paths)
 	// path_length = paths[0]->path_length;
 	//get_shortest_path(lem_in);
 	// new_path = lem_in->paths[0];
-	while(lem_in->paths[i])
+	new_path = lem_in->paths[i];
+	unique = check_all_paths_uniq(lem_in, new_path, paths);
+	while(unique == 0 && lem_in->paths[++i] != NULL)
 	{
-		new_path = lem_in->paths[0];
+		new_path = lem_in->paths[i];
 		unique = check_all_paths_uniq(lem_in, new_path, paths);
-		if (unique)
-		{
-			while(paths[j])
-				j++;
-			paths[j++] = new_path;
-			paths[j] = NULL;
-			return ;
-		}
+	}
+	if (unique)
+	{
+		while(paths[j])
+			j++;
+		paths[j++] = new_path;
+		paths[j] = NULL;
+		return 1;
+	}
+	// while(lem_in->paths[i])
+	// {
+	// 	new_path = lem_in->paths[i];
+	// 	unique = check_all_paths_uniq(lem_in, new_path, paths);
+	// 	if (unique)
+	// 	{
+	// 		while(paths[j])
+	// 			j++;
+	// 		paths[j++] = new_path;
+	// 		paths[j] = NULL;
+	// 		return ;
+	// 	}
 		// while(new_path != paths[paths_count])
 		// {
 		// 	new_path = get_a_new_path(lem_in, paths);
@@ -223,9 +244,11 @@ void	add_a_path(t_lem_in *lem_in, t_path **paths)
 		// 	}
 			
 		// }
-		i++;
-	}
-	swap_old_path(lem_in, paths);
+		// i++;
+	// }
+	// If no path with unique room is found, swap existing path.
+	return 0;
+	// swap_old_path(lem_in, paths);
 }
 
 /*
@@ -268,8 +291,13 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 	size_t	end_neigbors;
 	t_path	**paths;
 	t_path	*path;
-	// t_path	*temp;
+	int		value;
+	int		j;
 
+
+
+	// t_path	*temp;
+	j = 0;
 	start_neigbors = ft_lstlen(lem_in->start_room->neighbors);
 	end_neigbors = ft_lstlen(lem_in->end_room->neighbors);
 	if (start_neigbors > end_neigbors)
@@ -280,8 +308,13 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 	paths[1] = NULL;
 	while (count_paths(paths) < start_neigbors)
 	{
-		add_a_path(lem_in, paths);
-
+		value = add_a_path(lem_in, paths);
+		while(value == 0)
+		{
+			swap_old_path(lem_in, paths, j++);
+			if (value == 1)
+				value = add_a_path(lem_in, paths);
+		}
 	}
 	lem_in->paths = paths;
 
