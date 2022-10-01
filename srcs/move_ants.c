@@ -43,24 +43,6 @@ void	remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant)
 	ant = lem_in->ants;
 }
 
-/*
-void	remove_first_ants(t_lem_in *lem_in)
-{
-	t_ant	*temp;
-
-	if (lem_in->ants == NULL)
-		return ;
-	if (lem_in->ants->room == NULL)
-		return ;
-	while (lem_in->ants->room == lem_in->end_room)
-	{
-		temp = lem_in->ants;
-		lem_in->ants = lem_in->ants->next;
-		free(temp);
-	}
-}
-*/
-
 void	remove_ants_in_goal(t_lem_in *lem_in)
 {
 	t_ant	*ant;
@@ -77,68 +59,11 @@ void	remove_ants_in_goal(t_lem_in *lem_in)
 			ant = ant->next;
 	}
 }
-/*
-void	remove_ants_in_goal(t_lem_in *lem_in)
-{
-	t_ant	*ant;
-	t_ant	*temp;
-
-	if (lem_in->ants == NULL)
-		return ;
-	remove_first_ants(lem_in);
-	while (ant != NULL)
-	{
-		if (ant->room == lem_in->end_room)
-		{
-			temp = ant;
-			ant = ant->next;
-			free(temp);
-		}
-		if (ant->next)
-		{
-			if (ant->next->room == lem_in->end_room)
-			{
-				if (ant->next->next)
-					ant->next = ant->next->next;
-				else
-					ant->next = NULL;
-				free(ant->next);
-				ant->next = NULL;
-			}
-		}
-		ant = ant->next;
-	}
-}
-*/
-
-
 
 /*
-*	If ant is in end room, remove and free it from ants list.
+*	move ants from other rooms by other paths
 */
-/*
-void	ant_in_goal(t_lem_in *lem_in, t_ant *ant)
-{
-	t_ant	*temp;
-
-	temp = lem_in->ants;
-	ft_printf("L%i-%s ", ant->ant_id, lem_in->end_room->name);
-	if (lem_in->ants == ant)
-		lem_in->ants = ant->next;
-	else
-	{
-		while (temp->next != ant)
-			temp = temp->next;
-		if (ant->next == NULL)
-			temp->next = NULL;
-		else
-			temp->next = temp->next->next;
-	}
-	free(ant);
-}
-*/
-
-void	move_ants_from_other_rooms_by_other_paths(t_lem_in *lem_in, t_path *path)
+void	mov_ants_oth_rooms_by_oth_paths(t_lem_in *lem_in, t_path *path)
 {
 	t_ant	*ant;
 	t_path	*temp;
@@ -159,8 +84,6 @@ void	move_ants_from_other_rooms_by_other_paths(t_lem_in *lem_in, t_path *path)
 					ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 					ant->room = lem_in->end_room;
 				}
-				// else if (ant->room == temp->next_path->room || ant->room == temp->room)
-				// 	;
 				else if (path->next_path->room->visited == 0)
 				{
 					ant->room = path->next_path->room;
@@ -213,8 +136,6 @@ void	move_ants_by_shortest_path(t_lem_in *lem_in, t_path *path)
 				ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 				ant->room = lem_in->end_room;
 			}
-			// else if (ant->room == temp->next_path->room || ant->room == temp->room)
-			// 	;
 			else if (path->next_path->room->visited == 0)
 			{
 				if (ant->room == lem_in->start_room)
@@ -256,7 +177,7 @@ void	move_ants(t_lem_in *lem_in)
 			else if (path->path_length < lem_in->ants_in_start - 1)
 				move_ants_from_start_other_paths(lem_in, path);
 			if (path != lem_in->paths[0])
-				move_ants_from_other_rooms_by_other_paths(lem_in, path);
+				mov_ants_oth_rooms_by_oth_paths(lem_in, path);
 			path = lem_in->paths[++i];
 		}
 		set_visited_to_zero(lem_in);
@@ -267,5 +188,4 @@ void	move_ants(t_lem_in *lem_in)
 		counter++;
 	}
 	ft_printf("Number of lines: %d\n", counter);
-
 }

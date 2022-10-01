@@ -111,7 +111,7 @@ int	main(int argc, char **argv)
 	lem_in = lem_in_init();
 	if (!lem_in)
 		return (0);
-	clock_t start = clock();
+	clock_t	start = clock();
 	get_lem_in(lem_in);
 	clock_t stop_1 = clock();
 	double elapsed = (double)(stop_1 - start) * 1000.0 / CLOCKS_PER_SEC;
@@ -121,8 +121,8 @@ int	main(int argc, char **argv)
 	check_lem_in(lem_in);
 	do_lem_in(lem_in);
 	free_lem_in(lem_in);
-	clock_t stop_final = clock();
-	double elapsed_2 = (double)(stop_final - start) * 1000.0 / CLOCKS_PER_SEC;
-    printf("Total elapsed in ms: %f\n", elapsed_2);
+	clock_t	stop_final = clock();
+	double	elapsed_2 = (double)(stop_final - start) * 1000.0 / CLOCKS_PER_SEC;
+	printf("Total elapsed in ms: %f\n", elapsed_2);
 	return (0);
 }

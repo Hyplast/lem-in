@@ -19,6 +19,7 @@ do_lem_in.c \
 print.c \
 queue.c \
 util.c \
+util_paths.c \
 free.c \
 neigbors.c \
 path.c \

@@ -35,7 +35,7 @@ void	end_to_start(t_lem_in *lem_in, t_path *path)
 	{
 		if (path->room == lem_in->end_room)
 			path->room = lem_in->start_room;
-		else if(path->room == lem_in->start_room)
+		else if (path->room == lem_in->start_room)
 			path->room = lem_in->end_room;
 		path = path->next_path;
 	}
@@ -49,13 +49,13 @@ void	start_to_end(t_lem_in *lem_in, t_path **path)
 	temp = *path;
 	new_path = lem_in_add_new_path(lem_in->end_room);
 	temp = temp->next_path;
-	while(temp->next_path)
+	while (temp->next_path)
 	{
 		lem_in_add_to_path(&new_path, temp->room);
-		temp = temp->next_path; 
+		temp = temp->next_path;
 	}
 	lem_in_add_to_path(&new_path, lem_in->start_room);
-	while(*path)
+	while (*path)
 	{
 		(*path)->room = new_path->room;
 		*path = (*path)->next_path;
@@ -79,8 +79,6 @@ void	change_paths_order(t_lem_in *lem_in)
 			start_to_end(lem_in, &path);
 		else if (path->room == lem_in->end_room)
 			end_to_start(lem_in, path);
-		// printf("round %d ongoing\n", i);
-		// print_paths(lem_in);
 		path = lem_in->paths[++i];
 	}
 }
@@ -99,11 +97,12 @@ void	find_paths_reverse_order(t_lem_in *lem_in)
 	i = 0;
 	room = lem_in->start_room->neighbors[i];
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
-	find_n_shortest_path(lem_in, room, lem_in->start_room, lem_in->end_room);
+	fd_sho_path(lem_in, room, lem_in->start_room, lem_in->end_room);
 	room = lem_in->start_room->neighbors[++i];
 	while ((size_t)i < start_neighbors)
 	{
-		find_n_shortest_path(lem_in, room, lem_in->start_room, lem_in->end_room);
+		fd_sho_path(lem_in, room,
+			lem_in->start_room, lem_in->end_room);
 		room = lem_in->start_room->neighbors[++i];
 	}
 }

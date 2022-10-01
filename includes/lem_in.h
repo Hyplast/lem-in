@@ -114,7 +114,7 @@ t_path		*lem_in_add_new_path(t_room *room);
 void		find_paths(t_lem_in *lem_in);
 void		find_paths_reverse_order(t_lem_in *lem_in);
 void		change_paths_order(t_lem_in *lem_in);
-void		find_n_shortest_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end);
+void		fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end);
 void		free_paths(t_lem_in *lem_in);
 void		move_ants(t_lem_in *lem_in);
 
@@ -127,6 +127,7 @@ t_room		*return_shortest_room(t_room *room);
 void		calculate_optimal_paths(t_lem_in *lem_in);
 void		bubble_sort_paths(t_lem_in *lem_in);
 size_t		count_paths(t_path **paths);
+t_path		**create_paths(t_lem_in *lem_in, size_t	size);
 t_path		*get_shortest_path(t_lem_in *lem_in);
 void		bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room);
 

@@ -18,14 +18,14 @@
 *	@param2 path 2
 *	@return 1 no match, 0 if matching rooms
 */
-int		is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2)
+int	is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2)
 {
 	t_path	*temp_1;
 	t_path	*temp_2;
 
 	temp_1 = path_1->next_path;
 	temp_2 = path_2->next_path;
-	while(temp_1->room != lem_in->end_room)
+	while (temp_1->room != lem_in->end_room)
 	{
 		while (temp_2->room != lem_in->end_room)
 		{
@@ -52,7 +52,7 @@ int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
 	int	result;
 
 	i = 0;
-	while(paths[i])
+	while (paths[i])
 	{
 		if (path_1 == paths[i])
 			result = 0;
@@ -72,12 +72,11 @@ int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
 */
 int	swap_old_path(t_lem_in *lem_in, t_path **paths, int j)
 {
-
 	int		i;
 	t_path	*replace;
 	int		unique;
-	i = 0;
 
+	i = 0;
 	replace = paths[j];
 	paths[j] = NULL;
 	while (lem_in->paths[i])
@@ -88,7 +87,7 @@ int	swap_old_path(t_lem_in *lem_in, t_path **paths, int j)
 			if (unique == 1)
 			{
 				paths[j] = lem_in->paths[i];
-				return 1;
+				return (1);
 			}
 		}
 		i++;
@@ -115,32 +114,31 @@ int	add_a_path(t_lem_in *lem_in, t_path **paths)
 	j = 0;
 	new_path = lem_in->paths[i];
 	unique = check_all_paths_uniq(lem_in, new_path, paths);
-	while(unique == 0 && lem_in->paths[++i] != NULL)
+	while (unique == 0 && lem_in->paths[++i] != NULL)
 	{
 		new_path = lem_in->paths[i];
 		unique = check_all_paths_uniq(lem_in, new_path, paths);
 	}
 	if (unique)
 	{
-		while(paths[j])
+		while (paths[j])
 			j++;
 		paths[j++] = new_path;
 		paths[j] = NULL;
-		return 1;
+		return (1);
 	}
-	return 0;
+	return (0);
 }
 
 /*
 *	Calculate shortest paths for ants. Max paths is whichever is lower, amount of 
 *	neighbors of start or end rooms. Replace paths in ascending order into lem-in.
 */
-void 	calculate_optimal_paths(t_lem_in *lem_in)
+void	calculate_optimal_paths(t_lem_in *lem_in)
 {
 	size_t	start_neigbors;
 	size_t	end_neigbors;
 	t_path	**paths;
-	t_path	*path;
 	int		value;
 	int		j;
 
@@ -149,14 +147,11 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 	end_neigbors = ft_lstlen(lem_in->end_room->neighbors);
 	if (start_neigbors > end_neigbors)
 		start_neigbors = end_neigbors;
-	paths = (t_path **)malloc(sizeof(t_path *) * (start_neigbors + 1));
-	path = get_shortest_path(lem_in);
-	paths[0] = path;
-	paths[1] = NULL;
+	paths = create_paths(lem_in, start_neigbors);
 	while (count_paths(paths) < start_neigbors)
 	{
 		value = add_a_path(lem_in, paths);
-		while(value == 0)
+		while (value == 0)
 		{
 			value = swap_old_path(lem_in, paths, j++);
 			if (value == 1)
@@ -164,5 +159,4 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 		}
 	}
 	lem_in->paths = paths;
-
 }

@@ -39,7 +39,7 @@ t_path	*lem_in_add_new_path(t_room *room)
 *	@return	the shortest path between start and end rooms.
 *	@return NULL if no path is found.
 */
-t_path	*create_a_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
+t_path	*create_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 {
 	t_path	*path;
 
@@ -63,7 +63,7 @@ t_path	*create_a_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end
 *	Add it to the path list.
 *	@return void
 */
-void	find_n_shortest_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
+void	fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 {
 	t_path	**paths;
 	t_path	*path;
@@ -78,7 +78,7 @@ void	find_n_shortest_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room 
 			len++;
 	}
 	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)len + 1 + 1));
-	path = create_a_path(lem_in, room, start, end);
+	path = create_path(lem_in, room, start, end);
 	while (i < len)
 	{
 		paths[i] = lem_in->paths[i];
@@ -106,7 +106,7 @@ void	find_paths(t_lem_in *lem_in)
 	room = lem_in->end_room->neighbors[i];
 	threshold = lem_in->ants_count + lem_in->end_room->distance - 1;
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
-	find_n_shortest_path(lem_in, room, lem_in->end_room, lem_in->start_room);
+	fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 	if (lem_in->paths == NULL)
 	{
 		handle_error(lem_in, "No path found.");
@@ -115,7 +115,7 @@ void	find_paths(t_lem_in *lem_in)
 	room = lem_in->end_room->neighbors[++i];
 	while (room != NULL && start_neighbors > 1 && room->distance < threshold)
 	{
-		find_n_shortest_path(lem_in, room, lem_in->end_room, lem_in->start_room);
+		fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 		start_neighbors--;
 		room = lem_in->end_room->neighbors[++i];
 	}
