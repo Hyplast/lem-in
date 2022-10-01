@@ -12,41 +12,6 @@
 
 #include "lem_in.h"
 
-
-/*
-*	Count the length of the path.
-*	@param	t_paths *path
-*	@return	length of the path.
-*//*
-size_t	path_len(t_path *path)
-{
-	size_t		len;
-
-	len = 0;
-	if (paths == NULL)
-		return (len);
-	while (paths[len] != NULL)
-		len++;
-	return (len);
-}
-*/
-/*
-*	Count the amount of paths
-*	@param	t_paths **paths
-*	@return	amount of paths
-*/
-size_t	count_paths(t_path **paths)
-{
-	size_t		len;
-
-	len = 0;
-	if (paths == NULL)
-		return (len);
-	while (paths[len] != NULL)
-		len++;
-	return (len);
-}
-
 /*
 *	Check whether paths have matching rooms excluding start and end rooms.
 *	@param1 path 1
@@ -100,29 +65,6 @@ int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
 	return (1);
 }
 
-
-/*
-*	@return Shortest path from lem-in paths.
-*/
-t_path	*get_shortest_path(t_lem_in *lem_in)
-{
-	t_path	*path;
-	t_path	*temp;
-	int		i;
-
-	i = 0;
-	temp = lem_in->paths[i];
-	path = temp;
-	while (temp)
-	{
-		if (path->path_length > temp->path_length)
-			path = temp;
-		temp = lem_in->paths[++i];
-	}
-	return (path);
-}
-
-
 /*
 *	@return Get a different shortest path from lem-in paths.
 *	@return 1 if swap succesfull
@@ -132,69 +74,38 @@ int	swap_old_path(t_lem_in *lem_in, t_path **paths, int j)
 {
 
 	int		i;
-	// int		j;
 	t_path	*replace;
 	int		unique;
-
 	i = 0;
-	// j = 0;
-	// replace = paths[j];,
+
 	replace = paths[j];
 	paths[j] = NULL;
-	
 	while (lem_in->paths[i])
 	{
-		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
-		if (unique == 1)
+		if (replace != lem_in->paths[i])
 		{
-			paths[j] = lem_in->paths[i];
-			return 1;
+			unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+			if (unique == 1)
+			{
+				paths[j] = lem_in->paths[i];
+				return 1;
+			}
 		}
 		i++;
 	}
 	paths[j] = replace;
 	return (0);
-
-	// t_path	*path;
-	// int		found;
-	// int		j;
-	// int		i;
-
-	// i = 0;
-	// found = -1;
-	// j = 0;
-	// temp = lem_in->paths[];
-	// path = paths[j];
-
-	// while (paths[j])
-	// {
-	// 	if (temp == paths[j])
-	// 		found = j;
-	// 	j++;
-	// }
-
-	// 	while (lem_in->paths[i] != paths[j])
-	// 	{
-	// 		j++;
-	// 	}
-	// }
-
-	// return (path);
 }
 
-
-//	3	->	2
-//	2	->	3
-//	4	->	4
 /*
 *	Add a new path to new paths array and make sure that it doesn't
 *	have overlapping rooms with previous paths. If it has, go to next path until
 * 	new path is found. TODO: Check what combinations of path length lead to lowest
+*	@return 1 if new path is found and added
+*	@return 0 if no path is added
 */
 int	add_a_path(t_lem_in *lem_in, t_path **paths)
 {
-	// int		path_length;
-	// size_t	paths_count;
 	t_path	*new_path;
 	int		i;
 	int		j;
@@ -202,11 +113,6 @@ int	add_a_path(t_lem_in *lem_in, t_path **paths)
 
 	i = 0;
 	j = 0;
-	// path_length = path_len(paths);
-	// paths_count = count_paths(paths);
-	// path_length = paths[0]->path_length;
-	//get_shortest_path(lem_in);
-	// new_path = lem_in->paths[0];
 	new_path = lem_in->paths[i];
 	unique = check_all_paths_uniq(lem_in, new_path, paths);
 	while(unique == 0 && lem_in->paths[++i] != NULL)
@@ -222,63 +128,7 @@ int	add_a_path(t_lem_in *lem_in, t_path **paths)
 		paths[j] = NULL;
 		return 1;
 	}
-	// while(lem_in->paths[i])
-	// {
-	// 	new_path = lem_in->paths[i];
-	// 	unique = check_all_paths_uniq(lem_in, new_path, paths);
-	// 	if (unique)
-	// 	{
-	// 		while(paths[j])
-	// 			j++;
-	// 		paths[j++] = new_path;
-	// 		paths[j] = NULL;
-	// 		return ;
-	// 	}
-		// while(new_path != paths[paths_count])
-		// {
-		// 	new_path = get_a_new_path(lem_in, paths);
-		// 	unique = check_all_paths_uniq(lem_in, new_path, paths);
-		// 	if (unique == 1)
-		// 	{
-		// 		//add_to_paths(lem_in, paths);
-		// 	}
-			
-		// }
-		// i++;
-	// }
-	// If no path with unique room is found, swap existing path.
 	return 0;
-	// swap_old_path(lem_in, paths);
-}
-
-/*
-*	Use bubble sorting to sort the paths in length ascending order.
-*/
-void 	bubble_sort_paths(t_lem_in *lem_in)
-{
-	t_path	**paths;
-	t_path	*temp;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	paths = lem_in->paths;
-	while(lem_in->paths[i])
-	{
-		while (paths[j])
-		{
-			if (lem_in->paths[i]->path_length < paths[j]->path_length)
-			{
-				temp = paths[j];
-				paths[j] = lem_in->paths[i];
-				lem_in->paths[i] = temp;
-			}
-			j++;
-		}
-		j = 0;
-		i++;
-	}
 }
 
 /*
@@ -294,9 +144,6 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 	int		value;
 	int		j;
 
-
-
-	// t_path	*temp;
 	j = 0;
 	start_neigbors = ft_lstlen(lem_in->start_room->neighbors);
 	end_neigbors = ft_lstlen(lem_in->end_room->neighbors);
@@ -311,7 +158,7 @@ void 	calculate_optimal_paths(t_lem_in *lem_in)
 		value = add_a_path(lem_in, paths);
 		while(value == 0)
 		{
-			swap_old_path(lem_in, paths, j++);
+			value = swap_old_path(lem_in, paths, j++);
 			if (value == 1)
 				value = add_a_path(lem_in, paths);
 		}

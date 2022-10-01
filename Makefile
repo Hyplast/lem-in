@@ -25,6 +25,7 @@ path.c \
 path_reversed.c \
 calc_paths.c \
 move_ants.c \
+bread_first_traversal.c \
 
 SRCS = $(addprefix srcs/, $(SRC))
 

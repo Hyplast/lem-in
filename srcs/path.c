@@ -38,25 +38,6 @@ t_path	*lem_in_add_new_path(t_room *room)
 *	Find the shortest path between start and end rooms different than last path.
 *	@return	the shortest path between start and end rooms.
 *	@return NULL if no path is found.
-*//*
-t_path	*create_a_path(t_lem_in *lem_in, t_room *room)
-{
-	t_path	*path;
-
-	path = lem_in_add_new_path(lem_in->end_room);
-	while (ft_memcmp(room, lem_in->start_room, sizeof(room)) != 0)
-	{
-		lem_in_add_to_path(&path, room);
-		room = return_shortest_room(room);
-		if (room == NULL)
-		{
-			handle_error(lem_in, "No path found.");
-			exit(-1);
-		}
-	}
-	lem_in_add_to_path(&path, lem_in->start_room);
-	return (path);
-}
 */
 t_path	*create_a_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 {

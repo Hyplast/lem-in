@@ -13,61 +13,21 @@
 #include "lem_in.h"
 
 /*
-*	Find the shortest path between end and start rooms different than last path.
-*	@return	the shortest path between start and end rooms.
-*	@return NULL if no path is found.
-*//*
-t_path	*create_a_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
-{
-	t_path	*path;
-
-	path = lem_in_add_new_path(end);
-	while (room != end)
-	{
-		lem_in_add_to_path(&path, room);
-		room = return_shortest_room(room);
-		if (room == NULL)
-		{
-			handle_error(lem_in, "No path found.");
-			exit(-1);
-		}
-	}
-	lem_in_add_to_path(&path, start);
-	return (path);
-}
+*	Count the amount of paths
+*	@param	t_paths **paths
+*	@return	amount of paths
 */
-/*
-*	Find the shortest path between start and given room.
-*	Add it to the path list.
-*	@return void
-*//*
-void	find_n_shortest_path(t_lem_in *lem_in, t_room *room)
+size_t	count_paths(t_path **paths)
 {
-	t_path	**paths;
-	t_path	*path;
-	int		len;
-	int		i;
+	size_t		len;
 
 	len = 0;
-	i = 0;
-	if (lem_in->paths != NULL)
-	{
-		while (lem_in->paths[len] != NULL)
-			len++;
-	}
-	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)len + 1 + 1));
-	path = create_a_path(lem_in, room);
-	while (i < len)
-	{
-		paths[i] = lem_in->paths[i];
-		i++;
-	}
-	paths[len] = path;
-	paths[len + 1] = NULL;
-	free(lem_in->paths);
-	lem_in->paths = paths;
+	if (paths == NULL)
+		return (len);
+	while (paths[len] != NULL)
+		len++;
+	return (len);
 }
-*/
 
 void	end_to_start(t_lem_in *lem_in, t_path *path)
 {
@@ -84,11 +44,8 @@ void	end_to_start(t_lem_in *lem_in, t_path *path)
 void	start_to_end(t_lem_in *lem_in, t_path **path)
 {
 	t_path	*temp;
-	// t_room	*compare;
 	t_path	*new_path;
 
-	// temp = path->next_path;
-	// compare = lem_in->end_room;
 	temp = *path;
 	new_path = lem_in_add_new_path(lem_in->end_room);
 	temp = temp->next_path;
@@ -98,38 +55,13 @@ void	start_to_end(t_lem_in *lem_in, t_path **path)
 		temp = temp->next_path; 
 	}
 	lem_in_add_to_path(&new_path, lem_in->start_room);
-	// lem_in_add_to_path(&new_path, lem_in->start_room);
-	// new_path = lem_in_add_new_path(lem_in->start_room);
-	
-	// while (new_path->room != path->next_path->room)
-	// {
-	// 	while(temp->next_path->room != compare)
-	// 		temp = temp->next_path;
-	// 	lem_in_add_to_path(&new_path, temp->room);
-	// 	compare = temp->room;
-	// 	temp = path->next_path;
-	// }
-	// lem_in_add_to_path(&new_path, lem_in->end_room);
-	
-	// temp = path;
-	// while (path)
-	// {
-	// 	temp = path->next_path;
-	// 	free(path);
-	// 	path = temp;
-	// }
-	// path = new_path;
-	// end_to_start(lem_in, new_path);
-
 	while(*path)
 	{
 		(*path)->room = new_path->room;
 		*path = (*path)->next_path;
 		new_path = new_path->next_path;
 	}
-	// *path = new_path;
 }
-
 
 /*
 *	Fix starting path to lem_in->start and ending path to lem_in->end.
@@ -160,15 +92,12 @@ void	change_paths_order(t_lem_in *lem_in)
 */
 void	find_paths_reverse_order(t_lem_in *lem_in)
 {
-	// int		threshold;
 	int		i;
 	size_t	start_neighbors;
 	t_room	*room;
-	// t_path	**paths;
 
 	i = 0;
 	room = lem_in->start_room->neighbors[i];
-	// threshold = lem_in->ants_count + lem_in->start_room->distance - 1;
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
 	find_n_shortest_path(lem_in, room, lem_in->start_room, lem_in->end_room);
 	room = lem_in->start_room->neighbors[++i];
@@ -177,10 +106,4 @@ void	find_paths_reverse_order(t_lem_in *lem_in)
 		find_n_shortest_path(lem_in, room, lem_in->start_room, lem_in->end_room);
 		room = lem_in->start_room->neighbors[++i];
 	}
-	// while (room != NULL && start_neighbors > 1 && room->distance < threshold)
-	// {
-	// 	find_n_shortest_path(lem_in, room);
-	// 	start_neighbors--;
-	// 	room = lem_in->end_room->neighbors[++i];
-	// }
 }
