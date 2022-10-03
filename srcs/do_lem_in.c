@@ -126,16 +126,16 @@ void	do_lem_in(t_lem_in *lem_in)
 	elapsed_3 = elapsed_3 / CLOCKS_PER_SEC;
     printf("find_paths elapsed in ms: %f\n", elapsed_3);
 	// ft_printf(queue->room->name);
-	print_paths(lem_in);
+	// print_paths(lem_in);
 	set_all_visited_to_zero(lem_in);
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->end_room);
 	find_paths_reverse_order(lem_in);
-	print_paths(lem_in);
+	// print_paths(lem_in);
 	change_paths_order(lem_in);
 
 	set_visited_to_zero(lem_in);
-	print_paths(lem_in);
+	// print_paths(lem_in);
 	clock_t stop_6 = clock();
 	bubble_sort_paths(lem_in);
 	printf("Before remove duplicants\n");
