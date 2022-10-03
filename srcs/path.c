@@ -47,7 +47,7 @@ t_path	*create_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 	while (room != end)
 	{
 		lem_in_add_to_path(&path, room);
-		room = return_shortest_room(room);
+		room = return_shortest_room(start, room);
 		if (room == NULL)
 		{
 			handle_error(lem_in, "No path found.");

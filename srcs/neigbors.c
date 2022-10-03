@@ -34,7 +34,7 @@ size_t	ft_lstlen(t_room **neighbors)
 *	@return	the room that is the shortest distance to x.
 *	@return NULL if no room is found.
 */
-t_room	*return_shortest_room(t_room *room)
+t_room	*return_shortest_room(t_room *start, t_room *room)
 {
 	t_room	*temp;
 	t_room	*shortest_room;
@@ -48,8 +48,11 @@ t_room	*return_shortest_room(t_room *room)
 	{
 		if (temp->distance < shortest_distance)
 		{
-			shortest_distance = temp->distance;
-			shortest_room = temp;
+			if (temp != start)
+			{
+				shortest_distance = temp->distance;
+				shortest_room = temp;
+			}
 		}
 		temp = room->neighbors[++i];
 	}
