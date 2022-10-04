@@ -162,6 +162,29 @@ int	add_a_path(t_lem_in *lem_in, t_path **paths)
 	return (0);
 }
 
+size_t		return_n_paths(t_lem_in *lem_in, t_path **paths, size_t start_neigh)
+{
+	int lem_in_path_count;
+	int paths_count;
+	int	value;
+	int	path_length;
+
+	lem_in_path_count = (int)count_paths(lem_in->paths);
+	paths_count = (int)count_paths(paths);
+	if (lem_in_path_count == paths_count)
+		return (start_neigh);
+	if (paths_count > 1)
+	{
+		path_length = paths[0]->path_length;
+		value = paths[1]->path_length;
+		if (lem_in->ants_count + path_length - 1 < value)
+			value = (int)start_neigh;
+	}
+	else
+		value = paths_count;
+	return ((size_t)value);
+}
+
 /*
 *	Calculate shortest paths for ants. Max paths is whichever is lower, amount of 
 *	neighbors of start or end rooms. Replace paths in ascending order into lem-in.
@@ -182,9 +205,9 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 		start_neigbors = end_neigbors;
 	paths = create_paths(lem_in, start_neigbors);
 	n_paths = count_paths(paths);
-	while (n_paths < start_neigbors - 1)
+	while (n_paths < start_neigbors)
 	{
-		value = add_a_path(lem_in, paths);
+		value = add_a_path(lem_in, paths - 1);
 		while (value == 0)
 		{
 			value = swap_old_path2(lem_in, paths, j++);
@@ -192,7 +215,7 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 				value = add_a_path(lem_in, paths);
 		}
 		j = 0;
-		n_paths = count_paths(paths);
+		n_paths = return_n_paths(lem_in, paths, start_neigbors);//count_paths(paths);
 	}
 	lem_in->paths = paths;
 	
