@@ -96,6 +96,37 @@ int	swap_old_path(t_lem_in *lem_in, t_path **paths, int j)
 	return (0);
 }
 
+
+int	swap_old_path2(t_lem_in *lem_in, t_path **paths, int j)
+{
+	int		i;
+	t_path	*replace;
+	int		unique;
+
+	i = 0;
+	j = (int)count_paths(paths) - j - 1;
+	replace = paths[j];
+	printf("-replacing path:%dlength;%s;%s-\n", replace->path_length, replace->next_path->room->name, replace->next_path->next_path->room->name);
+	paths[j] = NULL;
+	// printf("-DDreplacing path:%dlength;%s;%s-\n", replace->path_length, replace->next_path->room->name, replace->next_path->next_path->room->name);
+	while (lem_in->paths[i])
+	{
+		if (replace != lem_in->paths[i])
+		{
+			unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+			if (unique == 1)
+			{
+				paths[j] = lem_in->paths[i];
+				printf(" *-with path:%dlength;%s;%s-\n", paths[j]->path_length, paths[j]->next_path->room->name, paths[j]->next_path->next_path->room->name);
+				return (1);
+			}
+		}
+		i++;
+	}
+	paths[j] = replace;
+	return (0);
+}
+
 /*
 *	Add a new path to new paths array and make sure that it doesn't
 *	have overlapping rooms with previous paths. If it has, go to next path until
@@ -125,6 +156,7 @@ int	add_a_path(t_lem_in *lem_in, t_path **paths)
 			j++;
 		paths[j++] = new_path;
 		paths[j] = NULL;
+		printf("-added path:%dlength;%s;%s-\n", new_path->path_length, new_path->next_path->room->name, new_path->next_path->next_path->room->name);
 		return (1);
 	}
 	return (0);
@@ -141,6 +173,7 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	t_path	**paths;
 	int		value;
 	int		j;
+	size_t		n_paths;
 
 	j = 0;
 	start_neigbors = ft_lstlen(lem_in->start_room->neighbors);
@@ -148,15 +181,19 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	if (start_neigbors > end_neigbors)
 		start_neigbors = end_neigbors;
 	paths = create_paths(lem_in, start_neigbors);
-	while (count_paths(paths) < start_neigbors)
+	n_paths = count_paths(paths);
+	while (n_paths < start_neigbors - 1)
 	{
 		value = add_a_path(lem_in, paths);
 		while (value == 0)
 		{
-			value = swap_old_path(lem_in, paths, j++);
+			value = swap_old_path2(lem_in, paths, j++);
 			if (value == 1)
 				value = add_a_path(lem_in, paths);
 		}
+		j = 0;
+		n_paths = count_paths(paths);
 	}
 	lem_in->paths = paths;
+	
 }
