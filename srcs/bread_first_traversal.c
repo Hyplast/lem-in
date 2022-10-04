@@ -18,10 +18,11 @@
 void	bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room)
 {
 	room->visited = 1;
+	room->distance = 0;
 	insert(queue, room);
 	while (!is_queue_empty(*queue))
 	{
-		go_to_linked_rooms(lem_in, queue);
+		go_to_linked_rooms(lem_in, queue, room);
 		queue_remove(queue);
 	}
 }

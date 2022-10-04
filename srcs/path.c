@@ -97,14 +97,14 @@ void	fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 */
 void	find_paths(t_lem_in *lem_in)
 {
-	int		threshold;
+	// int		threshold;
 	int		i;
 	size_t	start_neighbors;
 	t_room	*room;
 
 	i = 0;
 	room = lem_in->end_room->neighbors[i];
-	threshold = lem_in->ants_count + lem_in->end_room->distance - 1;
+	// threshold = lem_in->ants_count + lem_in->end_room->distance - 1;
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
 	fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 	if (lem_in->paths == NULL)
@@ -113,7 +113,7 @@ void	find_paths(t_lem_in *lem_in)
 		exit(-1);
 	}
 	room = lem_in->end_room->neighbors[++i];
-	while (room != NULL && start_neighbors > 1 && room->distance < threshold)
+	while (room != NULL)// && start_neighbors > 1 && room->distance < threshold)
 	{
 		fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 		start_neighbors--;

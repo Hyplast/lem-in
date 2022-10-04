@@ -108,7 +108,7 @@ t_queue		*init_queue(void);
 void		insert(t_queue **queue, t_room *room);
 void		queue_remove(t_queue **queue);
 int			is_queue_empty(t_queue *queue);
-void		go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue);
+void		go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue, t_room *room);
 void		lem_in_add_to_path(t_path **path, t_room *room);
 t_path		*lem_in_add_new_path(t_room *room);
 void		find_paths(t_lem_in *lem_in);

@@ -76,7 +76,7 @@ int	is_queue_empty(t_queue *queue)
 /*
 *	Check if the addresses point to the same memory location
 */
-void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
+void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue, t_room *room)
 {
 	t_link		*temp;
 	static int	distance;
@@ -88,6 +88,14 @@ void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue)
 	{
 		if (temp->room_1 == (*queue)->room)
 		{
+			if (temp->room_2 == lem_in->end_room || temp->room_2 == lem_in->start_room)
+			{
+				if (temp->room_2 != room)
+				{
+					temp->room_2->visited = 1;
+					temp->room_2->distance = 2147483647;
+				}
+			}
 			if (temp->room_2->visited == 0)
 			{
 				if (just_once == 0)

@@ -52,20 +52,41 @@ void	remove_paths(t_lem_in *lem_in, int to_be_removed[500])
 	lem_in->paths = paths;
 }
 
+void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
+{
+	t_path	**paths;
+	int		num_paths;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	num_paths = (int)count_paths(lem_in->paths);
+	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)num_paths + 1));
+	while (lem_in->paths[i])
+	{
+		if (to_be_removed != i)
+			paths[j++] = lem_in->paths[i];
+		i++;
+	}
+	paths[j] = NULL;
+	lem_in->paths = paths;
+}
+
 void	remove_duplicates(t_lem_in *lem_in)
 {
 	t_path	*path;
 	// t_path	**paths;
 	t_path	*temp;
 	int		i;
-	int		j;
+	// int		j;
 	int		result;
-	int		to_be_removed[500];
+	// int		to_be_removed[500];
 
 	i = 0;
-	j = 0;
-	while (i < 500)
-		to_be_removed[i++] = -1;
+	// j = 0;
+	// while (i < 500)
+	// 	to_be_removed[i++] = -1;
 	i = 0;
 	path = lem_in->paths[i];
 	while (path)
@@ -77,13 +98,17 @@ void	remove_duplicates(t_lem_in *lem_in)
 			{
 				result = same_path(lem_in, path, temp);
 				if (result == 1)
-					to_be_removed[j++] = i;
+				{
+					remove_path_n(lem_in, i);	//to_be_removed[j++] = i;
+					path = lem_in->paths[0];
+					temp = lem_in->paths[0];
+				}
 			}
 			temp = temp->next_path;
 		}
 		path = lem_in->paths[++i];
 	}
-	remove_paths(lem_in, to_be_removed);
+	// remove_paths(lem_in, to_be_removed);
 }
 
 void	do_lem_in(t_lem_in *lem_in)
