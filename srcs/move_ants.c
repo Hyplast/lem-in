@@ -188,7 +188,7 @@ void	move_others(t_lem_in *lem_in, t_path *path)
 	{
 		if (lem_in->ants_in_start > 0)
 		{
-			if (lem_in->ants_in_start + path->path_length - 1 < lem_in->paths[0]->path_length)
+			if (lem_in->ants_in_start > path->path_length - lem_in->paths[0]->path_length)
 				move_ants_from_start_other_paths2(lem_in, path);
 		}
 		else
