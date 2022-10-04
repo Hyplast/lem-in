@@ -129,7 +129,7 @@ void	move_ants_from_start_other_paths2(t_lem_in *lem_in, t_path *path)
 	{
 		while (path && path->room != ant->room)
 			path = path->next_path;
-		if (path)
+		if (path && ant->room != lem_in->end_room)
 		{
 			if (path->next_path->room == lem_in->end_room)
 			{
@@ -179,6 +179,7 @@ void	move_ants_by_shortest_path(t_lem_in *lem_in, t_path *path)
 		}
 		path = temp;
 		ant = ant->next;
+		// remove_ants_in_goal(lem_in);
 	}
 }
 
@@ -190,6 +191,8 @@ void	move_others(t_lem_in *lem_in, t_path *path)
 		{
 			if (lem_in->ants_in_start > path->path_length - lem_in->paths[0]->path_length)
 				move_ants_from_start_other_paths2(lem_in, path);
+			else
+				mov_ants_oth_rooms_by_oth_paths(lem_in, path);
 		}
 		else
 			mov_ants_oth_rooms_by_oth_paths(lem_in, path);
