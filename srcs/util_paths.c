@@ -20,12 +20,15 @@ t_path	**create_paths(t_lem_in *lem_in, size_t	size)
 {
 	t_path	**paths;
 	t_path	*path;
+	size_t	i;
 
+	i = 1;
 	paths = (t_path **)malloc(sizeof(t_path *) * (size + 1));
 	path = get_shortest_path(lem_in);
 	printf("-added path:%dlength;%s;%s-\n", path->path_length, path->next_path->room->name, path->next_path->next_path->room->name);
 	paths[0] = path;
-	paths[1] = NULL;
+	while (i < size)
+		paths[i++] = NULL;
 	return (paths);
 }
 

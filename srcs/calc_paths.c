@@ -107,7 +107,7 @@ int	swap_old_path2(t_lem_in *lem_in, t_path **paths, int j)
 	j = (int)count_paths(paths) - j - 1;
 	replace = paths[j];
 	printf("-replacing path:%dlength;%s;%s-\n", replace->path_length, replace->next_path->room->name, replace->next_path->next_path->room->name);
-	paths[j] = NULL;
+	// paths[j] = NULL;
 	// printf("-DDreplacing path:%dlength;%s;%s-\n", replace->path_length, replace->next_path->room->name, replace->next_path->next_path->room->name);
 	while (lem_in->paths[i])
 	{
@@ -123,7 +123,7 @@ int	swap_old_path2(t_lem_in *lem_in, t_path **paths, int j)
 		}
 		i++;
 	}
-	paths[j] = replace;
+	// paths[j] = replace;
 	return (0);
 }
 
@@ -162,7 +162,7 @@ int	add_a_path(t_lem_in *lem_in, t_path **paths)
 	return (0);
 }
 
-size_t		return_n_paths(t_lem_in *lem_in, t_path **paths, size_t start_neigh)
+int		return_n_paths(t_lem_in *lem_in, t_path **paths, int start_neigh)
 {
 	int lem_in_path_count;
 	int paths_count;
@@ -188,26 +188,206 @@ size_t		return_n_paths(t_lem_in *lem_in, t_path **paths, size_t start_neigh)
 }
 
 /*
+*	If path is unique, replace it to paths.
+*/
+int		check_and_add(t_lem_in *lem_in, t_path *path_1, t_path **paths, t_path *replace)
+{
+	int	unique;
+	int	i;
+
+	if (path_1 == replace)
+		return (0);
+	unique = check_all_paths_uniq(lem_in, path_1, paths);
+	if (unique == 1)
+	{
+		i = (int)count_paths(paths);
+		paths[i] = path_1;
+		// paths[i] = NULL;
+	}
+	return (unique);
+}
+
+int		check_and_add_2(t_lem_in *lem_in, t_path *path_1, t_path **paths, int replace[500])
+{
+	int	unique;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (replace[j] != -1)
+	{
+		if (path_1 == lem_in->paths[replace[j++]])
+			return (0);
+	}
+	unique = check_all_paths_uniq(lem_in, path_1, paths);
+	if (unique == 1)
+	{
+		i = (int)count_paths(paths);
+		paths[i] = path_1;
+		paths[i + 1] = NULL;
+	}
+	return (unique);
+}
+
+t_path	*remove_last_path(t_path **paths)
+{
+	int	i;
+	t_path	*path;
+
+	i = 0;
+	while (paths[i] != NULL)
+		i++;
+	if (i != 0)
+	{
+		path = paths[i - 1];
+		paths[i - 1] = NULL;
+	}
+	return (path);
+	// free(paths[i - 1]);
+}
+
+int		remove_last_path_2(t_lem_in *lem_in, t_path **paths)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	while (paths[i] != NULL)
+		i++;
+	while (lem_in->paths[j] != paths[i - 1])
+		j++;
+	paths[i - 1] = NULL;
+	return (j);
+	// free(paths[i - 1]);
+}
+
+int		find_permuntations(t_lem_in *lem_in, t_path **paths, int size)
+{
+	int		unique;
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	paths[j++] = lem_in->paths[i];
+	while (j < size)
+	{
+		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+		while (unique == 0 && (i < lem_in->paths_count - 1))
+			unique = check_all_paths_uniq(lem_in, lem_in->paths[++i], paths);
+		if (unique == 1)
+			paths[j++] = lem_in->paths[i];
+		else
+		{
+			if (k > lem_in->paths_count)
+			{
+				j--;
+				k = 0;
+			}
+			if (j < 1)
+				return (0);
+			paths[--j] = lem_in->paths[k++];
+		}
+		i = 0;
+	}
+	return (1);
+}
+
+
+int	min_number(int x, int replace[500])		
+{
+	int	i;
+
+	i = 0;
+	if (replace[i] == -1)
+		return (0);
+	while(replace[i] != -1)
+		i++;
+	if (x - 1 == replace[i - 1])
+		return (replace[i - 1]);
+	return (replace[i - 1] + 1);
+}
+
+int		find_permuntations_v2(t_lem_in *lem_in, t_path **paths, int size)
+{
+	int		unique;
+	int		i;
+	int		j;
+	int		k;
+	// t_path	*replace;
+	int		tried[500];
+
+	
+	i = 0;
+	j = 0;
+	k = 0;
+	while (i < 500)
+		tried[i++] = -1;
+	i = 0;
+	paths[j++] = lem_in->paths[i];
+	// replace = NULL;
+	while (j < size)
+	{
+		unique = check_and_add_2(lem_in, lem_in->paths[i], paths, tried);
+		while (unique == 0 && (i < lem_in->paths_count - 1))
+			unique = check_and_add_2(lem_in, lem_in->paths[++i], paths, tried);
+		if (unique == 1)
+		{
+			i = 0;
+			while (i < 500)
+				tried[i++] = -1;
+			j++;//paths[j++] = lem_in->paths[i];
+			k = 0;
+		}
+		else
+		{
+			tried[k++] = remove_last_path_2(lem_in, paths);
+			j--;
+			// if (k > lem_in->paths_count)
+			// {
+			// 	j--;
+			// 	k = 0;
+			// }
+			// if (j < 1)
+			// 	return (0);
+			// paths[--j] = lem_in->paths[k++];
+		}
+		
+		i = min_number(lem_in->paths_count, tried);
+	}
+	return (1);
+}
+
+/*
 *	Calculate shortest paths for ants. Max paths is whichever is lower, amount of 
 *	neighbors of start or end rooms. Replace paths in ascending order into lem-in.
 *	TODO: add start_neighbors and end_neighbors and update paths_count to lem_in.
 */
 void	calculate_optimal_paths(t_lem_in *lem_in)
 {
-	size_t	start_neigbors;
-	size_t	end_neigbors;
+	int	start_neigbors;
+	int	end_neigbors;
 	t_path	**paths;
 	int		value;
 	int		j;
-	size_t		n_paths;
+	int		n_paths;
 
 	j = 0;
-	start_neigbors = ft_lstlen(lem_in->start_room->neighbors);
-	end_neigbors = ft_lstlen(lem_in->end_room->neighbors);
+	start_neigbors = (int)ft_lstlen(lem_in->start_room->neighbors);
+	end_neigbors = (int)ft_lstlen(lem_in->end_room->neighbors);
 	if (start_neigbors > end_neigbors)
 		start_neigbors = end_neigbors;
-	paths = create_paths(lem_in, start_neigbors);
-	n_paths = count_paths(paths);
+	paths = create_paths(lem_in, (size_t)start_neigbors);
+	// n_paths = (int)count_paths(paths);
+	
+	while (j == 0)
+		j = find_permuntations_v2(lem_in, paths, start_neigbors--);
+	n_paths = (int)count_paths(paths);
+	j = 0;
 	if (lem_in->paths_count != 1 && start_neigbors != 1)
 	{
 		if (lem_in->ants_count > lem_in->paths[1]->path_length - lem_in->paths[0]->path_length)
