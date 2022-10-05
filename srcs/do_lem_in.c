@@ -108,6 +108,7 @@ void	remove_duplicates(t_lem_in *lem_in)
 		}
 		path = lem_in->paths[++i];
 	}
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
 	// remove_paths(lem_in, to_be_removed);
 }
 
