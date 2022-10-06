@@ -117,12 +117,6 @@ void	do_lem_in(t_lem_in *lem_in)
 	t_queue	*queue;
 
 	queue = init_queue();
-	// print_rooms(lem_in);
-	// print_links(lem_in);
-	// print_ants(lem_in);
-	// ft_printf("room_name : %s\n", lem_in->rooms->name);
-	// ft_printf("ants : %i\n", lem_in->ants->ant_id);
-	// ft_printf("nextl line\n");
 	clock_t stop_2 = clock();
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	clock_t stop_3 = clock();
@@ -133,17 +127,6 @@ void	do_lem_in(t_lem_in *lem_in)
 	clock_t stop_4 = clock();
 	double elapsed_2 = (double)(stop_4 - stop_3) * 1000.0 / CLOCKS_PER_SEC;
     printf("find_neighbors elapsed in ms: %f\n", elapsed_2);
-	// ft_printf("\n $£€\n");
-	// ft_printf(lem_in->rooms->name);
-	// ft_printf("\n");
-	// print_rooms(lem_in);
-	// ft_printf("START ROOM as t_room->name: %s \n", lem_in->start_room->name);
-	// ft_printf("END ROOM as t_room->name: %s \n", lem_in->end_room->name);
-	// print_neighbors(lem_in->rooms);
-	// print_neighbors(lem_in->rooms->next);
-	// print_neighbors(lem_in->rooms->next->next);
-	// print_neighbors(lem_in->rooms->next->next->next);
-	// print_neighbors(lem_in->rooms->next->next->next->next);
 	find_paths(lem_in);
 	clock_t stop_5 = clock();
 	double elapsed_3;
@@ -151,7 +134,6 @@ void	do_lem_in(t_lem_in *lem_in)
 	elapsed_3 = elapsed_3 * 1000.0;
 	elapsed_3 = elapsed_3 / CLOCKS_PER_SEC;
     printf("find_paths elapsed in ms: %f\n", elapsed_3);
-	// ft_printf(queue->room->name);
 	print_paths(lem_in);
 	set_all_visited_to_zero(lem_in);
 	queue = init_queue();
@@ -161,7 +143,6 @@ void	do_lem_in(t_lem_in *lem_in)
 	find_paths_reverse_order(lem_in);
 	print_paths(lem_in);
 	change_paths_order(lem_in);
-
 	set_visited_to_zero(lem_in);
 	print_paths(lem_in);
 	clock_t stop_6 = clock();
@@ -179,6 +160,32 @@ void	do_lem_in(t_lem_in *lem_in)
 	clock_t stop_7 = clock();
 	double elapsed_4 = (double)(stop_7 - stop_6) * 1000.0 / CLOCKS_PER_SEC;
     printf("find_paths elapsed in ms: %f\n", elapsed_4);
+	// print_moves(lem_in);
+	printf("\n");
+}
+
+/*
+*	Main solver
+*/
+void	do_lem_in_2(t_lem_in *lem_in)
+{
+	t_queue	*queue;
+
+	queue = init_queue();
+	bread_first_search(lem_in, &queue, lem_in->start_room);
+	// free(queue);
+	find_neighbors(lem_in);
+	find_paths(lem_in);
+	set_all_visited_to_zero(lem_in);
+	queue = init_queue();
+	bread_first_search(lem_in, &queue, lem_in->end_room);
+	find_paths_reverse_order(lem_in);
+	change_paths_order(lem_in);
+	set_visited_to_zero(lem_in);
+	bubble_sort_paths(lem_in);
+	remove_duplicates(lem_in);
+	calculate_optimal_paths(lem_in);
+	move_ants(lem_in);
 	// print_moves(lem_in);
 	printf("\n");
 }

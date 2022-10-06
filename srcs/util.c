@@ -53,3 +53,18 @@ int	is_number(char *str)
 	}
 	return (1);
 }
+
+void	set_visited_and_distance(t_room *room, int distance)
+{
+	room->visited = 1;
+	room->distance = distance;
+}
+
+void	set_just_once(int *distance, int *just_once)
+{
+	if (*just_once == 0)
+	{
+		*distance++;
+		*just_once = 1;
+	}
+}

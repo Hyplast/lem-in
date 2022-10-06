@@ -131,4 +131,7 @@ t_path		**create_paths(t_lem_in *lem_in, size_t	size);
 t_path		*get_shortest_path(t_lem_in *lem_in);
 void		bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room);
 
+void	set_visited_and_distance(t_room *room, int distance);
+void	set_just_once(int *distance, int *just_once);
+
 #endif

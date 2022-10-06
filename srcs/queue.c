@@ -88,23 +88,16 @@ void	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue, t_room *room)
 	{
 		if (temp->room_1 == (*queue)->room)
 		{
-			if (temp->room_2 == lem_in->end_room || temp->room_2 == lem_in->start_room)
+			if (temp->room_2 == lem_in->end_room
+				|| temp->room_2 == lem_in->start_room)
 			{
 				if (temp->room_2 != room)
-				{
-					temp->room_2->visited = 1;
-					temp->room_2->distance = 2147483647;
-				}
+					set_visited_and_distance(temp->room_2, 2147483647);
 			}
 			if (temp->room_2->visited == 0)
 			{
-				if (just_once == 0)
-				{
-					distance++;
-					just_once = 1;
-				}
-				temp->room_2->visited = 1;
-				temp->room_2->distance = distance;
+				set_just_once(&distance, &just_once);
+				set_visited_and_distance(temp->room_2, 1);
 				insert(queue, temp->room_2);
 			}
 		}
