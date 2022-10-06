@@ -195,10 +195,122 @@ int		find_permuntations_old(t_lem_in *lem_in, t_path **paths, int size)
 }
 */
 
+void	add_path_to_paths(t_path **paths, t_path *path)
+{
+	int	i;
+
+	i = 0;
+	while (paths[i] != NULL)
+		i++;
+	paths[i] = path;
+}
+
+int		remove_path_from_paths(t_path **paths)
+{
+	int	i;
+
+	i = 0;
+	while (paths[i] != NULL)
+		i++;
+	paths[--i] = NULL;
+	return (i);
+}
+
+/*
+*	Permutations !number_of_paths.
+*	@return !number_of_paths
+*/
+int		calculate_max_times(int	paths)
+{
+	int	i;
+	int	value;
+
+	value = 0;
+	i = 0;
+	while(i < paths)
+		value = value + paths - i;
+	return (value);
+}
+
+int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique)
+{
+	static int	last_removed;
+	static int	times_called;
+	static int	max_times_called;
+
+	if (times_called == 0)
+		max_times_called = calculate_max_times(lem_in->paths_count);
+	times_called++;
+	if (unique == 0)
+	{
+		last_removed = remove_path_from_paths(paths);
+		return (last_removed + 1);
+	}
+	if (times_called == max_times_called)
+		return(lem_in->paths_count);
+	return (0);
+}
+
+/*
+*	Sidenote; is the amount of neighbors the start or end room necessary to know?
+*	doesn't the algorithm check for unique path so it cannot find more unique paths
+*	than the amount of neighbors?
+*/
+void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, float min_turns)
+{
+	t_path	**optimun;
+	float	recent_turns;
+	int		i;
+	int		unique;
+
+	i = 0;
+	optimun = paths;
+	while (i < lem_in->paths_count)
+	{
+		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+		while (unique == 0 && lem_in->paths[++i] != NULL)
+			unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+		if (unique == 1)
+		{
+			add_path_to_paths(paths, lem_in->paths[i]);
+			recent_turns = calculate_path_turns(lem_in, paths);
+			if (recent_turns < min_turns)
+			{
+				min_turns = recent_turns;
+				optimun = paths;
+			}
+		}
+		i = return_path_len(lem_in, paths, unique);
+	}
+	paths = optimun;
+}
+
+/*
+*	Calculate the shortest paths with least amount of turns to move the 
+*	ant throught. 
+*
+*
+*/
+void	calculate_optimal_paths_v2(t_lem_in *lem_in)
+{
+	t_path	**paths;
+	float	min_turns;
+	int		start_neigbors;
+
+	start_neigbors = calculate_neigbors(lem_in);
+	paths = create_paths(lem_in, (size_t)start_neigbors);
+	min_turns = calculate_path_turns(lem_in, paths);
+	if (lem_in->paths_count != 1 && start_neigbors != 1)
+		calculate_optimal_paths_extend(lem_in, paths, min_turns);
+	lem_in->paths = paths;
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
+}
+
 /*
 *	Calculate shortest paths for ants. Max paths is whichever is lower, amount of 
 *	neighbors of start or end rooms. Replace paths in ascending order into lem-in.
 *	TODO: add start_neighbors and end_neighbors and update paths_count to lem_in.
+*	go through the paths until until until
 */
 void	calculate_optimal_paths(t_lem_in *lem_in)
 {

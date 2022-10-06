@@ -13,8 +13,8 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
-# include <stdio.h>
-# include <time.h>
+# include <stdio.h> // REMOVE !!
+# include <time.h>	// REMOVE !!
 # include "ft_printf.h"
 # include "get_next_line.h"
 
@@ -140,5 +140,6 @@ int			find_permuntations(t_lem_in *lem_in, t_path **paths, int size);
 void		remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant);
 void		remove_ants_in_goal(t_lem_in *lem_in);
 int			remove_last_path(t_lem_in *lem_in, t_path **paths);
+float		calculate_path_turns(t_lem_in *lem_in, t_path **paths);
 
 #endif

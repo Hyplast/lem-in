@@ -83,6 +83,97 @@ int	find_permuntations(t_lem_in *lem_in, t_path **paths, int size)
 }
 
 /*
+*	Calculate sum of length of the paths
+*	@return (int) Sum of paths lengths
+*/
+int		total_path_len(t_path **paths)
+{
+	int	i;
+	int	paths_len_sum;
+
+	i = 0;
+	paths_len_sum = 0;
+	while(paths[i] != NULL)
+		paths_len_sum += paths[i++]->path_length;
+	return (paths_len_sum);
+}
+
+/*
+*	Calculate amount turns for the path to walk the ants through.
+*	@return (float) number of turns
+*/
+float	calculate_path_turns(t_lem_in *lem_in, t_path **paths)
+{
+	int		paths_len_sum;
+	float	lowest;
+
+	paths_len_sum = total_path_len(paths);
+	lowest = ((float)paths[0]->path_length / (float)paths_len_sum * (float)lem_in->ants_count);
+	lowest = lowest + (float)lem_in->ants_count - 1;
+	return (lowest);
+}
+
+void	check_other_than_shortest(t_lem_in *lem_in, t_path **paths,
+			int max_neigbors)
+{
+	// int	i;
+	// int	j;
+	int		paths_len_sum;
+	float	lowest;
+
+	// i = 0;
+	// j = 0;
+	paths_len_sum = total_path_len(paths);
+	lowest = ((float)paths[0]->path_length / (float)paths_len_sum * (float)lem_in->ants_count);
+	lowest = lowest + (float)lem_in->ants_count - 1;
+	
+	while (max_neigbors < (int)count_paths(paths))
+	if ((float)paths_len_sum < lowest)
+	{
+		// swap_to_new_path();
+	}
+	/*11 ants
+
+	4 lenght
+	12 length
+
+	4 + 12 = 16
+
+	16 - 4 = 12/16 = 3 / 4
+	16 - 12 = 4/16 = 1 / 4
+
+	11 ants = 8,25 ants	-> 8
+			= 2,75 ants -> 3
+	pathslength + ants - 1 = turns
+	12 + 3 - 1 = 14 turns 
+	4 + 8 - 1 =  11 turns
+
+	12 + 2 - 1 = 13 turns 
+	4 + 9 - 1 =  12 turns
+ 
+  turn 4, 1
+turn 5, 2
+turn 6, 3
+turn 7, 4
+turn 8, 5
+turn 9, 6
+turn 10, 7
+turn 11, 8
+turn 12, 9
+turn 13, 10
+
+	pathlength 5 + 6 = 11
+
+	5/11 6/11 	-> 5 ants
+				-> 6 ants -> 6 + 
+
+*/
+}
+
+
+
+
+/*
 *	Check if amount of neigbors == shortest paths
 */
 void	check_for_max_neigbor_option(t_lem_in *lem_in, t_path **paths,
@@ -94,6 +185,7 @@ void	check_for_max_neigbor_option(t_lem_in *lem_in, t_path **paths,
 	int		start_neigbors;
 
 	j = 0;
+	check_other_than_shortest(lem_in, paths, max_neigbors);
 	start_neigbors = calculate_neigbors(lem_in);
 	n_paths = (int)count_paths(paths);
 	if (n_paths < max_neigbors)
