@@ -54,6 +54,30 @@ int	is_number(char *str)
 	return (1);
 }
 
+/*
+*	Get the minium number from last position before -1 
+*	and add +1 to it to make sure the same path is not counted
+*	again.
+*/
+int	min_number(int x, int replace[100])		
+{
+	int	i;
+
+	i = 0;
+	if (replace[i] == -1)
+		return (0);
+	while(replace[i] != -1)
+		i++;
+	if (x - 1 == replace[i - 1])
+		return (replace[i - 1]);
+	return (replace[i - 1] + 1);
+}
+
+/*
+*	Check if linked room is the goal, if it is, set it's distance to max
+*	int for preventing the exploring algorithm taking illegal shortcuts 
+*	through rooms.
+*/
 void	check_for_goal(t_lem_in *lem_in, t_link *temp, t_room *room)
 {
 	if (temp->room_2 == lem_in->end_room

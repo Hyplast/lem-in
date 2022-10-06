@@ -58,3 +58,39 @@ void	remove_ants_in_goal(t_lem_in *lem_in)
 			ant = ant->next;
 	}
 }
+
+/*
+t_path	*remove_last_path_old(t_path **paths)
+{
+	int	i;
+	t_path	*path;
+
+	i = 0;
+	while (paths[i] != NULL)
+		i++;
+	if (i != 0)
+	{
+		path = paths[i - 1];
+		paths[i - 1] = NULL;
+	}
+	return (path);
+	// free(paths[i - 1]);
+}
+*/
+
+int		remove_last_path(t_lem_in *lem_in, t_path **paths)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	while (paths[i] != NULL)
+		i++;
+	while (lem_in->paths[j] != paths[i - 1])
+		j++;
+	paths[i - 1] = NULL;
+	return (j);
+	// free(paths[i - 1]);
+}
+

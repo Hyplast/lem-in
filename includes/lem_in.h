@@ -126,14 +126,19 @@ void		find_neighbors(t_lem_in *lem_in);
 t_room		*return_shortest_room(t_room *start, t_room *room);
 void		calculate_optimal_paths(t_lem_in *lem_in);
 void		bubble_sort_paths(t_lem_in *lem_in);
+int			is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2);
+int			check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths);
+int			min_number(int x, int replace[100]);
+int			calculate_neigbors(t_lem_in *lem_in);
 size_t		count_paths(t_path **paths);
 t_path		**create_paths(t_lem_in *lem_in, size_t	size);
 t_path		*get_shortest_path(t_lem_in *lem_in);
 void		bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room);
-
+void		check_for_max_neigbor_option(t_lem_in *lem_in, t_path **paths, int max_neigbors);
 void		check_for_goal(t_lem_in *lem_in, t_link *temp, t_room *room);
-
+int			find_permuntations(t_lem_in *lem_in, t_path **paths, int size);
 void		remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant);
 void		remove_ants_in_goal(t_lem_in *lem_in);
+int			remove_last_path(t_lem_in *lem_in, t_path **paths);
 
 #endif

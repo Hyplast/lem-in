@@ -82,3 +82,56 @@ t_path	*get_shortest_path(t_lem_in *lem_in)
 	}
 	return (path);
 }
+
+/*
+*	Check whether paths have matching rooms excluding start and end rooms.
+*	@param1 path 1
+*	@param2 path 2
+*	@return 1 no match, 0 if matching rooms
+*/
+int	is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2)
+{
+	t_path	*temp_1;
+	t_path	*temp_2;
+
+	temp_1 = path_1->next_path;
+	temp_2 = path_2->next_path;
+	while (temp_1->room != lem_in->end_room)
+	{
+		while (temp_2->room != lem_in->end_room)
+		{
+			if (temp_1->room == temp_2->room)
+				return (0);
+			temp_2 = temp_2->next_path;
+		}
+		temp_2 = path_2->next_path;
+		temp_1 = temp_1->next_path;
+	}
+	return (1);
+}
+
+/*
+*	Check whether path and paths have matching rooms excluding start and end rooms.
+*	Don't compare path to itself.
+*	@param1 path 1
+*	@param2 paths
+*	@return 1 no match, 0 if matching rooms
+*/
+int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
+{
+	int	i;
+	int	result;
+
+	i = 0;
+	while (paths[i])
+	{
+		if (path_1 == paths[i])
+			result = 0;
+		else
+			result = is_path_unique(lem_in, path_1, paths[i]);
+		if (result == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
