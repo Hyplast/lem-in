@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-int		same_path(t_lem_in *lem_in, t_path *path1, t_path *path2)
+int	same_path(t_lem_in *lem_in, t_path *path1, t_path *path2)
 {
 	while (path1->room == path2->room)
 	{
@@ -24,7 +24,8 @@ int		same_path(t_lem_in *lem_in, t_path *path1, t_path *path2)
 	return (0);
 }
 
-void	remove_paths(t_lem_in *lem_in, int to_be_removed[500])
+/*
+void	remove_paths_old(t_lem_in *lem_in, int to_be_removed[500])
 {
 	t_path	**paths;
 	int		num_paths;
@@ -51,6 +52,7 @@ void	remove_paths(t_lem_in *lem_in, int to_be_removed[500])
 	paths[j] = NULL;
 	lem_in->paths = paths;
 }
+*/
 
 void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
 {
@@ -76,17 +78,11 @@ void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
 void	remove_duplicates(t_lem_in *lem_in)
 {
 	t_path	*path;
-	// t_path	**paths;
 	t_path	*temp;
 	int		i;
-	// int		j;
 	int		result;
-	// int		to_be_removed[500];
 
 	i = 0;
-	// j = 0;
-	// while (i < 500)
-	// 	to_be_removed[i++] = -1;
 	i = 0;
 	path = lem_in->paths[i];
 	while (path)
@@ -99,7 +95,7 @@ void	remove_duplicates(t_lem_in *lem_in)
 				result = same_path(lem_in, path, temp);
 				if (result == 1)
 				{
-					remove_path_n(lem_in, i);	//to_be_removed[j++] = i;
+					remove_path_n(lem_in, i);//to_be_removed[j++] = i;
 					path = lem_in->paths[0];
 					temp = lem_in->paths[0];
 				}
@@ -109,7 +105,6 @@ void	remove_duplicates(t_lem_in *lem_in)
 		path = lem_in->paths[++i];
 	}
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
-	// remove_paths(lem_in, to_be_removed);
 }
 
 void	do_lem_in(t_lem_in *lem_in)
@@ -121,19 +116,19 @@ void	do_lem_in(t_lem_in *lem_in)
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	clock_t stop_3 = clock();
 	double elapsed = (double)(stop_3 - stop_2) * 1000.0 / CLOCKS_PER_SEC;
-    printf("bread_first_search elapsed in ms: %f\n", elapsed);
+	printf("bread_first_search elapsed in ms: %f\n", elapsed);
 	// free(queue);
 	find_neighbors(lem_in);
 	clock_t stop_4 = clock();
 	double elapsed_2 = (double)(stop_4 - stop_3) * 1000.0 / CLOCKS_PER_SEC;
-    printf("find_neighbors elapsed in ms: %f\n", elapsed_2);
+	printf("find_neighbors elapsed in ms: %f\n", elapsed_2);
 	find_paths(lem_in);
 	clock_t stop_5 = clock();
 	double elapsed_3;
 	elapsed_3 = (double) (stop_5 - stop_4);
 	elapsed_3 = elapsed_3 * 1000.0;
 	elapsed_3 = elapsed_3 / CLOCKS_PER_SEC;
-    printf("find_paths elapsed in ms: %f\n", elapsed_3);
+	printf("find_paths elapsed in ms: %f\n", elapsed_3);
 	print_paths(lem_in);
 	set_all_visited_to_zero(lem_in);
 	queue = init_queue();
@@ -159,7 +154,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	move_ants(lem_in);
 	clock_t stop_7 = clock();
 	double elapsed_4 = (double)(stop_7 - stop_6) * 1000.0 / CLOCKS_PER_SEC;
-    printf("find_paths elapsed in ms: %f\n", elapsed_4);
+	printf("find_paths elapsed in ms: %f\n", elapsed_4);
 	// print_moves(lem_in);
 	printf("\n");
 }
