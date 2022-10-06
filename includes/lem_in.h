@@ -133,4 +133,7 @@ void		bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room);
 
 void		check_for_goal(t_lem_in *lem_in, t_link *temp, t_room *room);
 
+void		remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant);
+void		remove_ants_in_goal(t_lem_in *lem_in);
+
 #endif

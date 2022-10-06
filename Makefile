@@ -21,6 +21,7 @@ queue.c \
 util.c \
 util_paths.c \
 free.c \
+remove.c \
 neigbors.c \
 path.c \
 path_reversed.c \

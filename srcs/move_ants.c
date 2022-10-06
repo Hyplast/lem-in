@@ -12,51 +12,21 @@
 
 #include "lem_in.h"
 
-/*
-*	Remove ant from lem_in
-*	@param Lem_in
-*	@param Ant to be removed.
-*/
-void	remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant)
+void	set_end(t_lem_in *lem_in, t_ant *ant)
 {
-	t_ant	*temp;
-
-	temp = lem_in->ants;
-	// ft_printf("L%i-%s ", ant->ant_id, lem_in->end_room->name);
-	if (temp == ant)
-	{
-		if (temp->next == NULL)
-			lem_in->ants = NULL;
-		else
-			lem_in->ants = temp->next;
-	}
-	else
-	{
-		while (temp->next != ant)
-			temp = temp->next;
-		if (temp->next->next == NULL)
-			temp->next = NULL;
-		else
-			temp->next = temp->next->next;
-	}
-	free(ant);
-	ant = lem_in->ants;
+	ant->room = lem_in->end_room;
+	ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 }
 
-void	remove_ants_in_goal(t_lem_in *lem_in)
+void	check_end_and_visited(t_lem_in *lem_in, t_path *path, t_ant *ant)
 {
-	t_ant	*ant;
-
-	ant = lem_in->ants;
-	while (ant)
+	if (path->next_path->room == lem_in->end_room)
+		set_end(lem_in, ant);
+	else if (path->next_path->room->visited == 0)
 	{
-		if (ant->room == lem_in->end_room)
-		{
-			remove_ant_from_lem_in(lem_in, ant);
-			ant = lem_in->ants;
-		}
-		else
-			ant = ant->next;
+		ant->room = path->next_path->room;
+		ant->room->visited = 1;
+		ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 	}
 }
 
@@ -78,26 +48,15 @@ void	mov_ants_oth_rooms_by_oth_paths(t_lem_in *lem_in, t_path *path)
 			while (path && path->room != ant->room)
 				path = path->next_path;
 			if (path)
-			{
-				if (path->next_path->room == lem_in->end_room)
-				{
-					ant->room = lem_in->end_room;
-					ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
-				}
-				else if (path->next_path->room->visited == 0)
-				{
-					ant->room = path->next_path->room;
-					ant->room->visited = 1;
-					ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
-				}
-			}
+				check_end_and_visited(lem_in, path, ant);
 		}
 		path = temp;
 		ant = ant->next;
 	}
 }
 
-void	move_ants_from_start_other_paths(t_lem_in *lem_in, t_path *path)
+/*
+void	move_ants_from_start_other_paths_old(t_lem_in *lem_in, t_path *path)
 {
 	t_ant	*ant;
 
@@ -117,8 +76,9 @@ void	move_ants_from_start_other_paths(t_lem_in *lem_in, t_path *path)
 		}
 	}
 }
+*/
 
-void	move_ants_from_start_other_paths2(t_lem_in *lem_in, t_path *path)
+void	move_ants_from_start_other_paths(t_lem_in *lem_in, t_path *path)
 {
 	t_ant	*ant;
 	t_path	*temp;
@@ -132,10 +92,7 @@ void	move_ants_from_start_other_paths2(t_lem_in *lem_in, t_path *path)
 		if (path && ant->room != lem_in->end_room)
 		{
 			if (path->next_path->room == lem_in->end_room)
-			{
-				ant->room = lem_in->end_room;
-				ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
-			}
+				set_end(lem_in, ant);
 			else if (path->next_path->room->visited == 0)
 			{
 				if (ant->room == lem_in->start_room)
@@ -164,10 +121,7 @@ void	move_ants_by_shortest_path(t_lem_in *lem_in, t_path *path)
 		if (path)
 		{
 			if (path->room == lem_in->end_room)
-			{
-				ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
-				ant->room = lem_in->end_room;
-			}
+				set_end(lem_in, ant);
 			else if (path->next_path->room->visited == 0)
 			{
 				if (ant->room == lem_in->start_room)
@@ -179,7 +133,6 @@ void	move_ants_by_shortest_path(t_lem_in *lem_in, t_path *path)
 		}
 		path = temp;
 		ant = ant->next;
-		// remove_ants_in_goal(lem_in);
 	}
 }
 
@@ -189,8 +142,9 @@ void	move_others(t_lem_in *lem_in, t_path *path)
 	{
 		if (lem_in->ants_in_start > 0)
 		{
-			if (lem_in->ants_in_start > path->path_length - lem_in->paths[0]->path_length)
-				move_ants_from_start_other_paths2(lem_in, path);
+			if (lem_in->ants_in_start > path->path_length
+				- lem_in->paths[0]->path_length)
+				move_ants_from_start_other_paths(lem_in, path);
 			else
 				mov_ants_oth_rooms_by_oth_paths(lem_in, path);
 		}
@@ -224,10 +178,6 @@ void	move_ants(t_lem_in *lem_in)
 			if (path == lem_in->paths[0])
 				move_ants_by_shortest_path(lem_in, path);
 			move_others(lem_in, path);
-			// else if (lem_in->ants_in_start > 1)
-			// 	move_ants_from_start_other_paths(lem_in, path);
-			// if (path != lem_in->paths[0])
-			// 	mov_ants_oth_rooms_by_oth_paths(lem_in, path);
 			path = lem_in->paths[++i];
 		}
 		set_visited_to_zero(lem_in);

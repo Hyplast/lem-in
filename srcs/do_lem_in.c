@@ -165,7 +165,7 @@ void	do_lem_in(t_lem_in *lem_in)
 }
 
 /*
-*	Main solver
+*	Ant solver
 */
 void	do_lem_in_2(t_lem_in *lem_in)
 {
