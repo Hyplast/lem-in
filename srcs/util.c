@@ -54,17 +54,15 @@ int	is_number(char *str)
 	return (1);
 }
 
-void	set_visited_and_distance(t_room *room, int distance)
+void	check_for_goal(t_lem_in *lem_in, t_link *temp, t_room *room)
 {
-	room->visited = 1;
-	room->distance = distance;
-}
-
-void	set_just_once(int *distance, int *just_once)
-{
-	if (*just_once == 0)
+	if (temp->room_2 == lem_in->end_room
+		|| temp->room_2 == lem_in->start_room)
 	{
-		*distance++;
-		*just_once = 1;
+		if (temp->room_2 != room)
+		{
+			temp->room_2->visited = 1;
+			temp->room_2->distance = 2147483647;
+		}
 	}
 }
