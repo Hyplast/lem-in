@@ -318,8 +318,6 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, t_path **o
 /*
 *	Calculate the shortest paths with least amount of turns to move the 
 *	ant throught. 
-*
-*
 */
 void	calculate_optimal_paths(t_lem_in *lem_in)
 {
@@ -336,43 +334,4 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 		calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
 	lem_in->paths = paths;
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
-}
-
-/*
-*	Calculate shortest paths for ants. Max paths is whichever is lower, amount of 
-*	neighbors of start or end rooms. Replace paths in ascending order into lem-in.
-*	TODO: add start_neighbors and end_neighbors and update paths_count to lem_in.
-*	go through the paths until until until
-*/
-void	calculate_optimal_paths_old(t_lem_in *lem_in)
-{
-	int		start_neigbors;
-	t_path	**paths;
-	int		value;
-	int		j;
-	int		n_paths;
-
-	j = 0;
-	start_neigbors = calculate_neigbors(lem_in);
-	paths = create_paths(lem_in, (size_t)start_neigbors);
-	n_paths = (int)count_paths(paths);
-	if (lem_in->paths_count != 1 && start_neigbors != 1)
-	{
-		if (lem_in->ants_count > lem_in->paths[1]->path_length - lem_in->paths[0]->path_length)
-		{
-			while (n_paths < start_neigbors)
-			{
-				value = add_a_path(lem_in, paths);
-				while (value == 0)
-				{
-					value = swap_old_path(lem_in, paths, j++);
-					if (value == 1)
-						value = add_a_path(lem_in, paths);
-				}
-				j = 0;
-				n_paths = return_n_paths(lem_in, paths, start_neigbors);//count_paths(paths);
-			}
-		}
-	}
-	check_for_max_neigbor_option(lem_in, paths, start_neigbors);
 }

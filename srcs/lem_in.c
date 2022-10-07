@@ -111,6 +111,28 @@ int	main(int argc, char **argv)
 	lem_in = lem_in_init();
 	if (!lem_in)
 		return (0);
+	get_lem_in(lem_in);
+	check_lem_in(lem_in);
+	do_lem_in(lem_in);
+	free_lem_in(lem_in);
+	return (0);
+}
+
+/*
+int	main_old(int argc, char **argv)
+{
+	t_lem_in	*lem_in;
+
+	if (argc != 1)
+	{
+		ft_printf("Usage: ./lem_in \"stdin\"\n");
+		if (argv[0] == NULL)
+			return (0);
+		return (0);
+	}
+	lem_in = lem_in_init();
+	if (!lem_in)
+		return (0);
 	clock_t	start = clock();
 	get_lem_in(lem_in);
 	clock_t stop_1 = clock();
@@ -126,3 +148,4 @@ int	main(int argc, char **argv)
 	printf("Total elapsed in ms: %f\n", elapsed_2);
 	return (0);
 }
+*/

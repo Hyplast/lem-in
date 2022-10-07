@@ -48,7 +48,7 @@ t_room	*return_shortest_room(t_room *start, t_room *room)
 	{
 		if (temp->distance < shortest_distance)
 		{
-			if (temp != start) // TODO: FIX from distance, maybe unnessacery?
+			if (temp != start)
 			{
 				shortest_distance = temp->distance;
 				shortest_room = temp;

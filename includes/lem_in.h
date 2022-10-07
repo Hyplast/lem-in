@@ -117,10 +117,10 @@ void		change_paths_order(t_lem_in *lem_in);
 void		fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end);
 void		free_paths(t_lem_in *lem_in);
 void		move_ants(t_lem_in *lem_in);
-
+void		set_end(t_lem_in *lem_in, t_ant *ant);
 void		set_visited_to_zero(t_lem_in *lem_in);
 void		set_all_visited_to_zero(t_lem_in *lem_in);
-
+void		check_end_and_visited(t_lem_in *lem_in, t_path *path, t_ant *ant);
 void		add_neighbors(t_room *room_1, t_room *room_2);
 void		find_neighbors(t_lem_in *lem_in);
 t_room		*return_shortest_room(t_room *start, t_room *room);

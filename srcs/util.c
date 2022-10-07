@@ -59,14 +59,14 @@ int	is_number(char *str)
 *	and add +1 to it to make sure the same path is not counted
 *	again.
 */
-int	min_number(int x, int replace[100])		
+int	min_number(int x, int replace[100])
 {
 	int	i;
 
 	i = 0;
 	if (replace[i] == -1)
 		return (0);
-	while(replace[i] != -1)
+	while (replace[i] != -1)
 		i++;
 	if (x - 1 == replace[i - 1])
 		return (replace[i - 1]);

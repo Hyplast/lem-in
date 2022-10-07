@@ -24,36 +24,6 @@ int	same_path(t_lem_in *lem_in, t_path *path1, t_path *path2)
 	return (0);
 }
 
-/*
-void	remove_paths_old(t_lem_in *lem_in, int to_be_removed[500])
-{
-	t_path	**paths;
-	int		num_paths;
-	int		num_removed;
-	int		i;
-	int		j;
-	int		k;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	num_removed = 0;
-	num_paths = (int)count_paths(lem_in->paths);
-	while (to_be_removed[num_removed] != -1)
-		num_removed++;
-	num_paths = num_paths - num_removed;
-	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)num_paths + 1));
-	while (lem_in->paths[i])
-	{
-		if (to_be_removed[k++] != i)
-			paths[j++] = lem_in->paths[i];
-		i++;
-	}
-	paths[j] = NULL;
-	lem_in->paths = paths;
-}
-*/
-
 void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
 {
 	t_path	**paths;
@@ -95,7 +65,7 @@ void	remove_duplicates(t_lem_in *lem_in)
 				result = same_path(lem_in, path, temp);
 				if (result == 1)
 				{
-					remove_path_n(lem_in, i);//to_be_removed[j++] = i;
+					remove_path_n(lem_in, i);
 					path = lem_in->paths[0];
 					temp = lem_in->paths[0];
 				}
@@ -107,6 +77,7 @@ void	remove_duplicates(t_lem_in *lem_in)
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
 
+/*
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
@@ -158,17 +129,17 @@ void	do_lem_in(t_lem_in *lem_in)
 	// print_moves(lem_in);
 	printf("\n");
 }
+*/
 
 /*
 *	Ant solver
 */
-void	do_lem_in_v2(t_lem_in *lem_in)
+void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
 
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->start_room);
-	// free(queue);
 	find_neighbors(lem_in);
 	find_paths(lem_in);
 	set_all_visited_to_zero(lem_in);
@@ -181,6 +152,5 @@ void	do_lem_in_v2(t_lem_in *lem_in)
 	remove_duplicates(lem_in);
 	calculate_optimal_paths(lem_in);
 	move_ants(lem_in);
-	// print_moves(lem_in);
 	printf("\n");
 }
