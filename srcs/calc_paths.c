@@ -13,245 +13,32 @@
 #include "lem_in.h"
 
 /*
-*	@return Get a different shortest path from lem-in paths.
-*	@return 1 if swap succesfull
-*	@return 0 if swap not succesfull
-*
-int	swap_old_path_ver_old(t_lem_in *lem_in, t_path **paths, int j)
-{
-	int		i;
-	t_path	*replace;
-	int		unique;
-
-	i = 0;
-	replace = paths[j];
-	paths[j] = NULL;
-	while (lem_in->paths[i])
-	{
-		if (replace != lem_in->paths[i])
-		{
-			unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
-			if (unique == 1)
-			{
-				paths[j] = lem_in->paths[i];
-				return (1);
-			}
-		}
-		i++;
-	}
-	paths[j] = replace;
-	return (0);
-}
-*/
-
-int	swap_old_path(t_lem_in *lem_in, t_path **paths, int j)
-{
-	int		i;
-	t_path	*replace;
-	int		unique;
-
-	i = 0;
-	j = (int)count_paths(paths) - j - 1;
-	replace = paths[j];
-	printf("-replacing path:%dlength;%s;%s-\n", replace->path_length,
-		replace->next_path->room->name,
-		replace->next_path->next_path->room->name);
-	while (lem_in->paths[i])
-	{
-		if (replace != lem_in->paths[i])
-		{
-			unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
-			if (unique == 1)
-			{
-				paths[j] = lem_in->paths[i];
-				printf(" *-with path:%dlength;%s;%s-\n", paths[j]->path_length,
-					paths[j]->next_path->room->name,
-					paths[j]->next_path->next_path->room->name);
-				return (1);
-			}
-		}
-		i++;
-	}
-	// paths[j] = replace;
-	return (0);
-}
-
-/*
-*	Add a new path to new paths array and make sure that it doesn't
-*	have overlapping rooms with previous paths. If it has, go to next path until
-* 	new path is found. TODO: Check what combinations of path length lead to lowest
-*	@return 1 if new path is found and added
-*	@return 0 if no path is added
-*/
-int	add_a_path(t_lem_in *lem_in, t_path **paths)
-{
-	t_path	*new_path;
-	int		i;
-	int		j;
-	int		unique;
-
-	i = 0;
-	j = 0;
-	new_path = lem_in->paths[i];
-	unique = check_all_paths_uniq(lem_in, new_path, paths);
-	while (unique == 0 && lem_in->paths[++i] != NULL)
-	{
-		new_path = lem_in->paths[i];
-		unique = check_all_paths_uniq(lem_in, new_path, paths);
-	}
-	if (unique)
-	{
-		while (paths[j])
-			j++;
-		paths[j++] = new_path;
-		paths[j] = NULL;
-		printf("-added path:%dlength;%s;%s-\n", new_path->path_length,
-			new_path->next_path->room->name,
-			new_path->next_path->next_path->room->name);
-		return (1);
-	}
-	return (0);
-}
-
-int	return_n_paths(t_lem_in *lem_in, t_path **paths, int start_neigh)
-{
-	int	lem_in_path_count;
-	int	paths_count;
-	int	value;
-	int	path_length;
-
-	lem_in_path_count = (int)count_paths(lem_in->paths);
-	paths_count = (int)count_paths(paths);
-	if (lem_in_path_count == paths_count)
-		return (start_neigh);
-	if (paths_count > 1)
-	{
-		path_length = paths[0]->path_length;
-		value = paths[1]->path_length;
-		if (lem_in->ants_count + path_length - 1 < value)
-			value = (int)start_neigh;
-		else
-			value = paths_count;
-	}
-	else
-		value = paths_count;
-	return ((size_t)value);
-}
-
-/*
-*	If path is unique, replace it to paths.
-*
-int		check_and_add_old(t_lem_in *lem_in, t_path *path_1, t_path **paths, t_path *replace)
-{
-	int	unique;
-	int	i;
-
-	if (path_1 == replace)
-		return (0);
-	unique = check_all_paths_uniq(lem_in, path_1, paths);
-	if (unique == 1)
-	{
-		i = (int)count_paths(paths);
-		paths[i] = path_1;
-		// paths[i] = NULL;
-	}
-	return (unique);
-}
-*/
-
-/*
-int		find_permuntations_old(t_lem_in *lem_in, t_path **paths, int size)
-{
-	int		unique;
-	int		i;
-	int		j;
-	int		k;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	paths[j++] = lem_in->paths[i];
-	while (j < size)
-	{
-		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
-		while (unique == 0 && (i < lem_in->paths_count - 1))
-			unique = check_all_paths_uniq(lem_in, lem_in->paths[++i], paths);
-		if (unique == 1)
-			paths[j++] = lem_in->paths[i];
-		else
-		{
-			if (k > lem_in->paths_count)
-			{
-				j--;
-				k = 0;
-			}
-			if (j < 1)
-				return (0);
-			paths[--j] = lem_in->paths[k++];
-		}
-		i = 0;
-	}
-	return (1);
-}
-*/
-
-void	add_path_to_paths(t_path **paths, t_path *path)
-{
-	int	i;
-
-	i = 0;
-	while (paths[i] != NULL)
-		i++;
-	paths[i] = path;
-}
-
-int		remove_path_from_paths(t_lem_in *lem_in, t_path **paths)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	i = 0;
-	while (paths[i] != NULL)
-	{
-		i++;
-	}
-	i--;
-	while (paths[i] != lem_in->paths[j])
-		j++;
-	paths[i] = NULL;
-	return (j);
-}
-
-/*
 *	Permutations !number_of_paths.
 *	@return !number_of_paths
 */
-int		calculate_max_times(int	paths)
+int	calculate_max_times(int paths)
 {
 	int	i;
 	int	value;
 
 	value = 0;
 	i = 0;
-	while(i < paths)
+	while (i < paths)
 		value = value + paths - i++;
 	return (value);
 }
 
-int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique)
+int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
 {
 	static int	last_removed;
 	static int	times_called;
 	static int	max_times_called;
-	int			removed;
 	int			paths_count;
 
 	if (times_called == 0)
 		max_times_called = calculate_max_times(lem_in->paths_count);
-	times_called++;
-	if (times_called >= max_times_called)
-		return(lem_in->paths_count + 1);
+	if (++times_called >= max_times_called)
+		return (lem_in->paths_count + 1);
 	if (unique == 0)
 	{
 		removed = last_removed;
@@ -259,8 +46,8 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique)
 		if (last_removed == 0)
 			return (1);
 		paths_count = (int)count_paths(paths);
-		while ((last_removed == removed || last_removed == lem_in->paths_count - 1) 
-				&& paths_count != 0)
+		while ((last_removed == removed || last_removed
+				== lem_in->paths_count - 1) && paths_count != 0)
 		{
 			paths_count = (int)count_paths(paths);
 			if (paths_count > 0)
@@ -288,7 +75,8 @@ void	path_copy(t_path **paths, t_path **copy)
 *	doesn't the algorithm check for unique path so it cannot find more unique paths
 *	than the amount of neighbors?
 */
-void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, t_path **optimun, float min_turns)
+void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths,
+			t_path **optimun, float min_turns)
 {
 	float	recent_turns;
 	int		i;
@@ -310,7 +98,7 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, t_path **o
 				path_copy(paths, optimun);
 			}
 		}
-		i = return_path_len(lem_in, paths, unique);
+		i = return_path_len(lem_in, paths, unique, i);
 	}
 	path_copy(optimun, paths);
 }

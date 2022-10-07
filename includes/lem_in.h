@@ -141,5 +141,7 @@ void		remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant);
 void		remove_ants_in_goal(t_lem_in *lem_in);
 int			remove_last_path(t_lem_in *lem_in, t_path **paths);
 float		calculate_path_turns(t_lem_in *lem_in, t_path **paths);
+void		add_path_to_paths(t_path **paths, t_path *path);
+int			remove_path_from_paths(t_lem_in *lem_in, t_path **paths);
 
 #endif

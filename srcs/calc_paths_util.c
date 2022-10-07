@@ -12,46 +12,46 @@
 
 #include "lem_in.h"
 
-/*
-*	Check which paths have already been tried and keep count
-*	on them to not to try them again.
-*/
-int	check_and_add(t_lem_in *lem_in, t_path *path_1,
-	t_path **paths, int replace[100])
+void	add_path_to_paths(t_path **paths, t_path *path)
 {
-	int	unique;
+	int	i;
+
+	i = 0;
+	while (paths[i] != NULL)
+		i++;
+	paths[i] = path;
+}
+
+int	remove_path_from_paths(t_lem_in *lem_in, t_path **paths)
+{
 	int	i;
 	int	j;
 
-	i = 0;
 	j = 0;
-	while (replace[j] != -1)
+	i = 0;
+	while (paths[i] != NULL)
 	{
-		if (path_1 == lem_in->paths[replace[j++]])
-			return (0);
+		i++;
 	}
-	unique = check_all_paths_uniq(lem_in, path_1, paths);
-	if (unique == 1)
-	{
-		i = (int)count_paths(paths);
-		paths[i] = path_1;
-		paths[i + 1] = NULL;
-	}
-	return (unique);
+	i--;
+	while (paths[i] != lem_in->paths[j])
+		j++;
+	paths[i] = NULL;
+	return (j);
 }
 
 /*
 *	Calculate sum of length of the paths
 *	@return (int) Sum of paths lengths
 */
-int		total_path_len(t_path **paths)
+int	total_path_len(t_path **paths)
 {
 	int	i;
 	int	paths_len_sum;
 
 	i = 0;
 	paths_len_sum = 0;
-	while(paths[i] != NULL)
+	while (paths[i] != NULL)
 		paths_len_sum += paths[i++]->path_length;
 	return (paths_len_sum);
 }
@@ -70,77 +70,10 @@ float	calculate_path_turns(t_lem_in *lem_in, t_path **paths)
 	if (n_paths == 1)
 		return ((float)(lem_in->ants_count + paths[0]->path_length - 1));
 	paths_len_sum = total_path_len(paths);
-	lowest = ((float)paths[0]->path_length / (float)paths_len_sum * (float)lem_in->ants_count);
+	lowest = ((float)paths[0]->path_length / (float)paths_len_sum
+			* (float)lem_in->ants_count);
 	lowest = lowest + (float)paths[1]->path_length - 1;
 	return (lowest);
-}
-
-void	check_other_than_shortest(t_lem_in *lem_in, t_path **paths,
-			int max_neigbors)
-{
-	// int	i;
-	// int	j;
-	int		paths_len_sum;
-	float	lowest;
-
-	// i = 0;
-	// j = 0;
-	paths_len_sum = total_path_len(paths);
-	lowest = ((float)paths[0]->path_length / (float)paths_len_sum * (float)lem_in->ants_count);
-	lowest = lowest + (float)paths[0]->path_length - 1;
-	
-	while (max_neigbors < (int)count_paths(paths))
-	if ((float)paths_len_sum < lowest)
-	{
-		// swap_to_new_path();
-	}
-	/*11 ants
-
-	4 lenght
-	12 length
-
-	5 + 6 = 11
-	4 + 12 = 16
-
-	11 - 5 = 5/11 = 
-	11 - 6 = 6/11 = 
-
-	16 - 4 = 4/16  = 1 /4
-	16 - 12 = 12/16 = 3 / 4
-
-	2,75 -> ants -> 3 ants + 12 - 1 -> 14 turns
-				->	2 ants + 12 - 1 -> 13 turns
-	8,25 -> ants -> 9 ants + 4  - 1 -> 12 turns
-				->	8 ants + 4  - 1 -> 11 turns
-
-
-	11 ants = 6 ants -> 6 + 5 - 1 -> 10 turns
-			= 6 ants -> 5 + 6 - 1 -> 10 turns
-			= 5 ants -> 
-	pathslength + ants - 1 = turns
-	6 + 11 - 1 = 16 turns 
-	5 + 11 - 1 =  15 turns
-
-	12 + 2 - 1 = 13 turns 
-	4 + 9 - 1 =  12 turns
- 
-  turn 4, 1
-turn 5, 2
-turn 6, 3
-turn 7, 4
-turn 8, 5
-turn 9, 6
-turn 10, 7
-turn 11, 8
-turn 12, 9
-turn 13, 10
-
-	pathlength 5 + 6 = 11
-
-	5/11 6/11 	-> 5 ants
-				-> 6 ants -> 6 + 
-
-*/
 }
 
 /*

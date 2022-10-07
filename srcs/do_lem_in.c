@@ -45,15 +45,12 @@ void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
 	lem_in->paths = paths;
 }
 
-void	remove_duplicates(t_lem_in *lem_in)
+void	remove_duplicates(t_lem_in *lem_in, int i)
 {
 	t_path	*path;
 	t_path	*temp;
-	int		i;
 	int		result;
 
-	i = 0;
-	i = 0;
 	path = lem_in->paths[i];
 	while (path)
 	{
@@ -74,7 +71,6 @@ void	remove_duplicates(t_lem_in *lem_in)
 		}
 		path = lem_in->paths[++i];
 	}
-	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
 
 /*
@@ -137,7 +133,9 @@ void	do_lem_in(t_lem_in *lem_in)
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
+	int		i;
 
+	i = 0;
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	find_neighbors(lem_in);
@@ -149,7 +147,8 @@ void	do_lem_in(t_lem_in *lem_in)
 	change_paths_order(lem_in);
 	set_visited_to_zero(lem_in);
 	bubble_sort_paths(lem_in);
-	remove_duplicates(lem_in);
+	remove_duplicates(lem_in, i);
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
 	calculate_optimal_paths(lem_in);
 	move_ants(lem_in);
 	printf("\n");
