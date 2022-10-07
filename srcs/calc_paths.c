@@ -253,7 +253,7 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique)
 	{
 		removed = last_removed;
 		last_removed = remove_path_from_paths(lem_in, paths);
-		if (last_removed == removed || last_removed == lem_in->paths_count - 1)
+		while (last_removed == removed || last_removed == lem_in->paths_count - 1)
 			last_removed = remove_path_from_paths(lem_in, paths);
 		return (last_removed + 1);
 	}
