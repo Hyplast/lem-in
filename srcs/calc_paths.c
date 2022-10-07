@@ -205,15 +205,22 @@ void	add_path_to_paths(t_path **paths, t_path *path)
 	paths[i] = path;
 }
 
-int		remove_path_from_paths(t_path **paths)
+int		remove_path_from_paths(t_lem_in *lem_in, t_path **paths)
 {
 	int	i;
+	int	j;
 
+	j = 0;
 	i = 0;
 	while (paths[i] != NULL)
+	{
 		i++;
-	paths[--i] = NULL;
-	return (i);
+	}
+	i--;
+	while (paths[i] != lem_in->paths[j])
+		j++;
+	paths[i] = NULL;
+	return (j);
 }
 
 /*
@@ -228,7 +235,7 @@ int		calculate_max_times(int	paths)
 	value = 0;
 	i = 0;
 	while(i < paths)
-		value = value + paths - i;
+		value = value + paths - i++;
 	return (value);
 }
 
@@ -237,18 +244,34 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique)
 	static int	last_removed;
 	static int	times_called;
 	static int	max_times_called;
+	int			removed;
 
 	if (times_called == 0)
 		max_times_called = calculate_max_times(lem_in->paths_count);
 	times_called++;
 	if (unique == 0)
 	{
-		last_removed = remove_path_from_paths(paths);
+		removed = last_removed;
+		last_removed = remove_path_from_paths(lem_in, paths);
+		if (last_removed == removed || last_removed == lem_in->paths_count - 1)
+			last_removed = remove_path_from_paths(lem_in, paths);
 		return (last_removed + 1);
 	}
-	if (times_called == max_times_called)
-		return(lem_in->paths_count);
+	if (times_called >= max_times_called)
+		return(lem_in->paths_count + 1);
 	return (0);
+}
+
+void	path_copy(t_path **paths, t_path **copy)
+{
+	int	i;
+
+	i = 0;
+	while (paths[i] != NULL)
+	{
+		copy[i] = paths[i];
+		i++;
+	}
 }
 
 /*
@@ -256,16 +279,14 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique)
 *	doesn't the algorithm check for unique path so it cannot find more unique paths
 *	than the amount of neighbors?
 */
-void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, float min_turns)
+void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, t_path **optimun, float min_turns)
 {
-	t_path	**optimun;
 	float	recent_turns;
 	int		i;
 	int		unique;
 
 	i = 0;
-	optimun = paths;
-	while (i < lem_in->paths_count)
+	while (i < lem_in->paths_count + 1)
 	{
 		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
 		while (unique == 0 && lem_in->paths[++i] != NULL)
@@ -277,12 +298,12 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, float min_
 			if (recent_turns < min_turns)
 			{
 				min_turns = recent_turns;
-				optimun = paths;
+				path_copy(paths, optimun);
 			}
 		}
 		i = return_path_len(lem_in, paths, unique);
 	}
-	paths = optimun;
+	path_copy(optimun, paths);
 }
 
 /*
@@ -291,17 +312,19 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths, float min_
 *
 *
 */
-void	calculate_optimal_paths_v2(t_lem_in *lem_in)
+void	calculate_optimal_paths(t_lem_in *lem_in)
 {
 	t_path	**paths;
+	t_path	**optimun;
 	float	min_turns;
 	int		start_neigbors;
 
 	start_neigbors = calculate_neigbors(lem_in);
 	paths = create_paths(lem_in, (size_t)start_neigbors);
+	optimun = create_paths(lem_in, (size_t)start_neigbors);
 	min_turns = calculate_path_turns(lem_in, paths);
 	if (lem_in->paths_count != 1 && start_neigbors != 1)
-		calculate_optimal_paths_extend(lem_in, paths, min_turns);
+		calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
 	lem_in->paths = paths;
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
@@ -312,7 +335,7 @@ void	calculate_optimal_paths_v2(t_lem_in *lem_in)
 *	TODO: add start_neighbors and end_neighbors and update paths_count to lem_in.
 *	go through the paths until until until
 */
-void	calculate_optimal_paths(t_lem_in *lem_in)
+void	calculate_optimal_paths_old(t_lem_in *lem_in)
 {
 	int		start_neigbors;
 	t_path	**paths;

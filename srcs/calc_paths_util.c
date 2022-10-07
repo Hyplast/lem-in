@@ -106,10 +106,14 @@ float	calculate_path_turns(t_lem_in *lem_in, t_path **paths)
 {
 	int		paths_len_sum;
 	float	lowest;
+	size_t	n_paths;
 
+	n_paths = count_paths(paths);
+	if (n_paths == 1)
+		return ((float)(lem_in->ants_count + paths[0]->path_length - 1));
 	paths_len_sum = total_path_len(paths);
 	lowest = ((float)paths[0]->path_length / (float)paths_len_sum * (float)lem_in->ants_count);
-	lowest = lowest + (float)lem_in->ants_count - 1;
+	lowest = lowest + (float)paths[1]->path_length - 1;
 	return (lowest);
 }
 
@@ -125,7 +129,7 @@ void	check_other_than_shortest(t_lem_in *lem_in, t_path **paths,
 	// j = 0;
 	paths_len_sum = total_path_len(paths);
 	lowest = ((float)paths[0]->path_length / (float)paths_len_sum * (float)lem_in->ants_count);
-	lowest = lowest + (float)lem_in->ants_count - 1;
+	lowest = lowest + (float)paths[0]->path_length - 1;
 	
 	while (max_neigbors < (int)count_paths(paths))
 	if ((float)paths_len_sum < lowest)
@@ -137,16 +141,27 @@ void	check_other_than_shortest(t_lem_in *lem_in, t_path **paths,
 	4 lenght
 	12 length
 
+	5 + 6 = 11
 	4 + 12 = 16
 
-	16 - 4 = 12/16 = 3 / 4
-	16 - 12 = 4/16 = 1 / 4
+	11 - 5 = 5/11 = 
+	11 - 6 = 6/11 = 
 
-	11 ants = 8,25 ants	-> 8
-			= 2,75 ants -> 3
+	16 - 4 = 4/16  = 1 /4
+	16 - 12 = 12/16 = 3 / 4
+
+	2,75 -> ants -> 3 ants + 12 - 1 -> 14 turns
+				->	2 ants + 12 - 1 -> 13 turns
+	8,25 -> ants -> 9 ants + 4  - 1 -> 12 turns
+				->	8 ants + 4  - 1 -> 11 turns
+
+
+	11 ants = 6 ants -> 6 + 5 - 1 -> 10 turns
+			= 6 ants -> 5 + 6 - 1 -> 10 turns
+			= 5 ants -> 
 	pathslength + ants - 1 = turns
-	12 + 3 - 1 = 14 turns 
-	4 + 8 - 1 =  11 turns
+	6 + 11 - 1 = 16 turns 
+	5 + 11 - 1 =  15 turns
 
 	12 + 2 - 1 = 13 turns 
 	4 + 9 - 1 =  12 turns
