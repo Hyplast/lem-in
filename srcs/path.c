@@ -34,6 +34,11 @@ t_path	*lem_in_add_new_path(t_room *room)
 	return (path);
 }
 
+// void	path_to_path(t_path *path_1, t_path *path_2)
+// {
+
+// }
+
 /*
 *	Find the shortest path between start and end rooms different than last path.
 *	@return	the shortest path between start and end rooms.
@@ -86,7 +91,7 @@ void	fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 	}
 	paths[len] = path;
 	paths[len + 1] = NULL;
-	free(lem_in->paths);
+	// free_paths(lem_in);
 	lem_in->paths = paths;
 }
 
