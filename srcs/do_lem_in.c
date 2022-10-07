@@ -107,7 +107,7 @@ void	remove_duplicates(t_lem_in *lem_in)
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
 
-void	do_lem_in_old(t_lem_in *lem_in)
+void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
 
@@ -162,7 +162,7 @@ void	do_lem_in_old(t_lem_in *lem_in)
 /*
 *	Ant solver
 */
-void	do_lem_in(t_lem_in *lem_in)
+void	do_lem_in_v2(t_lem_in *lem_in)
 {
 	t_queue	*queue;
 

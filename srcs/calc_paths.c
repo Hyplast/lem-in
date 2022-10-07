@@ -245,20 +245,29 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique)
 	static int	times_called;
 	static int	max_times_called;
 	int			removed;
+	int			paths_count;
 
 	if (times_called == 0)
 		max_times_called = calculate_max_times(lem_in->paths_count);
 	times_called++;
+	if (times_called >= max_times_called)
+		return(lem_in->paths_count + 1);
 	if (unique == 0)
 	{
 		removed = last_removed;
 		last_removed = remove_path_from_paths(lem_in, paths);
-		while (last_removed == removed || last_removed == lem_in->paths_count - 1)
-			last_removed = remove_path_from_paths(lem_in, paths);
+		if (last_removed == 0)
+			return (1);
+		paths_count = (int)count_paths(paths);
+		while ((last_removed == removed || last_removed == lem_in->paths_count - 1) 
+				&& paths_count != 0)
+		{
+			paths_count = (int)count_paths(paths);
+			if (paths_count > 0)
+				last_removed = remove_path_from_paths(lem_in, paths);
+		}
 		return (last_removed + 1);
 	}
-	if (times_called >= max_times_called)
-		return(lem_in->paths_count + 1);
 	return (0);
 }
 
