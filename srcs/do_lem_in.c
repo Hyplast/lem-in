@@ -14,6 +14,8 @@
 
 int	same_path(t_lem_in *lem_in, t_path *path1, t_path *path2)
 {
+	if (path1 == path2)
+		return (0);
 	while (path1->room == path2->room)
 	{
 		path1 = path1->next_path;
@@ -106,25 +108,25 @@ void	remove_duplicates(t_lem_in *lem_in, int i)
 	t_path	*path;
 	t_path	*temp;
 	int		result;
+	int		j;
 
+	j = 0;
 	path = lem_in->paths[i];
 	while (path)
 	{
-		temp = lem_in->paths[i + 1];
+		temp = lem_in->paths[0];
 		while (temp)
 		{
-			if (path->path_length == temp->path_length)
+			result = same_path(lem_in, path, temp);
+			if (result == 1)
 			{
-				result = same_path(lem_in, path, temp);
-				if (result == 1)
-				{
-					remove_path_n(lem_in, i);
-					path = lem_in->paths[0];
-					temp = lem_in->paths[0];
-				}
+				remove_path_n(lem_in, j);
+				j = -1;
+				i = 0;
 			}
-			temp = temp->next_path;
+			temp = lem_in->paths[++j];
 		}
+		j = 0;
 		path = lem_in->paths[++i];
 	}
 }
