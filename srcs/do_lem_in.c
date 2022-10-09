@@ -129,7 +129,7 @@ void	remove_duplicates(t_lem_in *lem_in, int i)
 	}
 }
 
-/*
+
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
@@ -185,11 +185,11 @@ void	do_lem_in(t_lem_in *lem_in)
 	// print_moves(lem_in);
 	printf("\n");
 }
-*/
+
 
 /*
 *	Ant solver
-*/
+*//*
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
@@ -214,4 +214,4 @@ void	do_lem_in(t_lem_in *lem_in)
 	// printf("\n");
 	// free_lem_in(lem_in);
 }
-
+*/

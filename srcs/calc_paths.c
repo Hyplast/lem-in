@@ -37,7 +37,7 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
 
 	if (times_called == 0)
 		max_times_called = calculate_max_times(lem_in->paths_count);
-	if (++times_called >= max_times_called)
+	if (++times_called >= max_times_called - 1)
 		return (lem_in->paths_count + 1);
 	if (unique == 0)
 	{
