@@ -118,14 +118,42 @@ void	move_ants_by_shortest_path(t_lem_in *lem_in, t_path *path)
 	}
 }
 
+
+int	sum_of_path_differences(t_lem_in *lem_in, t_path *path)
+{
+	int	i;
+	int	sum;
+	// int	turns;
+	// turns = lem_in->ants_in_start + path->path_length - 1; // 26 + 14 - 1
+	// other_paths = 2;
+
+	i = 0;
+	sum = 0;
+	while (lem_in->paths[i] != path)
+		i++;
+	// if (i < 2)
+	// 	return (path->path_length - lem_in->paths[0]->path_length);
+	while (i > 0)
+		sum += path->path_length - lem_in->paths[--i]->path_length;
+	return (sum);
+
+}
+
+/*
+*	Move other ants than the shortest path.
+*	Only send ants to longer paths if 
+*	ants in start > path length difference 
+*/
 void	move_others(t_lem_in *lem_in, t_path *path)
 {
+	int	sum;
+
 	if (lem_in->paths[0] != path)
 	{
 		if (lem_in->ants_in_start > 0)
 		{
-			if (lem_in->ants_in_start > path->path_length
-				- lem_in->paths[0]->path_length)
+			sum = sum_of_path_differences(lem_in, path);
+			if (lem_in->ants_in_start > sum)
 				move_ants_from_start_other_paths(lem_in, path);
 			else
 				mov_ants_oth_rooms_by_oth_paths(lem_in, path);
