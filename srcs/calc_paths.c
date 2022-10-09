@@ -87,6 +87,8 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths,
 	i = 0;
 	while (i < lem_in->paths_count + 1)
 	{
+		if (i == lem_in->paths_count)
+			i = 0;
 		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
 		while (unique == 0 && lem_in->paths[++i] != NULL)
 			unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
