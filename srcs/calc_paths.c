@@ -131,7 +131,7 @@ void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths)
 
 /*
 *	Calculate the shortest paths with least amount of turns to move the 
-*	ant throught. 
+*	ants throught. 
 */
 void	calculate_optimal_paths(t_lem_in *lem_in)
 {

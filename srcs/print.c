@@ -16,6 +16,7 @@ int	handle_error(t_lem_in *lem_in, char *error_msg)
 {
 	ft_putstr(error_msg);
 	free_lem_in(lem_in);
+	exit(1);
 	return (0);
 }
 
