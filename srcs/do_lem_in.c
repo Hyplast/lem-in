@@ -94,7 +94,7 @@ void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
 	}
 	// free_a_path(paths[j]);
 	paths[j] = NULL;
-	
+	free(lem_in->paths);
 	lem_in->paths = paths;
 }
 

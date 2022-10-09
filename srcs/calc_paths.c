@@ -147,7 +147,7 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	if (lem_in->paths_count != 1 && start_neigbors != 1)
 		calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
 	free_non_used_paths(lem_in, paths);
-	// free(lem_in->paths);
+	free(optimun);
 	lem_in->paths = paths;
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
