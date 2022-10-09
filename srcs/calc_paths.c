@@ -58,12 +58,14 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
 	return (0);
 }
 
-void	path_copy(t_path **paths, t_path **copy)
+void	path_copy(t_lem_in *lem_in, t_path **paths, t_path **copy)
 {
 	int	i;
+	int	start_neigbors;
 
+	start_neigbors = calculate_neigbors(lem_in);
 	i = 0;
-	while (paths[i] != NULL)
+	while (i < start_neigbors)
 	{
 		copy[i] = paths[i];
 		i++;
@@ -95,12 +97,12 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths,
 			if (recent_turns < min_turns)
 			{
 				min_turns = recent_turns;
-				path_copy(paths, optimun);
+				path_copy(lem_in, paths, optimun);
 			}
 		}
 		i = return_path_len(lem_in, paths, unique, i);
 	}
-	path_copy(optimun, paths);
+	path_copy(lem_in, optimun, paths);
 }
 
 void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths)
@@ -131,7 +133,8 @@ void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths)
 
 /*
 *	Calculate the shortest paths with least amount of turns to move the 
-*	ants throught. 
+*	ants throught. Special cases.
+*	1. One path 2. One ant
 */
 void	calculate_optimal_paths(t_lem_in *lem_in)
 {
@@ -145,7 +148,10 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	optimun = create_paths(lem_in, (size_t)start_neigbors);
 	min_turns = calculate_path_turns(lem_in, paths);
 	if (lem_in->paths_count != 1 && start_neigbors != 1)
-		calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
+	{
+		if (lem_in->ants_count != 1)
+			calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
+	}
 	free_non_used_paths(lem_in, paths);
 	free(optimun);
 	lem_in->paths = paths;

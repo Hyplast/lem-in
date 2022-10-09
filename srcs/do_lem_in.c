@@ -133,7 +133,9 @@ void	remove_duplicates(t_lem_in *lem_in, int i)
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
+	int		i;
 
+	i = 0;
 	queue = init_queue();
 	clock_t stop_2 = clock();
 	bread_first_search(lem_in, &queue, lem_in->start_room);
@@ -167,9 +169,11 @@ void	do_lem_in(t_lem_in *lem_in)
 	bubble_sort_paths(lem_in);
 	printf("Before remove duplicants\n");
 	print_paths(lem_in);
-	remove_duplicates(lem_in);
+	remove_duplicates(lem_in, i);
 	printf("After remove duplicants\n");
 	print_paths(lem_in);
+
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
 	calculate_optimal_paths(lem_in);
 	printf("After calculate_optimal_paths\n");
 	print_paths(lem_in);
@@ -207,6 +211,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 	calculate_optimal_paths(lem_in);
 	move_ants(lem_in);
-	printf("\n");
+	// printf("\n");
 	// free_lem_in(lem_in);
 }
+
