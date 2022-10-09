@@ -120,6 +120,7 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	min_turns = calculate_path_turns(lem_in, paths);
 	if (lem_in->paths_count != 1 && start_neigbors != 1)
 		calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
+	free(lem_in->paths);
 	lem_in->paths = paths;
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }

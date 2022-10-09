@@ -26,7 +26,7 @@ void	free_paths(t_lem_in *lem_in)
 	while (paths)
 	{
 		path = paths->next_path;
-		while (path)
+		while (path)	
 		{
 			temp = path->next_path;
 			free(path);

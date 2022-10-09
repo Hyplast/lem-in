@@ -63,6 +63,26 @@ t_path	*create_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 	return (path);
 }
 
+void	free_paths_array_only(t_lem_in *lem_in)
+{
+	t_path	*paths;
+	int		i;
+
+	i = 0;
+	if (lem_in->paths == NULL)
+		return ;
+	paths = lem_in->paths[i];
+	while (paths)
+	{
+		free(paths);
+		paths = NULL;
+		paths = lem_in->paths[++i];
+	}
+	free(lem_in->paths);
+	lem_in->paths = NULL;
+}
+
+
 /*
 *	Find the shortest path between start and given room.
 *	Add it to the path list.
@@ -91,7 +111,8 @@ void	fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 	}
 	paths[len] = path;
 	paths[len + 1] = NULL;
-	// free_paths(lem_in);
+	// free_paths_array_only(lem_in);
+	free(lem_in->paths);
 	lem_in->paths = paths;
 }
 
