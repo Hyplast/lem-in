@@ -118,6 +118,7 @@ void		fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start,
 				t_room *end);
 void		free_paths(t_lem_in *lem_in);
 void		free_a_path(t_path *path);
+void		free_paths_array_only(t_lem_in *lem_in);
 void		move_ants(t_lem_in *lem_in);
 void		set_end(t_lem_in *lem_in, t_ant *ant);
 void		set_visited_to_zero(t_lem_in *lem_in);

@@ -45,6 +45,7 @@ void	start_to_end(t_lem_in *lem_in, t_path **path)
 {
 	t_path	*temp;
 	t_path	*new_path;
+	t_path	*start_of_new_path;
 
 	temp = *path;
 	new_path = lem_in_add_new_path(lem_in->end_room);
@@ -55,12 +56,14 @@ void	start_to_end(t_lem_in *lem_in, t_path **path)
 		temp = temp->next_path;
 	}
 	lem_in_add_to_path(&new_path, lem_in->start_room);
+	start_of_new_path = new_path;
 	while (*path)
 	{
 		(*path)->room = new_path->room;
 		*path = (*path)->next_path;
 		new_path = new_path->next_path;
 	}
+	free_a_path(start_of_new_path);
 }
 
 /*
@@ -84,7 +87,7 @@ void	change_paths_order(t_lem_in *lem_in)
 }
 
 /*
-*	Find paths from end to start using neihgboring distance.
+*	Find paths from end to start using neighboring distance.
 *	
 *	@return NULL if no path is found.
 */
