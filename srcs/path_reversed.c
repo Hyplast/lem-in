@@ -87,7 +87,7 @@ void	change_paths_order(t_lem_in *lem_in)
 }
 
 /*
-*	Find paths from end to start using neighboring distance.
+*	Find paths from start to end using neighboring distance.
 *	
 *	@return NULL if no path is found.
 */
@@ -98,14 +98,17 @@ void	find_paths_reverse_order(t_lem_in *lem_in)
 	t_room	*room;
 
 	i = 0;
-	room = lem_in->start_room->neighbors[i];
+	// room = lem_in->start_room->neighbors[i];
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
-	fd_sho_path(lem_in, room, lem_in->start_room, lem_in->end_room);
-	room = lem_in->start_room->neighbors[++i];
+	// fd_sho_path(lem_in, room, lem_in->start_room, lem_in->end_room);
+	// check_path(lem_in, room, lem_in->start_room, lem_in->end_room);
 	while ((size_t)i < start_neighbors)
 	{
-		fd_sho_path(lem_in, room,
+		room = lem_in->start_room->neighbors[i++];
+		check_path(lem_in, room,
 			lem_in->start_room, lem_in->end_room);
-		room = lem_in->start_room->neighbors[++i];
+		// fd_sho_path(lem_in, room,
+		// 	lem_in->start_room, lem_in->end_room);
+		// room = lem_in->start_room->neighbors[++i];
 	}
 }

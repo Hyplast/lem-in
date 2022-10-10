@@ -42,6 +42,7 @@ t_room	*return_shortest_room(t_room *start, t_room *room)
 	int		i;
 
 	i = 0;
+	shortest_room = NULL;
 	temp = room->neighbors[i];
 	shortest_distance = 2147483647;
 	while (temp != NULL)

@@ -116,6 +116,33 @@ void	fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 	lem_in->paths = paths;
 }
 
+
+/*
+*	Check that a valid path can be found between these rooms.
+*/
+void	check_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
+{
+	t_room	*prev;
+	t_room	*temp;
+	t_room	*after;
+	int		i;
+
+	i = 0;
+	temp = room;
+	while (temp != end)
+	{
+		if (temp->distance == 0)
+			return ;
+		temp = return_shortest_room(start, temp);
+		if (temp == prev || temp == after || temp == NULL)
+			return ;
+		prev = temp;
+		if (i++ % 2 == 0)
+			after = temp;
+	}
+	fd_sho_path(lem_in, room, start, end);
+}
+
 /*
 *	Find paths from end to start using neihgboring distance.
 *	
@@ -128,18 +155,18 @@ void	find_paths(t_lem_in *lem_in)
 	t_room	*room;
 
 	i = 0;
+	if (lem_in->end_room->neighbors == NULL || lem_in->start_room->neighbors == NULL)
+		handle_error(lem_in, "No path found.");
 	room = lem_in->end_room->neighbors[i];
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
 	fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 	if (lem_in->paths == NULL)
-	{
 		handle_error(lem_in, "No path found.");
-		exit(-1);
-	}
 	room = lem_in->end_room->neighbors[++i];
 	while (room != NULL)
 	{
-		fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
+		check_path(lem_in, room, lem_in->end_room, lem_in->start_room);
+		// fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 		start_neighbors--;
 		room = lem_in->end_room->neighbors[++i];
 	}
