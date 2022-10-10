@@ -58,16 +58,54 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
 	return (0);
 }
 
+void	next_path_copy(t_path *copy, t_path *paths)
+{
+	t_path	*path;
+	t_path	*new;
+	t_path	*temp;
+
+	temp = paths;
+	if (paths == NULL)
+	{
+		copy = NULL;
+		return ; 
+	}
+	path = (t_path *)malloc(sizeof(t_path));
+	path->room = temp->room;
+	path->path_length = temp->path_length;
+	path->turns = temp->turns;
+	path->ants = temp->ants;
+	path->next_path = NULL;
+	copy = path;
+	path = copy;
+	temp = temp->next_path;
+
+	while (temp)
+	{
+		new = (t_path *)malloc(sizeof(t_path));
+		new->room = temp->room;
+		new->turns = temp->turns;
+		new->path_length = temp->path_length;
+		new->ants = temp->ants;
+		new->next_path = path;
+		// path = new;
+		temp = temp->next_path;
+	}
+
+}
+
 void	path_copy(t_lem_in *lem_in, t_path **paths, t_path **copy)
 {
 	int	i;
 	int	start_neigbors;
 
 	start_neigbors = calculate_neigbors(lem_in);
+
 	i = 0;
 	while (i < start_neigbors)
 	{
-		copy[i] = paths[i];
+		next_path_copy(copy[i], paths[i]);
+		// copy[i] = paths[i];
 		i++;
 	}
 }
@@ -78,9 +116,9 @@ void	path_copy(t_lem_in *lem_in, t_path **paths, t_path **copy)
 *	than the amount of neighbors?
 */
 void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths,
-			t_path **optimun, float min_turns)
+			t_path **optimun, int min_turns)
 {
-	float	recent_turns;
+	int	recent_turns;
 	int		i;
 	int		unique;
 
@@ -133,6 +171,33 @@ void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths)
 	lem_in->paths = NULL;
 }
 
+
+/*
+*	@param1	Number of paths
+*	@return paths array with shortest path at index [0]
+*/
+t_path	**create_paths_empty(size_t size)
+{
+	t_path	**paths;
+	t_path	*path;
+	size_t	i;
+
+	i = 0;
+	paths = (t_path **)malloc(sizeof(t_path *) * (size + 1));
+	while (i <= size)
+	{
+		path = (t_path *)malloc(sizeof(t_path));
+		path->ants = -1;
+		path->room = NULL;
+		path->turns = -1;
+		path->next_path = NULL;
+		path->path_length = -1;
+		paths[i++] = path;
+	}
+	return (paths);
+}
+
+
 /*
 *	Calculate the shortest paths with least amount of turns to move the 
 *	ants throught. Special cases.
@@ -142,12 +207,12 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 {
 	t_path	**paths;
 	t_path	**optimun;
-	float	min_turns;
+	int		min_turns;
 	int		start_neigbors;
 
 	start_neigbors = calculate_neigbors(lem_in);
 	paths = create_paths(lem_in, (size_t)start_neigbors);
-	optimun = create_paths(lem_in, (size_t)start_neigbors);
+	optimun = create_paths_empty((size_t)start_neigbors);
 	min_turns = calculate_path_turns(lem_in, paths);
 	if (lem_in->paths_count != 1 && start_neigbors != 1)
 	{

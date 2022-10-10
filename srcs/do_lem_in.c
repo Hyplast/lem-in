@@ -199,6 +199,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	clock_t stop_5 = clock();
 	double elapsed_22 = (double)(stop_5 - stop_2) * 1000.0 / CLOCKS_PER_SEC;
 	printf("Total do lem in elapsed in ms: %56f\n", elapsed_22);
+	printf("starting room neighbors: %15d\n", calculate_neigbors(lem_in));
 	printf("\n");
 }
 
