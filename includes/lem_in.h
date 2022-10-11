@@ -119,6 +119,7 @@ void		change_paths_order(t_lem_in *lem_in);
 void		fd_sho_path(t_lem_in *lem_in, t_room *room, t_room *start,
 				t_room *end);
 void		free_paths(t_lem_in *lem_in);
+void		free_paths_separate(t_path **free_paths);
 void		free_a_path(t_path *path);
 void		free_paths_array_only(t_lem_in *lem_in);
 void		move_ants(t_lem_in *lem_in);

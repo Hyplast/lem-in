@@ -39,7 +39,7 @@ void	free_paths(t_lem_in *lem_in)
 	lem_in->paths = NULL;
 }
 
-void	free_paths_from_lem_in(t_path **free_paths)
+void	free_paths_separate(t_path **free_paths)
 {
 	t_path	*path;
 	t_path	*paths;

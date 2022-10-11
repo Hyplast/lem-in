@@ -111,6 +111,7 @@ void	path_copy(t_lem_in *lem_in, t_path **paths, t_path **copy)
 	i = 0;
 	while (i < start_neigbors)
 	{
+		free_a_path(copy[i]);
 		next_path_copy(&copy[i], paths[i]);
 		// copy[i] = paths[i];
 		i++;
@@ -231,6 +232,9 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	// free_non_used_paths(lem_in, paths);
 	// free(optimun);
 	// lem_in->paths = paths;
+	// free_paths_separate(paths);
+	free(paths);
+	free_paths(lem_in);
 	lem_in->paths = optimun;
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }

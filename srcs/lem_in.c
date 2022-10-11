@@ -84,14 +84,14 @@ void	handle_start_end(t_lem_in *lem_in, char *line)
 		if (lem_in->start_name != NULL)
 			handle_error(lem_in, "start room already defined\n");
 		lem_in->start = 1;
-		return ; // (ft_putstr("##start\n"));
+		return ;
 	}
 	if (ft_strcmp(line, "##end") == 0)
 	{
 		if (lem_in->end_name != NULL)
 			handle_error(lem_in, "end room already defined\n");
 		lem_in->end = 1;
-		return ; // (ft_putstr("##end\n"));
+		return ;
 	}
 	while (line[i] != ' ' && line[i] != '\0')
 		i++;
