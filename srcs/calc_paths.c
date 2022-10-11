@@ -186,20 +186,21 @@ void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths)
 t_path	**create_paths_empty(size_t size)
 {
 	t_path	**paths;
-	t_path	*path;
+	// t_path	*path;
 	size_t	i;
 
 	i = 0;
 	paths = (t_path **)malloc(sizeof(t_path *) * (size + 1));
 	while (i <= size)
 	{
-		path = (t_path *)malloc(sizeof(t_path));
-		path->ants = -1;
-		path->room = NULL;
-		path->turns = -1;
-		path->next_path = NULL;
-		path->path_length = -1;
-		paths[i++] = path;
+		paths[i++] = NULL;
+		// path = (t_path *)malloc(sizeof(t_path));
+		// path->ants = -1;
+		// path->room = NULL;
+		// path->turns = -1;
+		// path->next_path = NULL;
+		// path->path_length = -1;
+		// paths[i++] = path;
 	}
 	return (paths);
 }

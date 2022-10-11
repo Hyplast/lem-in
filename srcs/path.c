@@ -55,7 +55,7 @@ t_path	*create_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 		room = return_shortest_room(start, room);
 		if (room == NULL)
 		{
-			handle_error(lem_in, "No path found.");
+			handle_error(lem_in, "No path found.\n");
 			exit(-1);
 		}
 	}
@@ -159,9 +159,10 @@ void	find_paths(t_lem_in *lem_in)
 		handle_error(lem_in, "No path found.");
 	room = lem_in->end_room->neighbors[i];
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);
-	fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
+	check_path(lem_in, room, lem_in->end_room, lem_in->start_room);
+	// fd_sho_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 	if (lem_in->paths == NULL)
-		handle_error(lem_in, "No path found.");
+		handle_error(lem_in, "No path found.\n");
 	room = lem_in->end_room->neighbors[++i];
 	while (room != NULL)
 	{

@@ -40,7 +40,9 @@ void	lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2)
 	temp_1 = get_room(lem_in, name1);
 	temp_2 = get_room(lem_in, name2);
 	if (temp_1 == NULL || temp_2 == NULL)
-		exit(-1);
+		handle_error(lem_in, "error link not possible\n");
+	if (temp_1 == temp_2)
+		handle_error(lem_in, "error link not possible\n");
 	link->room_1 = temp_1;
 	link->room_2 = temp_2;
 	link->next = lem_in->links;
