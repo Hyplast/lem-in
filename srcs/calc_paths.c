@@ -149,7 +149,7 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths,
 		}
 		i = return_path_len(lem_in, paths, unique, i);
 	}
-	path_copy(lem_in, optimun, paths);
+	// path_copy(lem_in, optimun, paths);
 }
 
 void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths)
@@ -220,14 +220,16 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	start_neigbors = calculate_neigbors(lem_in);
 	paths = create_paths(lem_in, (size_t)start_neigbors);
 	optimun = create_paths_empty((size_t)start_neigbors);
+	path_copy(lem_in, paths, optimun);
 	min_turns = calculate_path_turns(lem_in, paths);
 	if (lem_in->paths_count != 1 && start_neigbors != 1)
 	{
 		if (lem_in->ants_count != 1)
 			calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
 	}
-	free_non_used_paths(lem_in, paths);
-	free(optimun);
-	lem_in->paths = paths;
+	// free_non_used_paths(lem_in, paths);
+	// free(optimun);
+	// lem_in->paths = paths;
+	lem_in->paths = optimun;
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
