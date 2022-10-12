@@ -105,6 +105,7 @@ void		print_links(t_lem_in *lem_in);
 void		print_moves(t_lem_in *lem_in);
 void		print_ants(t_lem_in *lem_in);
 void		print_paths(t_lem_in *lem_in);
+void		print_ant_move(int ant_id, char *room_name);
 int			handle_error(t_lem_in *lem_in, char *error_msg);
 t_queue		*init_queue(void);
 void		insert(t_queue **queue, t_room *room);

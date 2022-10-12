@@ -12,6 +12,15 @@
 
 #include "lem_in.h"
 
+void	print_ant_move(int ant_id, char *room_name)
+{
+	ft_putchar('L');
+	ft_putnbr(ant_id);
+	ft_putchar('-');
+	ft_putstr(room_name);
+	ft_putchar(' ');
+}
+
 /*
 *	move ants from other rooms by other paths
 */
@@ -81,7 +90,8 @@ void	move_ants_from_start_other_paths(t_lem_in *lem_in, t_path *path)
 					lem_in->ants_in_start--;
 				ant->room = path->next_path->room;
 				ant->room->visited = 1;
-				ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
+				print_ant_move(ant->ant_id, ant->room->name);
+				// ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 			}
 		}
 		path = temp;
@@ -110,7 +120,8 @@ void	move_ants_by_shortest_path(t_lem_in *lem_in, t_path *path)
 					lem_in->ants_in_start--;
 				ant->room = path->next_path->room;
 				ant->room->visited = 1;
-				ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
+				print_ant_move(ant->ant_id, ant->room->name);
+				// ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 			}
 		}
 		path = temp;
@@ -189,8 +200,9 @@ void	move_ants(t_lem_in *lem_in)
 		i = 0;
 		path = lem_in->paths[i];
 		remove_ants_in_goal(lem_in);
-		ft_printf("\n");
+		ft_putchar('\n');
 		counter++;
 	}
-	ft_printf("Number of lines: %d\n", counter);
+	ft_putstr("Number of lines: ");
+	ft_putnbr(counter);
 }

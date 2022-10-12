@@ -58,6 +58,18 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
 	return (0);
 }
 
+t_path	*init_path_copy(t_path *copy_path)
+{
+	t_path	*new;
+
+	new = (t_path *)malloc(sizeof(t_path));
+	new->room = copy_path->room;
+	new->turns = copy_path->turns;
+	new->path_length = copy_path->path_length;
+	new->ants = copy_path->ants;
+	return (new);
+}
+
 void	next_path_copy(t_path **copy, t_path *paths)
 {
 	t_path	*path;
@@ -71,21 +83,13 @@ void	next_path_copy(t_path **copy, t_path *paths)
 		*copy = NULL;
 		return ; 
 	}
-	new = (t_path *)malloc(sizeof(t_path));
-	new->room = temp->room;
-	new->turns = temp->turns;
-	new->path_length = temp->path_length;
-	new->ants = temp->ants;
+	new = init_path_copy(temp);
 	*copy = new;
 	path = *copy;
 	temp = temp->next_path;
 	while (temp)
 	{
-		new = (t_path *)malloc(sizeof(t_path));
-		new->room = temp->room;
-		new->turns = temp->turns;
-		new->path_length = temp->path_length;
-		new->ants = temp->ants;
+		new = init_path_copy(temp);
 		path->next_path = new;
 		path = path->next_path;
 		temp = temp->next_path;

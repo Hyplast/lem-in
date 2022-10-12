@@ -226,8 +226,15 @@ void	do_lem_in(t_lem_in *lem_in)
 	bubble_sort_paths(lem_in);
 	remove_duplicates(lem_in, i);
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
+	clock_t stop_1 = clock();
 	calculate_optimal_paths(lem_in);
+	clock_t stop_2 = clock();
 	move_ants(lem_in);
+	clock_t stop_3 = clock();
+	double elapsed_1 = (double)(stop_2 - stop_1) * 1000.0 / CLOCKS_PER_SEC;
+	double elapsed_2 = (double)(stop_3 - stop_2) * 1000.0 / CLOCKS_PER_SEC;
+	printf("\nCalculate optimal ants elapsed in ms: %26f\n", elapsed_1);
+	printf("Move ants elapsed in ms:              %26f\n", elapsed_2);
 	// printf("\n");
 	// free_lem_in(lem_in);
 }
