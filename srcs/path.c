@@ -106,7 +106,8 @@ void	find_paths(t_lem_in *lem_in)
 	t_room	*room;
 
 	i = 0;
-	if (lem_in->end_room->neighbors == NULL || lem_in->start_room->neighbors == NULL)
+	if (lem_in->end_room->neighbors == NULL
+		|| lem_in->start_room->neighbors == NULL)
 		handle_error(lem_in, "No path found.");
 	room = lem_in->end_room->neighbors[i];
 	start_neighbors = ft_lstlen(lem_in->start_room->neighbors);

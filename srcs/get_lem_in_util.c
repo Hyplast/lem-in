@@ -33,7 +33,7 @@ int	check_for_integer(char *str)
 {
 	int	i;
 
-	i =	is_digits(str);
+	i = is_digits(str);
 	if (i == 1)
 		return (ft_atoi(str));
 	ft_putstr("error coordinates are not digits\n");

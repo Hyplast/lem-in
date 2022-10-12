@@ -28,16 +28,26 @@ int	calculate_max_times(int paths)
 	return (value);
 }
 
-int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
+int	keep_track_times_called(t_lem_in *lem_in)
 {
-	static int	last_removed;
 	static int	times_called;
 	static int	max_times_called;
-	int			paths_count;
 
 	if (times_called == 0)
 		max_times_called = calculate_max_times(lem_in->paths_count);
 	if (++times_called >= max_times_called - 1)
+		return (lem_in->paths_count + 1);
+	return (0);
+}
+
+int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
+{
+	static int	last_removed;
+	int			paths_count;
+	int			i;
+
+	i = keep_track_times_called(lem_in);
+	if (i != 0)
 		return (lem_in->paths_count + 1);
 	if (unique == 0)
 	{
@@ -61,14 +71,13 @@ int	return_path_len(t_lem_in *lem_in, t_path **paths, int unique, int removed)
 /*
 *	Helper function for calculate optimal paths.
 *	Keep the best shortest turn combination stored in optimun
-*	
 */
 void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths,
 			t_path **optimun, int min_turns)
 {
 	int	recent_turns;
-	int		i;
-	int		unique;
+	int	i;
+	int	unique;
 
 	i = 0;
 	while (i < lem_in->paths_count + 1)
@@ -114,7 +123,6 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 		if (lem_in->ants_count != 1)
 		{
 			calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
-			//calculate_optimal_paths_extend_v3(lem_in, paths, optimun, min_turns);
 		}
 	}
 	free(paths);

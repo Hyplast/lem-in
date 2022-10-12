@@ -19,7 +19,6 @@
 t_path	**create_paths_empty(size_t size)
 {
 	t_path	**paths;
-	// t_path	*path;
 	size_t	i;
 
 	i = 0;
@@ -31,7 +30,7 @@ t_path	**create_paths_empty(size_t size)
 	return (paths);
 }
 
-void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths)
+void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths) // REMOVE IF UN-USED !!
 {
 	int		i;
 	int		j;
@@ -78,7 +77,7 @@ void	next_path_copy(t_path **copy, t_path *paths)
 	{
 		free(*copy);
 		*copy = NULL;
-		return ; 
+		return ;
 	}
 	new = init_path_copy(temp);
 	*copy = new;
@@ -100,7 +99,6 @@ void	path_copy(t_lem_in *lem_in, t_path **paths, t_path **copy)
 	int	start_neigbors;
 
 	start_neigbors = calculate_neigbors(lem_in);
-
 	i = 0;
 	while (i < start_neigbors)
 	{

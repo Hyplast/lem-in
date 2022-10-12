@@ -155,4 +155,5 @@ void	move_ants(t_lem_in *lem_in)
 	}
 	ft_putstr("Number of lines: ");
 	ft_putnbr(counter);
+	ft_putchar('\n');
 }

@@ -144,7 +144,7 @@ void	do_lem_in(t_lem_in *lem_in)
 
 /*
 *	Ant solver
-*/
+*//*
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
@@ -173,7 +173,31 @@ void	do_lem_in(t_lem_in *lem_in)
 	double elapsed_2 = (double)(stop_3 - stop_2) * 1000.0 / CLOCKS_PER_SEC;
 	printf("\nCalculate optimal ants elapsed in ms: %26f\n", elapsed_1);
 	printf("Move ants elapsed in ms:              %26f\n", elapsed_2);
-	// printf("\n");
-	// free_lem_in(lem_in);
 }
+*/
 
+/*
+*	Ant solver
+*/
+void	do_lem_in(t_lem_in *lem_in)
+{
+	t_queue	*queue;
+	int		i;
+
+	i = 0;
+	queue = init_queue();
+	bread_first_search(lem_in, &queue, lem_in->start_room);
+	find_neighbors(lem_in);
+	find_paths(lem_in);
+	set_all_visited_to_zero(lem_in);
+	queue = init_queue();
+	bread_first_search(lem_in, &queue, lem_in->end_room);
+	find_paths_reverse_order(lem_in);
+	change_paths_order(lem_in);
+	set_visited_to_zero(lem_in);
+	bubble_sort_paths(lem_in);
+	remove_duplicates(lem_in, i);
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
+	calculate_optimal_paths(lem_in);
+	move_ants(lem_in);
+}

@@ -13,8 +13,6 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
-# include <stdio.h> // REMOVE !!
-# include <time.h>	// REMOVE !!
 # include "ft_printf.h"
 # include "get_next_line.h"
 
@@ -162,7 +160,8 @@ int			remove_path_from_paths(t_lem_in *lem_in, t_path **paths);
 void		remove_path_n(t_lem_in *lem_in, int to_be_removed);
 int			calculate_path_turns(t_lem_in *lem_in, t_path **paths);
 void		add_path_to_paths(t_path **paths, t_path *path);
-void		check_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end);
+void		check_path(t_lem_in *lem_in, t_room *room,
+				t_room *start, t_room *end);
 int			sum_of_path_differences(t_lem_in *lem_in, t_path *path);
 //void		calculate_optimal_paths_extend_v3(t_lem_in *lem_in, t_path **paths,
 //				t_path **optimun, int min_turn);

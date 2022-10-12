@@ -49,16 +49,13 @@ void	set_up_ants_for_paths(t_lem_in *lem_in, t_path **paths, size_t n_paths)
 	}
 }
 
-void	increment_lowest_decrease_highest(t_path **paths)
+void	increment_lowest_decrease_highest(t_path **paths, int highest,
+			int lowest)
 {
 	int		i;
-	int		lowest;
-	int		highest;
 	int		low_i;
 	int		high_i;
 
-	lowest = 2147483647;
-	highest = -2147483648;
 	i = -1;
 	while (paths[++i])
 	{
@@ -80,11 +77,11 @@ void	increment_lowest_decrease_highest(t_path **paths)
 	paths[high_i]->turns = paths[high_i]->ants + paths[high_i]->path_length - 1;
 }
 
-int		get_paths_total_turns(t_path **paths)
+int	get_paths_total_turns(t_path **paths)
 {
 	int	i;
 	int	turns;
-	int result;
+	int	result;
 
 	turns = -1;
 	result = -1;
@@ -99,6 +96,15 @@ int		get_paths_total_turns(t_path **paths)
 	return (turns);
 }
 
+/*
+*	Calculate minimun ant turns with paths comibinations.
+*	Start by splitting the ants equally on each path.
+*	Calculate how many turns this path with this many ants
+*	will take.
+*	Then increase ants with lowest amount of turns and
+*	decrease ants with the highest amount of turns.
+*	Iterate until minimun amount of turns is found.
+*/
 int	calculate_path_turns(t_lem_in *lem_in, t_path **paths)
 {
 	int		lowest;
@@ -115,11 +121,11 @@ int	calculate_path_turns(t_lem_in *lem_in, t_path **paths)
 	while (i < 1)
 	{
 		lowest = turns;
-		increment_lowest_decrease_highest(paths);
-		increment_lowest_decrease_highest(paths);
-		increment_lowest_decrease_highest(paths);
-		increment_lowest_decrease_highest(paths);
-		increment_lowest_decrease_highest(paths);
+		increment_lowest_decrease_highest(paths, -2147483648, 2147483647);
+		increment_lowest_decrease_highest(paths, -2147483648, 2147483647);
+		increment_lowest_decrease_highest(paths, -2147483648, 2147483647);
+		increment_lowest_decrease_highest(paths, -2147483648, 2147483647);
+		increment_lowest_decrease_highest(paths, -2147483648, 2147483647);
 		turns = get_paths_total_turns(paths);
 		if (turns >= lowest)
 			i = 1;

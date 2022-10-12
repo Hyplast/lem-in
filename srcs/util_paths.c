@@ -105,7 +105,8 @@ int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
 	return (1);
 }
 
-int	compare_all_paths_unique(t_lem_in *lem_in, t_path **paths_1, t_path **paths_2)
+int	compare_all_paths_unique(t_lem_in *lem_in, t_path **paths_1,
+		t_path **paths_2)
 {
 	int	i;
 	int	j;
@@ -115,7 +116,7 @@ int	compare_all_paths_unique(t_lem_in *lem_in, t_path **paths_1, t_path **paths_
 	j = 0;
 	while (paths_1[i])
 	{
-		while(paths_2[j])
+		while (paths_2[j])
 		{
 			result = is_path_unique(lem_in, paths_1[i], paths_2[j]);
 			if (result == 0)

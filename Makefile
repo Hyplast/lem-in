@@ -12,8 +12,6 @@
 
 NAME = lem-in
 
-#calc_paths_big.c
-
 SRC = lem_in.c \
 add_paths.c \
 bread_first_traversal.c \
