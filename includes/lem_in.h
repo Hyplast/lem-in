@@ -13,6 +13,8 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
+# include <stdio.h> // REMOVE !!
+# include <time.h>	// REMOVE !!
 # include "ft_printf.h"
 # include "get_next_line.h"
 
@@ -61,6 +63,8 @@ typedef struct s_path
 	int				path_length;
 	int				ants;
 	int				turns;
+	int				index;
+	int				i;
 	struct s_room	*room;
 }					t_path;
 
@@ -71,6 +75,7 @@ typedef struct s_lem_in
 	t_ant		*ants;
 	t_move		*moves;
 	t_path		**paths;
+	t_path		**optimun;
 	int			ants_count;
 	int			ants_in_start;
 	int			rooms_count;
@@ -79,6 +84,7 @@ typedef struct s_lem_in
 	int			paths_count;
 	int			start;
 	int			end;
+	int			r;
 	t_room		*start_room;
 	t_room		*end_room;
 	char		*start_name;
@@ -140,6 +146,7 @@ void		bubble_sort_paths(t_lem_in *lem_in);
 int			is_path_unique(t_lem_in *lem_in, t_path *path_1, t_path *path_2);
 int			check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1,
 				t_path **paths);
+int			compare_all_paths_unique_itself(t_lem_in *lem_in, t_path **paths);
 int			min_number(int x, int replace[100]);
 int			calculate_neigbors(t_lem_in *lem_in);
 size_t		count_paths(t_path **paths);
@@ -163,7 +170,8 @@ void		add_path_to_paths(t_path **paths, t_path *path);
 void		check_path(t_lem_in *lem_in, t_room *room,
 				t_room *start, t_room *end);
 int			sum_of_path_differences(t_lem_in *lem_in, t_path *path);
-//void		calculate_optimal_paths_extend_v3(t_lem_in *lem_in, t_path **paths,
-//				t_path **optimun, int min_turn);
+void		calculate_big_n_of_paths(t_lem_in *lem_in, t_path **paths,
+				t_path **optimun, int min_turn);
+void		combinationUtil(t_lem_in *lem_in, t_path **paths, int index, int i);
 
 #endif

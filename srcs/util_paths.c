@@ -105,6 +105,12 @@ int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
 	return (1);
 }
 
+/**
+**	Check if all paths in paths_1 are unique compared 
+**	to all paths in paths_2.
+**	@return 1 if unique
+**	@return 0 if not unique
+**/
 int	compare_all_paths_unique(t_lem_in *lem_in, t_path **paths_1,
 		t_path **paths_2)
 {
@@ -125,6 +131,42 @@ int	compare_all_paths_unique(t_lem_in *lem_in, t_path **paths_1,
 		}
 		j = 0;
 		i++;
+	}
+	return (1);
+}
+
+
+/**
+**	Check if all paths in paths are unique compared 
+**	to itself
+**	@return 1 if unique
+**	@return 0 if not unique
+**/
+int	compare_all_paths_unique_itself(t_lem_in *lem_in, t_path **paths)
+{
+	int	i;
+	int	j;
+	int	result;
+	int	n_paths;
+
+	i = 0;
+	j = 1;
+	n_paths = (int)count_paths(paths);
+	while (paths[i])
+	{
+		while (paths[j] && j < n_paths)
+		{
+			result = is_path_unique(lem_in, paths[i], paths[j]);
+			if (result == 0)
+				return (0);
+			j++;
+			if (i == j)
+				j++;
+		}
+		j = 0;
+		i++;
+		if (i == j)
+			j++;
 	}
 	return (1);
 }

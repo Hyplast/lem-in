@@ -144,7 +144,7 @@ void	do_lem_in(t_lem_in *lem_in)
 
 /*
 *	Ant solver
-*//*
+*/
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
@@ -174,11 +174,11 @@ void	do_lem_in(t_lem_in *lem_in)
 	printf("\nCalculate optimal ants elapsed in ms: %26f\n", elapsed_1);
 	printf("Move ants elapsed in ms:              %26f\n", elapsed_2);
 }
-*/
+
 
 /*
 *	Ant solver
-*/
+*//*
 void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
@@ -201,3 +201,4 @@ void	do_lem_in(t_lem_in *lem_in)
 	calculate_optimal_paths(lem_in);
 	move_ants(lem_in);
 }
+*/

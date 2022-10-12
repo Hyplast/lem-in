@@ -12,6 +12,7 @@
 
 #include "lem_in.h"
 
+/*/
 void	select_paths(t_lem_in *lem_in, t_path **paths, int select[1000])
 {
 	int	i;
@@ -45,53 +46,6 @@ int	increase_number(int select[1000], int max)
 		i++;
 	}
 	return (0);
-}
-
-int		find_best_paths_size(t_lem_in *lem_in, t_path **paths,
-			t_path **optimun, int n_paths)
-{
-	int	unique;
-	int	i;
-	int	j;
-	int	recent_turns;
-	int	min_turns;
-
-	i = 0;
-	j = 1;
-	min_turns = 9999;
-	unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
-	while (j < n_paths)
-	{
-		while (unique == 0 && lem_in->paths[++i] != NULL)
-			unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
-		if (unique == 1)
-		{
-			add_path_to_paths(paths, lem_in->paths[i]);
-			recent_turns = calculate_path_turns(lem_in, paths);
-			if (recent_turns < min_turns)
-			{
-				min_turns = recent_turns;
-				path_copy(lem_in, paths, optimun);
-			}
-		}
-		i = j++;
-	}
-}
-
-void	calculate_optimal_paths_extend_v3(t_lem_in *lem_in, t_path **paths,
-			t_path **optimun, int min_turn)
-{
-	int	size;
-	int	start_neigbors;
-	int	found;
-
-	found = 1;
-	size = 1;
-	start_neigbors = calculate_neigbors(lem_in);
-	while (size < start_neigbors && found == 1)
-	{
-		found = find_best_paths_size(lem_in, paths, optimun, size++);
-	}
 }
 
 void	calculate_optimal_paths_extend_v2(t_lem_in *lem_in, t_path **paths,
@@ -137,62 +91,139 @@ void	calculate_optimal_paths_extend_v2(t_lem_in *lem_in, t_path **paths,
 	remove_path_from_paths(lem_in, paths);
 
 }
+*/
 
-
-
-void combinationUtil(int arr[],int n,int r,int index,int data[],int i);
- 
-// The main function that prints all combinations of size r
-// in arr[] of size n. This function mainly uses combinationUtil()
-void printCombination(int arr[], int n, int r)
+void	check_for_optimal_paths(t_lem_in *lem_in, t_path **paths)
 {
-    // A temporary array to store all combination one by one
-    int data[100];
-	int	start_neigbors;
-	int	i;
-
-	i = 0;
-	start_neigbors = calculate_neigbors(lem_in);
-	while (i < start_neigbors)
-		data[i++] = -1;
-	data[i] = -2;
- 
-    // Print all combination using temporary array 'data[]'
-    combinationUtil(arr, n, r, 0, data, 0);
+	calculate_path_turns(lem_in, paths);
+	if (lem_in->optimun[0]->turns > paths[0]->turns)
+		
 }
- 
-/* arr[]  ---> Input Array
-   n      ---> Size of input array
-   r      ---> Size of a combination to be printed
-   index  ---> Current index in data[]
+
+/* arr[]  ---> Input Array							->	lem_in->paths
+   n      ---> Size of input array 					->	lem_in->paths_count
+   r      ---> Size of a combination to be printed	->	size = 1 + count_paths(optimun);
+   index  ---> Current index in data[]				-> 	lem_in->index
    data[] ---> Temporary array to store current combination
    i      ---> index of current element in arr[]     */
-void combinationUtil(int arr[], int n, int r, int index, int data[], int i)
+void combinationUtil(t_lem_in *lem_in, t_path **paths, int index, int i)
 {
-    // Current combination is ready, print it
-    if (index == r)
-    {
-		res = compare_all_paths_unique(lem_in, paths1, paths2);
+	int	res;
+	
+	// Current combination is ready, print it
+	if (index == lem_in->r)
+	{
+		res = compare_all_paths_unique_itself(lem_in, paths);
 		if (res == 1)
 		{
 			
 		}
-        for (int j=0; j<r; j++)
-            printf("%d ",data[j]);
-        printf("\n");
-        return;
-    }
+		for (int j=0; j<lem_in->r; j++)
+			printf("%d ",paths[j]->path_length);
+		printf("\n");
+		return;
+	}
  
-    // When no more elements are there to put in data[]
-    if (i >= n)
-        return;
+	// When no more elements are there to put in data[]
+	if (i >= lem_in->paths_count)
+		return;
  
-    // current is included, put next at next location
-    data[index] = arr[i];
-    combinationUtil(arr, n, r, index+1, data, i+1);
+	// current is included, put next at next location
+	paths[index] = lem_in->paths[i];
+	combinationUtil(lem_in, paths, index+1, i+1);
  
     // current is excluded, replace it with next (Note that
     // i+1 is passed, but index is not changed)
-    combinationUtil(arr, n, r, index, data, i+1);
+	combinationUtil(lem_in, paths, index, i+1);
 }
 
+// The main function that prints all combinations of size r
+// in arr[] of size n. This function mainly uses combinationUtil()
+void get_combinations(t_lem_in *lem_in, t_path **paths, int r)
+{
+    // A temporary array to store all combination one by one
+    // int data[100];
+	// int	start_neigbors;
+	int	i;
+	int	index;
+
+	i = 0;
+	index = 0;
+	lem_in->r = r;
+	// start_neigbors = calculate_neigbors(lem_in);
+	// while (i < start_neigbors)
+	// 	data[i++] = -1;
+	// data[i] = -2;
+ 
+    // Print all combination using temporary array 'data[]'
+    combinationUtil(lem_in, paths, index, i);
+}
+
+int		find_best_paths_size(t_lem_in *lem_in, t_path **paths,
+			int n_paths, int turns)
+{
+	// int	unique;
+	// int	i;
+	// int	j;
+	// int	recent_turns;
+	// int	min_turns;
+	// int	turns_improved;
+
+	// i = 0;
+	// j = 1;
+	// turns_improved = optimun[0]->turns;
+	// min_turns = paths[0]->turns;
+	// while (turns_improved < )
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
+	// lem_in->n = count_paths(lem_in->paths);
+	get_combinations(lem_in, paths, n_paths);
+
+	if (paths[0]->turns < turns)
+		return (1);
+	return (0);
+	// if (turns_improved >)
+
+	// unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+	// while (j < n_paths)
+	// {
+		
+	// 	while (unique == 0 && lem_in->paths[++i] != NULL)
+	// 		unique = check_all_paths_uniq(lem_in, lem_in->paths[i], paths);
+	// 	if (unique == 1)
+	// 	{
+	// 		add_path_to_paths(paths, lem_in->paths[i]);
+	// 		recent_turns = calculate_path_turns(lem_in, paths);
+	// 		if (recent_turns < min_turns)
+	// 		{
+	// 			min_turns = recent_turns;
+	// 			path_copy(lem_in, paths, optimun);
+	// 		}
+	// 	}
+	// 	i = j++;
+	// }
+}
+
+/*
+*	Calculate bigger number of path combinations throught
+*	compared to previously found. Increase the 
+*/
+void	calculate_big_n_of_paths(t_lem_in *lem_in, t_path **paths,
+			t_path **optimun, int min_turn)
+{
+	int	size;
+	int	start_neigbors;
+	int	found;
+
+	found = 1;
+	size = (int)count_paths(optimun);
+	start_neigbors = calculate_neigbors(lem_in);
+	while (size < start_neigbors && found == 1)
+	{
+		found = find_best_paths_size(lem_in, paths, ++size, optimun[0]->turns);
+		if (found == 1)
+		{
+			if (paths[0]->turns < min_turn)
+				path_copy(lem_in, paths, optimun);
+		}
+	}
+}

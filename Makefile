@@ -15,6 +15,7 @@ NAME = lem-in
 SRC = lem_in.c \
 add_paths.c \
 bread_first_traversal.c \
+calc_paths_big.c \
 calc_paths_util_2.c \
 calc_paths_util.c \
 calc_paths.c \
