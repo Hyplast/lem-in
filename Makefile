@@ -12,24 +12,31 @@
 
 NAME = lem-in
 
+#calc_paths_big.c
+
 SRC = lem_in.c \
-init.c \
+add_paths.c \
+bread_first_traversal.c \
+calc_paths_util_2.c \
+calc_paths_util.c \
+calc_paths.c \
 check_lem_in.c \
 do_lem_in.c \
+free_2.c \
+free_lem_in.c \
+get_lem_in_util.c \
+get_lem_in.c \
+init.c \
+move_ants_util.c \
+move_ants.c \
+neigbors.c \
+path_reversed.c \
+path.c \
 print.c \
 queue.c \
-util.c \
-util_paths.c \
-free.c \
 remove.c \
-neigbors.c \
-path.c \
-path_reversed.c \
-calc_paths.c \
-calc_paths_util.c \
-move_ants.c \
-move_ants_util.c \
-bread_first_traversal.c \
+util_paths.c \
+util.c
 
 SRCS = $(addprefix srcs/, $(SRC))
 

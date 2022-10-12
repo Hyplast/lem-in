@@ -32,36 +32,6 @@ t_path	**create_paths(t_lem_in *lem_in, size_t	size)
 }
 
 /*
-*	Use bubble sorting to sort the paths in length ascending order.
-*/
-void	bubble_sort_paths(t_lem_in *lem_in)
-{
-	t_path	**paths;
-	t_path	*temp;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	paths = lem_in->paths;
-	while (lem_in->paths[i])
-	{
-		while (paths[j])
-		{
-			if (lem_in->paths[i]->path_length < paths[j]->path_length)
-			{
-				temp = paths[j];
-				paths[j] = lem_in->paths[i];
-				lem_in->paths[i] = temp;
-			}
-			j++;
-		}
-		j = 0;
-		i++;
-	}
-}
-
-/*
 *	@return Shortest path from lem-in paths.
 */
 t_path	*get_shortest_path(t_lem_in *lem_in)
@@ -130,6 +100,29 @@ int	check_all_paths_uniq(t_lem_in *lem_in, t_path *path_1, t_path **paths)
 			result = is_path_unique(lem_in, path_1, paths[i]);
 		if (result == 0)
 			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	compare_all_paths_unique(t_lem_in *lem_in, t_path **paths_1, t_path **paths_2)
+{
+	int	i;
+	int	j;
+	int	result;
+
+	i = 0;
+	j = 0;
+	while (paths_1[i])
+	{
+		while(paths_2[j])
+		{
+			result = is_path_unique(lem_in, paths_1[i], paths_2[j]);
+			if (result == 0)
+				return (0);
+			j++;
+		}
+		j = 0;
 		i++;
 	}
 	return (1);

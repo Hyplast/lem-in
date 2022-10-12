@@ -73,3 +73,48 @@ int	remove_last_path(t_lem_in *lem_in, t_path **paths)
 	paths[i - 1] = NULL;
 	return (j);
 }
+
+int	remove_path_from_paths(t_lem_in *lem_in, t_path **paths)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	while (paths[i] != NULL)
+	{
+		i++;
+	}
+	i--;
+	while (paths[i] != lem_in->paths[j])
+		j++;
+	paths[i] = NULL;
+	return (j);
+}
+
+/*
+*	Remove path n from lem_in
+*/
+void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
+{
+	t_path	**paths;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	paths = init_paths(count_paths(lem_in->paths));
+	while (lem_in->paths[i])
+	{
+		if (to_be_removed != i)
+		{
+			paths[j++] = lem_in->paths[i];
+		}
+		else
+			free_a_path_from_lem_in(lem_in, lem_in->paths[i]);
+		i++;
+	}
+	paths[j] = NULL;
+	free(lem_in->paths);
+	lem_in->paths = paths;
+}

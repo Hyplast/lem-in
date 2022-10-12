@@ -26,40 +26,6 @@ int	same_path(t_lem_in *lem_in, t_path *path1, t_path *path2)
 	return (0);
 }
 
-void	free_a_path(t_path *path)
-{
-	t_path	*temp;
-
-	temp = path;
-	while (temp)
-	{
-		path = temp;
-		temp = path->next_path;
-		free(path);
-		path = NULL;
-	}
-}
-
-void	free_a_path_from_lem_in(t_lem_in *lem_in, t_path *path)
-{
-	int		i;
-	// t_path	*temp;
-
-	i = 0;
-	while (lem_in->paths[i] != path)
-		i++;
-	free_a_path(path);
-	lem_in->paths[i] = NULL;
-
-	// temp = path;
-	// while( != NULL)
-	// {
-	// 	lem_in->paths[i] = lem_in->paths[i + 1];
-	// 	i++;
-	// }
-	
-}
-
 t_path	**init_paths(size_t size)
 {
 	t_path	**paths;
@@ -70,34 +36,6 @@ t_path	**init_paths(size_t size)
 	while (i <= size)
 		paths[i++] = NULL;
 	return (paths);
-}
-
-/*
-*	Remove path n from lem_in
-*/
-void	remove_path_n(t_lem_in *lem_in, int to_be_removed)
-{
-	t_path	**paths;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	paths = init_paths(count_paths(lem_in->paths));
-	while (lem_in->paths[i])
-	{
-		if (to_be_removed != i)
-		{
-			paths[j++] = lem_in->paths[i];
-		}
-		else
-			free_a_path_from_lem_in(lem_in, lem_in->paths[i]);
-		i++;
-	}
-	// free_a_path(paths[j]);
-	paths[j] = NULL;
-	free(lem_in->paths);
-	lem_in->paths = paths;
 }
 
 /*

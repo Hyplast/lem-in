@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   free_lem_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: severi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -37,33 +37,6 @@ void	free_paths(t_lem_in *lem_in)
 	}
 	free(lem_in->paths);
 	lem_in->paths = NULL;
-}
-
-void	free_paths_separate(t_path **free_paths)
-{
-	t_path	*path;
-	t_path	*paths;
-	t_path	*temp;
-	int		i;
-
-	i = 0;
-	if (free_paths == NULL)
-		return ;
-	paths = free_paths[i];
-	while (paths)
-	{
-		path = paths->next_path;
-		while (path)
-		{
-			temp = path->next_path;
-			free(path);
-			path = temp;
-		}
-		free(paths);
-		paths = free_paths[++i];
-	}
-	free(free_paths);
-	free_paths = NULL;
 }
 
 void	free_rooms(t_lem_in *lem_in)

@@ -12,15 +12,6 @@
 
 #include "lem_in.h"
 
-void	print_ant_move(int ant_id, char *room_name)
-{
-	ft_putchar('L');
-	ft_putnbr(ant_id);
-	ft_putchar('-');
-	ft_putstr(room_name);
-	ft_putchar(' ');
-}
-
 /*
 *	move ants from other rooms by other paths
 */
@@ -46,29 +37,6 @@ void	mov_ants_oth_rooms_by_oth_paths(t_lem_in *lem_in, t_path *path)
 	}
 }
 
-/*
-void	move_ants_from_start_other_paths_old(t_lem_in *lem_in, t_path *path)
-{
-	t_ant	*ant;
-
-	ant = lem_in->ants;
-	while (ant && ant->room != lem_in->start_room)
-	{
-		ant = ant->next;
-	}
-	if (ant)
-	{
-		if (ant->room == lem_in->start_room)
-		{
-			ant->room = path->next_path->room;
-			ant->room->visited = 1;
-			ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
-			lem_in->ants_in_start--;
-		}
-	}
-}
-*/
-
 void	move_ants_from_start_other_paths(t_lem_in *lem_in, t_path *path)
 {
 	t_ant	*ant;
@@ -91,7 +59,6 @@ void	move_ants_from_start_other_paths(t_lem_in *lem_in, t_path *path)
 				ant->room = path->next_path->room;
 				ant->room->visited = 1;
 				print_ant_move(ant->ant_id, ant->room->name);
-				// ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 			}
 		}
 		path = temp;
@@ -121,28 +88,11 @@ void	move_ants_by_shortest_path(t_lem_in *lem_in, t_path *path)
 				ant->room = path->next_path->room;
 				ant->room->visited = 1;
 				print_ant_move(ant->ant_id, ant->room->name);
-				// ft_printf("L%i-%s ", ant->ant_id, ant->room->name);
 			}
 		}
 		path = temp;
 		ant = ant->next;
 	}
-}
-
-
-int	sum_of_path_differences(t_lem_in *lem_in, t_path *path)
-{
-	int	i;
-	int	sum;
-
-	i = 0;
-	sum = 0;
-	while (lem_in->paths[i] != path)
-		i++;
-	while (i > 0)
-		sum += path->path_length - lem_in->paths[--i]->path_length;
-	return (sum);
-
 }
 
 /*

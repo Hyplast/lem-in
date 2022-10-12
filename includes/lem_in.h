@@ -88,6 +88,7 @@ typedef struct s_lem_in
 }				t_lem_in;
 
 t_lem_in	*lem_in_init(void);
+void		get_lem_in(t_lem_in *lem_in);
 void		free_lem_in(t_lem_in *lem_in);
 void		lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y);
 void		lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2);
@@ -96,6 +97,10 @@ void		lem_in_add_move(t_lem_in *lem_in, int ant_id, char *room_name);
 int			is_number(char *str);
 int			is_printable(char *str);
 t_room		*get_room(t_lem_in *lem_in, char *room_name);
+int			is_digits(char *str);
+int			check_for_integer(char *str);
+void		handle_room_print(char *str);
+void		handle_ant_print(t_lem_in *lem_in, char *buf);
 void		check_lem_in(t_lem_in *lem_in);
 int			lenght_of_array(char **array);
 size_t		ft_lstlen(t_room **neighbors);
@@ -123,6 +128,7 @@ void		free_paths(t_lem_in *lem_in);
 void		free_paths_separate(t_path **free_paths);
 void		free_a_path(t_path *path);
 void		free_paths_array_only(t_lem_in *lem_in);
+void		free_a_path_from_lem_in(t_lem_in *lem_in, t_path *path);
 void		move_ants(t_lem_in *lem_in);
 void		set_end(t_lem_in *lem_in, t_ant *ant);
 void		set_visited_to_zero(t_lem_in *lem_in);
@@ -140,7 +146,10 @@ int			min_number(int x, int replace[100]);
 int			calculate_neigbors(t_lem_in *lem_in);
 size_t		count_paths(t_path **paths);
 t_path		**create_paths(t_lem_in *lem_in, size_t	size);
+t_path		**create_paths_empty(size_t size);
 t_path		*get_shortest_path(t_lem_in *lem_in);
+t_path		**init_paths(size_t size);
+void		path_copy(t_lem_in *lem_in, t_path **paths, t_path **copy);
 void		bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room);
 void		check_for_max_neigbor_option(t_lem_in *lem_in, t_path **paths,
 				int max_neigbors);
@@ -149,9 +158,13 @@ int			find_permuntations(t_lem_in *lem_in, t_path **paths, int size);
 void		remove_ant_from_lem_in(t_lem_in *lem_in, t_ant *ant);
 void		remove_ants_in_goal(t_lem_in *lem_in);
 int			remove_last_path(t_lem_in *lem_in, t_path **paths);
+int			remove_path_from_paths(t_lem_in *lem_in, t_path **paths);
+void		remove_path_n(t_lem_in *lem_in, int to_be_removed);
 int			calculate_path_turns(t_lem_in *lem_in, t_path **paths);
 void		add_path_to_paths(t_path **paths, t_path *path);
-int			remove_path_from_paths(t_lem_in *lem_in, t_path **paths);
 void		check_path(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end);
+int			sum_of_path_differences(t_lem_in *lem_in, t_path *path);
+//void		calculate_optimal_paths_extend_v3(t_lem_in *lem_in, t_path **paths,
+//				t_path **optimun, int min_turn);
 
 #endif
