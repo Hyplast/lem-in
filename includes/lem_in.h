@@ -177,5 +177,10 @@ void		set_occupied_path_rooms(t_lem_in *lem_in);
 void		end_to_start(t_lem_in *lem_in, t_path *path);
 void		remove_duplicates(t_lem_in *lem_in, int i);
 void		start_to_end(t_lem_in *lem_in, t_path **path);
+void		set_one_path_to_visited(t_lem_in *lem_in, t_path *path);
+void		check_path_non_occupied(t_lem_in *lem_in, t_room *room,
+				t_room *start, t_room *end);
+void		change_paths_order_reverse(t_lem_in *lem_in);
+void		loop_paths(t_lem_in *lem_in);
 
 #endif

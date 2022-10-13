@@ -12,8 +12,24 @@
 
 #include "lem_in.h"
 
+/*  
+*	set each room in the path running throught it
+*   to visited.
+*/
+void	set_one_path_to_visited(t_lem_in *lem_in, t_path *path)
+{
+    t_path	*temp;
 
-// t_room	*not_neighbors(t_room,)
+	temp = path;
+	while (temp)
+	{
+		temp->room->visited = 1;
+		temp = temp->next_path;
+	}
+	lem_in->end_room->visited = 0;
+	lem_in->start_room->visited = 0;
+}
+
 
 /*  
 *	set each room that has a path running throught it

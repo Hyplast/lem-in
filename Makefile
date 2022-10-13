@@ -26,6 +26,7 @@ free_lem_in.c \
 get_lem_in_util.c \
 get_lem_in.c \
 init.c \
+loop_paths.c \
 more_paths.c \
 more_paths_util.c \
 move_ants_util.c \
