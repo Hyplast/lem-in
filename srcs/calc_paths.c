@@ -101,8 +101,6 @@ void	calculate_optimal_paths_extend(t_lem_in *lem_in, t_path **paths,
 	}
 }
 
-void	set_lem_in_paths_to_best(t_lem_in *lem_in, )
-
 /*
 *	Calculate the shortest paths with least amount of turns to move the 
 *	ants throught. Special cases.
@@ -116,6 +114,7 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 	int		start_neigbors;
 
 	start_neigbors = calculate_neigbors(lem_in);
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
 	paths = create_paths(lem_in, (size_t)start_neigbors);
 	optimun = create_paths_empty((size_t)start_neigbors);
 	path_copy(lem_in, paths, optimun);
