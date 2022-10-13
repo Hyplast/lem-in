@@ -81,14 +81,14 @@ void	calculate_big_n_of_paths(t_lem_in *lem_in, t_path **paths,
 	start_neigbors = calculate_neigbors(lem_in);
 	lem_in->optimun = create_paths_empty((size_t)start_neigbors);
 	path_copy(lem_in, optimun, lem_in->optimun);
-	while (size < start_neigbors && found >= 1)
+	while (size < start_neigbors && found == 1)
 	{
 		found = find_best_paths_size(lem_in, paths, ++size, min_turns);
 		if (found == 1)
 		{
 			if (lem_in->optimun[0]->turns < min_turns)
 				path_copy(lem_in, lem_in->optimun, optimun);
-			return ;
 		}
 	}
+	free_paths_separate(lem_in->optimun);
 }
