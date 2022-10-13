@@ -165,12 +165,14 @@ void	more_paths(t_lem_in *lem_in)
 	set_start_end_neighbors(lem_in, 0, 0);
 	bread_first_search(lem_in, &queue, lem_in->end_room);
 	set_all_visited_to_zero(lem_in);
+	set_occupied_path_rooms(lem_in);
 	set_start_end_neighbors(lem_in, 1, 0);
 	lem_in->start_room->distance = 2147483647;
 	room = lem_in->start_room->neighbors[i];
 	while (room)
 	{
-		check_path_non_occupied(lem_in, room, lem_in->start_room, lem_in->end_room);
+		check_path_non_occupied(lem_in, room, lem_in->start_room,
+			lem_in->end_room);
 		room = lem_in->start_room->neighbors[++i];
 	}
 	// print_paths(lem_in);
