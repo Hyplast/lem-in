@@ -174,5 +174,8 @@ void		combination_util(t_lem_in *lem_in, t_path **paths, int index, int i);
 void		more_paths(t_lem_in *lem_in);
 void		set_start_end_neighbors(t_lem_in *lem_in, int start, int end);
 void		set_occupied_path_rooms(t_lem_in *lem_in);
+void		end_to_start(t_lem_in *lem_in, t_path *path);
+void		remove_duplicates(t_lem_in *lem_in, int i);
+void		start_to_end(t_lem_in *lem_in, t_path **path);
 
 #endif

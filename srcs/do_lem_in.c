@@ -69,6 +69,29 @@ void	remove_duplicates(t_lem_in *lem_in, int i)
 	}
 }
 
+void	print_paths(t_lem_in *lem_in)
+{
+	t_path	*temp;
+	t_path	*path;
+	int		i;
+
+	i = 0;
+	temp = lem_in->paths[i++];
+	while (temp != NULL)
+	{
+		path = temp;
+		while (path != NULL)
+		{
+			ft_printf("%s ->", path->room->name);
+			path = path->next_path;
+		}
+		ft_printf("path_length : %i\n", temp->path_length);
+		temp = lem_in->paths[i++];
+	}
+	ft_printf("\n");
+}
+
+
 /*
 *	Ant solver
 */
@@ -82,17 +105,24 @@ void	do_lem_in(t_lem_in *lem_in)
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	find_neighbors(lem_in);
 	find_paths(lem_in);
+	print_paths(lem_in);
 	set_all_visited_to_zero(lem_in);
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->end_room);
 	find_paths_reverse_order(lem_in);
+	print_paths(lem_in);
 	change_paths_order(lem_in);
 	set_visited_to_zero(lem_in);
+	print_paths(lem_in);
 	bubble_sort_paths(lem_in);
 	remove_duplicates(lem_in, i);
+	print_paths(lem_in);
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
+	ft_putstr("before more paths\n");
 	more_paths(lem_in);
+	print_paths(lem_in);
 	set_visited_to_zero(lem_in);
 	calculate_optimal_paths(lem_in);
+	print_paths(lem_in);
 	move_ants(lem_in);
 }

@@ -140,4 +140,5 @@ void	find_paths(t_lem_in *lem_in)
 		start_neighbors--;
 		room = lem_in->end_room->neighbors[++i];
 	}
+	
 }

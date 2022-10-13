@@ -52,7 +52,7 @@ t_path	*create_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, 
 {
 	t_path	*path;
 
-	path = lem_in_add_new_path(end);
+	path = lem_in_add_new_path(start);
 	while (room != end)
 	{
 		lem_in_add_to_path(&path, room);
@@ -63,7 +63,7 @@ t_path	*create_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, 
 			exit(-1);
 		}
 	}
-	lem_in_add_to_path(&path, start);
+	lem_in_add_to_path(&path, end);
 	return (path);
 }
 
@@ -126,10 +126,31 @@ void	check_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, t_ro
 }
 
 /*
+*	Fix starting path from end to start and start to end;
+*/
+void	change_paths_order_reverse(t_lem_in *lem_in)
+{
+	t_path	*path;
+	int		i;
+
+	i = 0;
+	path = lem_in->paths[i];
+	while (path)
+	{
+		if (path->room == lem_in->end_room)
+			start_to_end(lem_in, &path);
+		path = lem_in->paths[++i];
+	}
+	i = 0;
+	bubble_sort_paths(lem_in);
+	remove_duplicates(lem_in, i);
+}
+
+/*
 *   Inorder to take into account path superpositions, try to find paths
 *   different from previous paths by looking for paths running throught
 *   different rooms. First set each room that has a path running throught it
-*   to visited.
+*   to visited except start and end neighbors.
 */
 void	more_paths(t_lem_in *lem_in)
 {
@@ -141,16 +162,19 @@ void	more_paths(t_lem_in *lem_in)
 	i = 0;
 	set_all_visited_to_zero(lem_in);
 	set_occupied_path_rooms(lem_in);
-	
-	bread_first_search(lem_in, &queue, lem_in->start_room);
+	set_start_end_neighbors(lem_in, 0, 0);
+	bread_first_search(lem_in, &queue, lem_in->end_room);
 	set_all_visited_to_zero(lem_in);
 	set_start_end_neighbors(lem_in, 1, 0);
 	lem_in->start_room->distance = 2147483647;
 	room = lem_in->start_room->neighbors[i];
 	while (room)
 	{
-		check_path_non_occupied(lem_in, room, lem_in->end_room, lem_in->start_room);
+		check_path_non_occupied(lem_in, room, lem_in->start_room, lem_in->end_room);
 		room = lem_in->start_room->neighbors[++i];
 	}
+	print_paths(lem_in);
+	change_paths_order_reverse(lem_in);
+	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
 
