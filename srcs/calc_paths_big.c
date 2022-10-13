@@ -124,9 +124,9 @@ void combinationUtil(t_lem_in *lem_in, t_path **paths, int index, int i)
 		res = compare_all_paths_unique_itself(lem_in, paths);
 		if (res == 1)
 			check_for_optimal_paths(lem_in, paths);
-		for (int j=0; j<lem_in->r; j++)
-			printf("%s->%s:%d ", paths[j]->next_path->room->name, paths[j]->next_path->next_path->room->name, paths[j]->path_length);
-		printf("\n");
+		// for (int j=0; j<lem_in->r; j++)
+		// 	printf("%s->%s:%d ", paths[j]->next_path->room->name, paths[j]->next_path->next_path->room->name, paths[j]->path_length);
+		// printf("\n");
 		return;
 	}
  
@@ -226,16 +226,14 @@ void	calculate_big_n_of_paths(t_lem_in *lem_in, t_path **paths,
 	start_neigbors = calculate_neigbors(lem_in);
 	lem_in->optimun = create_paths_empty((size_t)start_neigbors);
 	path_copy(lem_in, optimun, lem_in->optimun);
-	// lem_in->optimun = optimun;
-	while (size < start_neigbors && found == 1)
+	while (size < start_neigbors && found >= 1)
 	{
 		found = find_best_paths_size(lem_in, paths, ++size, optimun[0]->turns);
 		if (found == 1)
 		{
 			if (lem_in->optimun[0]->turns < min_turn)
 				path_copy(lem_in, lem_in->optimun, optimun);
+			return ;
 		}
 	}
-
-	// void	set_lem_in_paths_to_best(t_lem_in *lem_in, )
 }
