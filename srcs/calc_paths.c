@@ -125,7 +125,7 @@ void	calculate_optimal_paths(t_lem_in *lem_in)
 		{
 			calculate_optimal_paths_extend(lem_in, paths, optimun, min_turns);
 			start_neigbors = start_neigbors - (int)count_paths(paths);
-			if (start_neigbors > 0)
+			if (start_neigbors > 0 && start_neigbors < 9)
 				calculate_big_n_of_paths(lem_in, paths, optimun, min_turns);
 		}
 	}

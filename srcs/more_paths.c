@@ -173,7 +173,7 @@ void	more_paths(t_lem_in *lem_in)
 		check_path_non_occupied(lem_in, room, lem_in->start_room, lem_in->end_room);
 		room = lem_in->start_room->neighbors[++i];
 	}
-	print_paths(lem_in);
+	// print_paths(lem_in);
 	change_paths_order_reverse(lem_in);
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
