@@ -100,8 +100,9 @@ void	get_lem_in(t_lem_in *lem_in)
 		ft_strdel(&buf);
 		read = get_next_line(0, &buf);
 	}
+	ft_strdel(&buf);
 	read = get_next_line(0, &buf);
+	ft_strdel(&buf);
 	if (read == 1)
 		handle_error(lem_in, "error lem_in not in correct format\n");
-	ft_strdel(&buf);
 }
