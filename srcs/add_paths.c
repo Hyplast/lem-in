@@ -30,30 +30,6 @@ t_path	**create_paths_empty(size_t size)
 	return (paths);
 }
 
-void	free_non_used_paths(t_lem_in *lem_in, t_path **new_paths) // REMOVE IF UN-USED !!
-{
-	int		i;
-	int		j;
-	int		n_paths;
-
-	j = 0;
-	i = 0;
-	n_paths = (int)count_paths(new_paths);
-	while (lem_in->paths[i] != NULL)
-	{
-		while (j < n_paths && new_paths[j] != lem_in->paths[i])
-			j++;
-		if (n_paths == j)
-		{
-			free_a_path(lem_in->paths[i]);
-		}
-		j = 0;
-		i++;
-	}
-	free(lem_in->paths);
-	lem_in->paths = NULL;
-}
-
 t_path	*init_path_copy(t_path *copy_path)
 {
 	t_path	*new;

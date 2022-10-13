@@ -13,25 +13,6 @@
 #include "lem_in.h"
 
 /*
-*	@param1	Number of paths
-*	@return paths array with shortest path at index [0]
-*/
-t_path	**create_paths(t_lem_in *lem_in, size_t	size)
-{
-	t_path	**paths;
-	t_path	*path;
-	size_t	i;
-
-	i = 1;
-	paths = (t_path **)malloc(sizeof(t_path *) * (size + 1));
-	path = get_shortest_path(lem_in);
-	paths[0] = path;
-	while (i <= size)
-		paths[i++] = NULL;
-	return (paths);
-}
-
-/*
 *	@return Shortest path from lem-in paths.
 */
 t_path	*get_shortest_path(t_lem_in *lem_in)
@@ -134,7 +115,6 @@ int	compare_all_paths_unique(t_lem_in *lem_in, t_path **paths_1,
 	}
 	return (1);
 }
-
 
 /**
 **	Check if all paths in paths are unique compared 

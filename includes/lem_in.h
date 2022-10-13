@@ -13,8 +13,6 @@
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
-# include <stdio.h> // REMOVE !!
-# include <time.h>	// REMOVE !!
 # include "ft_printf.h"
 # include "get_next_line.h"
 
@@ -172,6 +170,6 @@ void		check_path(t_lem_in *lem_in, t_room *room,
 int			sum_of_path_differences(t_lem_in *lem_in, t_path *path);
 void		calculate_big_n_of_paths(t_lem_in *lem_in, t_path **paths,
 				t_path **optimun, int min_turn);
-void		combinationUtil(t_lem_in *lem_in, t_path **paths, int index, int i);
+void		combination_util(t_lem_in *lem_in, t_path **paths, int index, int i);
 
 #endif
