@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bread_first_traversal.c                            :+:      :+:    :+:   */
+/*   more_paths_util.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: severi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,46 +12,16 @@
 
 #include "lem_in.h"
 
-/*
-*	Bread first traversal to find path lenghts between start and end rooms.
+
+// t_room	*not_neighbors(t_room,)
+
+/*  
+*	set each room that has a path running throught it
+*   to visited.
 */
-void	bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room)
+void	set_occupied_path_rooms(t_lem_in *lem_in)
 {
-	int	distance;
-
-	distance = 0;
-	room->visited = 1;
-	room->distance = 0;
-	insert(queue, room);
-	while (!is_queue_empty(*queue))
-	{
-		distance = go_to_linked_rooms(lem_in, queue, room, distance);
-		queue_remove(queue);
-	}
-}
-
-/*
-*	Set all rooms visited to zero.
-*/
-void	set_all_visited_to_zero(t_lem_in *lem_in)
-{
-	t_room	*temp;
-
-	temp = lem_in->rooms;
-	while (temp)
-	{
-		temp->visited = 0;
-		temp = temp->next;
-	}
-}
-
-/*
-*	Set visited rooms in paths to zero in order to keep count which rooms are 
-*	occupied by ants.
-*/
-void	set_visited_to_zero(t_lem_in *lem_in)
-{
-	t_path	*path;
+    t_path	*path;
 	t_path	*temp;
 	int		i;
 
@@ -62,9 +32,32 @@ void	set_visited_to_zero(t_lem_in *lem_in)
 		temp = path;
 		while (temp)
 		{
-			temp->room->visited = 0;
+			temp->room->visited = 1;
 			temp = temp->next_path;
 		}
 		path = lem_in->paths[++i];
 	}
+}
+
+void	set_start_end_neighbors(t_lem_in *lem_in, int start, int end)
+{
+	t_room	*temp;
+	int		i;
+
+	i = 0;
+	temp = lem_in->start_room->neighbors[i];
+	while (temp)
+	{
+		temp->visited = start;
+		temp = lem_in->start_room->neighbors[++i];
+	}
+	i = 0;
+	temp = lem_in->end_room->neighbors[i];
+	while (temp)
+	{
+		temp->visited = end;
+		temp = lem_in->end_room->neighbors[++i];
+	}
+	lem_in->end_room->visited = 0;
+	lem_in->start_room->visited = 0; 
 }

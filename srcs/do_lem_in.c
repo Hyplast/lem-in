@@ -91,6 +91,8 @@ void	do_lem_in(t_lem_in *lem_in)
 	bubble_sort_paths(lem_in);
 	remove_duplicates(lem_in, i);
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
+	more_paths(lem_in);
+	set_visited_to_zero(lem_in);
 	calculate_optimal_paths(lem_in);
 	move_ants(lem_in);
 }

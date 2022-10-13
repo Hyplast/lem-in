@@ -32,7 +32,7 @@ size_t	ft_lstlen(t_room **neighbors)
 /*
 *	Given room x, find the room y that is the shortest distance to x.
 *	@return	the room that is the shortest distance to x.
-*	@return NULL if no room is found. // TODO: FIX from distance
+*	@return NULL if no room is found. 
 */
 t_room	*return_shortest_room(t_room *start, t_room *room)
 {
