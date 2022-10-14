@@ -123,7 +123,7 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra $(CFLAGS_DEBUG)
 
-CFLAGS_DEBUG = -g -fsanitize=address #-Wconversion
+CFLAGS_DEBUG = -g
 
 DEBUG_NAME = $(NAME).debug
 

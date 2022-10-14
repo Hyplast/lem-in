@@ -58,8 +58,8 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra $(DEBUG_FLAGS)
 
-DEBUG_FLAGS = -Wconversion -g -fsanitize=address
-#leaks -atExit -- ./lem_in
+DEBUG_FLAGS = -Wconversion -g 
+
 DEBUG_NAME = lem-in.debug
 
 all: dir $(NAME)

@@ -13,44 +13,51 @@
 #include "lem_in.h"
 
 /*
-*   Inorder to take into account path superpositions, try to find paths
-*   different from previous paths by looking for paths running throught
-*   different rooms. First set each room that has a path running throught it
-*   to visited except start and end neighbors.
+*	Given room x, find the room y that is the shortest distance to x.
+*	@return	the room that is the shortest distance to x.
+*	@return NULL if no room is found.
 */
-void	loop_paths(t_lem_in *lem_in)
+t_room	*return_shortest_non_occupied_room(t_room *start, t_room *room)
 {
+	t_room	*temp;
+	t_room	*shortest_room;
+	int		shortest_distance;
 	int		i;
-	int		j;
-	t_room	*room;
-	t_queue	*queue;
 
 	i = 0;
-	j = 0;
-	while(i < lem_in->paths_count)
+	shortest_room = NULL;
+	temp = room->neighbors[i];
+	shortest_distance = 2147483647;
+	while (temp != NULL)
 	{
-		queue = init_queue();
-		set_all_visited_to_zero(lem_in);
-		set_one_path_to_visited(lem_in, lem_in->paths[i]);
-		bread_first_search(lem_in, &queue, lem_in->end_room);
-		set_all_visited_to_zero(lem_in);
-		set_one_path_to_visited(lem_in, lem_in->paths[i]);
-		room = lem_in->start_room->neighbors[j];
-		lem_in->start_room->distance = 2147483647;
-		while(room)
+		if (temp->distance < shortest_distance)
 		{
-			if (room != lem_in->paths[i]->room)
+			if (temp != start && temp->visited == 0)
 			{
-				check_path_non_occupied(lem_in, room, lem_in->start_room,
-					lem_in->end_room);
+				shortest_distance = temp->distance;
+				shortest_room = temp;
 			}
-			room = lem_in->start_room->neighbors[++j];
 		}
-		j = 0;
-		i++;
+		temp = room->neighbors[++i];
 	}
-	// print_paths(lem_in);
-	change_paths_order_reverse(lem_in);
-	lem_in->paths_count = (int)count_paths(lem_in->paths);
+	return (shortest_room);
 }
 
+/*
+*	@param1	Number of paths
+*	@return paths array with shortest path at index [0]
+*/
+t_path	**create_paths(t_lem_in *lem_in, size_t	size)
+{
+	t_path	**paths;
+	t_path	*path;
+	size_t	i;
+
+	i = 1;
+	paths = (t_path **)malloc(sizeof(t_path *) * (size + 1));
+	path = get_shortest_path(lem_in);
+	paths[0] = path;
+	while (i <= size)
+		paths[i++] = NULL;
+	return (paths);
+}

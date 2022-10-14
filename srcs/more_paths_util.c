@@ -18,7 +18,7 @@
 */
 void	set_one_path_to_visited(t_lem_in *lem_in, t_path *path)
 {
-    t_path	*temp;
+	t_path	*temp;
 
 	temp = path;
 	while (temp)
@@ -30,14 +30,13 @@ void	set_one_path_to_visited(t_lem_in *lem_in, t_path *path)
 	lem_in->start_room->visited = 0;
 }
 
-
 /*  
 *	set each room that has a path running throught it
 *   to visited.
 */
 void	set_occupied_path_rooms(t_lem_in *lem_in)
 {
-    t_path	*path;
+	t_path	*path;
 	t_path	*temp;
 	int		i;
 
@@ -75,5 +74,5 @@ void	set_start_end_neighbors(t_lem_in *lem_in, int start, int end)
 		temp = lem_in->end_room->neighbors[++i];
 	}
 	lem_in->end_room->visited = 0;
-	lem_in->start_room->visited = 0; 
+	lem_in->start_room->visited = 0;
 }

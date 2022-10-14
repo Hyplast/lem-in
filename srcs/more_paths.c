@@ -13,42 +13,12 @@
 #include "lem_in.h"
 
 /*
-*	Given room x, find the room y that is the shortest distance to x.
-*	@return	the room that is the shortest distance to x.
-*	@return NULL if no room is found.
-*/
-t_room	*return_shortest_non_occupied_room(t_room *start, t_room *room)
-{
-	t_room	*temp;
-	t_room	*shortest_room;
-	int		shortest_distance;
-	int		i;
-
-	i = 0;
-	shortest_room = NULL;
-	temp = room->neighbors[i];
-	shortest_distance = 2147483647;
-	while (temp != NULL)
-	{
-		if (temp->distance < shortest_distance)
-		{
-			if (temp != start && temp->visited == 0)
-			{
-				shortest_distance = temp->distance;
-				shortest_room = temp;
-			}
-		}
-		temp = room->neighbors[++i];
-	}
-	return (shortest_room);
-}
-
-/*
 *	Find the shortest path between start and end rooms different than last path.
 *	@return	the shortest path between start and end rooms.
 *	@return NULL if no path is found.
 */
-t_path	*create_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
+t_path	*create_path_non_occupied(t_lem_in *lem_in, t_room *room,
+			t_room *start, t_room *end)
 {
 	t_path	*path;
 
@@ -72,7 +42,8 @@ t_path	*create_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, 
 *	Add it to the path list.
 *	@return void
 */
-void	fd_sho_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
+void	fd_sho_path_non_occupied(t_lem_in *lem_in, t_room *room,
+			t_room *start, t_room *end)
 {
 	t_path	**paths;
 	t_path	*path;
@@ -102,7 +73,8 @@ void	fd_sho_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, t_r
 /*
 *	Check that a valid path can be found between these rooms.
 */
-void	check_path_non_occupied(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
+void	check_path_non_occupied(t_lem_in *lem_in, t_room *room,
+			t_room *start, t_room *end)
 {
 	t_room	*prev;
 	t_room	*temp;
@@ -175,8 +147,6 @@ void	more_paths(t_lem_in *lem_in)
 			lem_in->end_room);
 		room = lem_in->start_room->neighbors[++i];
 	}
-	// print_paths(lem_in);
 	change_paths_order_reverse(lem_in);
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
 }
-

@@ -118,7 +118,8 @@ t_queue		*init_queue(void);
 void		insert(t_queue **queue, t_room *room);
 void		queue_remove(t_queue **queue);
 int			is_queue_empty(t_queue *queue);
-int			go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue, t_room *room, int distance);
+int			go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue,
+				t_room *room, int distance);
 void		lem_in_add_to_path(t_path **path, t_room *room);
 t_path		*lem_in_add_new_path(t_room *room);
 void		find_paths(t_lem_in *lem_in);
@@ -170,7 +171,8 @@ void		check_path(t_lem_in *lem_in, t_room *room,
 int			sum_of_path_differences(t_lem_in *lem_in, t_path *path);
 void		calculate_big_n_of_paths(t_lem_in *lem_in, t_path **paths,
 				t_path **optimun, int min_turn);
-void		combination_util(t_lem_in *lem_in, t_path **paths, int index, int i);
+void		combination_util(t_lem_in *lem_in, t_path **paths,
+				int index, int i);
 void		more_paths(t_lem_in *lem_in);
 void		set_start_end_neighbors(t_lem_in *lem_in, int start, int end);
 void		set_occupied_path_rooms(t_lem_in *lem_in);
@@ -182,5 +184,6 @@ void		check_path_non_occupied(t_lem_in *lem_in, t_room *room,
 				t_room *start, t_room *end);
 void		change_paths_order_reverse(t_lem_in *lem_in);
 void		loop_paths(t_lem_in *lem_in);
+t_room		*return_shortest_non_occupied_room(t_room *start, t_room *room);
 
 #endif

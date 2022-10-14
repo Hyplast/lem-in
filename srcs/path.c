@@ -13,25 +13,6 @@
 #include "lem_in.h"
 
 /*
-*	@param1	Number of paths
-*	@return paths array with shortest path at index [0]
-*/
-t_path	**create_paths(t_lem_in *lem_in, size_t	size)
-{
-	t_path	**paths;
-	t_path	*path;
-	size_t	i;
-
-	i = 1;
-	paths = (t_path **)malloc(sizeof(t_path *) * (size + 1));
-	path = get_shortest_path(lem_in);
-	paths[0] = path;
-	while (i <= size)
-		paths[i++] = NULL;
-	return (paths);
-}
-
-/*
 *	Find the shortest path between start and end rooms different than last path.
 *	@return	the shortest path between start and end rooms.
 *	@return NULL if no path is found.
@@ -129,7 +110,6 @@ void	find_valid_path(t_lem_in *lem_in)
 	}
 }
 
-
 /*
 *	Find paths from end to start using neihgboring distance.
 *	
@@ -158,5 +138,4 @@ void	find_paths(t_lem_in *lem_in)
 		start_neighbors--;
 		room = lem_in->end_room->neighbors[++i];
 	}
-	
 }

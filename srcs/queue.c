@@ -76,7 +76,8 @@ int	is_queue_empty(t_queue *queue)
 /*
 *	Check if the addresses point to the same memory location
 */
-int	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue, t_room *room, int distance)
+int	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue,
+		t_room *room, int distance)
 {
 	t_link		*temp;
 	int			just_once;
