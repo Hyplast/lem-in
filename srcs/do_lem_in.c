@@ -122,13 +122,13 @@ void	do_lem_in(t_lem_in *lem_in)
 	more_paths(lem_in);
 	// ft_putstr("after 1\n");
 	// print_paths(lem_in);
-	loop_paths(lem_in);
-	// more_paths(lem_in);
+	// loop_paths(lem_in);
+
 	// ft_putstr("after loop paths\n");
 	// print_paths(lem_in);
-	// more_paths(lem_in);
-	ft_putstr("after 3\n");
-	print_paths(lem_in);
+	
+	// ft_putstr("after 3\n");
+	// print_paths(lem_in);
 	set_visited_to_zero(lem_in);
 	calculate_optimal_paths(lem_in);
 	// print_paths(lem_in);
