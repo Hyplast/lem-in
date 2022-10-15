@@ -35,6 +35,16 @@ typedef struct s_room
 	struct s_room	**neighbors;
 }					t_room;
 
+typedef struct s_node
+{
+	struct s_room	*room;
+	struct s_room	*in;
+	struct s_room	*out;
+	int				in_visited;
+	int				out_visited;
+	struct s_node	*next;
+}					t_node;
+
 typedef struct s_link
 {
 	struct s_room	*room_1;
@@ -75,6 +85,7 @@ typedef struct s_lem_in
 	t_move		*moves;
 	t_path		**paths;
 	t_path		**optimun;
+	t_node		*nodes;
 	int			ants_count;
 	int			ants_in_start;
 	int			rooms_count;

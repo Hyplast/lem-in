@@ -29,7 +29,7 @@ t_path	*create_path_non_occupied(t_lem_in *lem_in, t_room *room,
 		room = return_shortest_non_occupied_room(start, room);
 		if (room == NULL)
 		{
-			handle_error(lem_in, "No path found.\n");
+			handle_error(lem_in, "ERROR no path found.");
 			exit(-1);
 		}
 	}

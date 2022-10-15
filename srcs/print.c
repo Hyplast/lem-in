@@ -15,6 +15,7 @@
 int	handle_error(t_lem_in *lem_in, char *error_msg)
 {
 	ft_putstr(error_msg);
+	ft_putchar('\n');
 	free_lem_in(lem_in);
 	exit(1);
 	return (0);
@@ -30,7 +31,13 @@ void	print_rooms(t_lem_in *lem_in)
 	while (temp != NULL)
 	{
 		ft_printf("name : %6s ", temp->name);
-		ft_printf(" dist : %i vis: %i\n", temp->distance, temp->visited);
+		if (temp->parent)
+		{
+			ft_printf(" dist : %i vis: %i parent: %s \n", temp->distance,
+				temp->visited, temp->parent->name);
+		}
+		else
+			ft_printf(" dist : %i vis: %i parent: null \n", temp->distance);
 		len++;
 		temp = temp->next;
 	}
