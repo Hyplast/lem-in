@@ -19,3 +19,4 @@ int	handle_error(t_lem_in *lem_in, char *error_msg)
 	exit(1);
 	return (0);
 }
+

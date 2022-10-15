@@ -58,7 +58,7 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra $(DEBUG_FLAGS)
 
-DEBUG_FLAGS = -Wconversion -g 
+DEBUG_FLAGS = -Wconversion -g -fsanitize=address
 
 DEBUG_NAME = lem-in.debug
 

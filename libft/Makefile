@@ -121,7 +121,7 @@ OBJ_DIR = obj/
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra $(CFLAGS_DEBUG)
+CFLAGS = -Wall -Werror -Wextra -O3 $(CFLAGS_DEBUG)
 
 CFLAGS_DEBUG = -g
 

@@ -25,7 +25,7 @@ char	*ft_dftoa(double x)
 	binary_in_string = (char *)malloc(sizeof(char) * 65);
 	if (!binary_in_string)
 		return (NULL);
-	temp = *(unsigned long *)(&x);
+	temp = (unsigned long)(&x);
 	while (i <= 63)
 	{
 		if (temp & 1)
