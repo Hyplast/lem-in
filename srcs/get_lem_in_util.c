@@ -36,12 +36,20 @@ int	check_for_integer(char *str)
 	i = is_digits(str);
 	if (i == 1)
 		return (ft_atoi(str));
-	ft_putstr("error coordinates are not digits\n");
+	ft_putstr("ERROR coordinates are not digits\n");
 	exit(1);
 }
 
 void	handle_room_print(char *str)
 {
+	if (str[0] == '#')
+	{
+		if (str[1])
+		{
+			if (str[1] == '#')
+				return ;
+		}
+	}
 	ft_putstr(str);
 	ft_putchar('\n');
 }

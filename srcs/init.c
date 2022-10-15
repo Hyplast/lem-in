@@ -16,8 +16,10 @@ void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 {
 	t_room	*room;
 
+	if (name[0] == 'L')
+		handle_error(lem_in, "ERROR room name cannot begin with 'L'\n");
 	if (!is_printable(name))
-		handle_error(lem_in, "room name is not printable\n");
+		handle_error(lem_in, "ERROR room name is not printable\n");
 	room = (t_room *)malloc(sizeof(t_room));
 	room->name = ft_strdup(name);
 	room->x = x;
@@ -26,6 +28,7 @@ void	lem_in_add_room(t_lem_in *lem_in, char *name, int x, int y)
 	room->visited = 0;
 	room->next = lem_in->rooms;
 	room->neighbors = NULL;
+	room->parent = NULL;
 	lem_in->rooms = room;
 	lem_in->rooms_count++;
 }
@@ -40,9 +43,9 @@ void	lem_in_add_link(t_lem_in *lem_in, char *name1, char *name2)
 	temp_1 = get_room(lem_in, name1);
 	temp_2 = get_room(lem_in, name2);
 	if (temp_1 == NULL || temp_2 == NULL)
-		handle_error(lem_in, "error link not possible\n");
+		handle_error(lem_in, "ERROR link not possible\n");
 	if (temp_1 == temp_2)
-		handle_error(lem_in, "error link not possible\n");
+		handle_error(lem_in, "ERROR link not possible\n");
 	link->room_1 = temp_1;
 	link->room_2 = temp_2;
 	link->next = lem_in->links;

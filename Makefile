@@ -21,6 +21,7 @@ calc_paths_util.c \
 calc_paths.c \
 check_lem_in.c \
 do_lem_in.c \
+edmonkarp.c \
 free_2.c \
 free_lem_in.c \
 get_lem_in_util.c \

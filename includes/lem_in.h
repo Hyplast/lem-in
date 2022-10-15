@@ -31,6 +31,7 @@ typedef struct s_room
 	int				distance;
 	int				visited;
 	struct s_room	*next;
+	struct s_room	*parent;
 	struct s_room	**neighbors;
 }					t_room;
 
@@ -185,5 +186,6 @@ void		check_path_non_occupied(t_lem_in *lem_in, t_room *room,
 void		change_paths_order_reverse(t_lem_in *lem_in);
 void		loop_paths(t_lem_in *lem_in);
 t_room		*return_shortest_non_occupied_room(t_room *start, t_room *room);
+void		edmonkarp(t_lem_in *lem_in);
 
 #endif

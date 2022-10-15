@@ -40,7 +40,21 @@ void	add_to_lem_in(t_lem_in *lem_in, char *line)
 	}
 	ft_free_array(temp);
 	if (err == 0)
-		handle_error(lem_in, "error adding rooms and links\n");
+		handle_error(lem_in, "ERROR adding rooms and links\n");
+}
+
+void	set_and_print(t_lem_in *lem_in, int i)
+{
+	if (i == 1)
+	{
+		lem_in->start = 1;
+		ft_putstr("##start\n");
+	}
+	if (i == 2)
+	{
+		lem_in->end = 1;
+		ft_putstr("##end\n");
+	}
 }
 
 /*
@@ -54,15 +68,15 @@ void	handle_start_end(t_lem_in *lem_in, char *line)
 	if (ft_strcmp(line, "##start") == 0)
 	{
 		if (lem_in->start_name != NULL)
-			handle_error(lem_in, "start room already defined\n");
-		lem_in->start = 1;
+			handle_error(lem_in, "ERROR start room already defined\n");
+		set_and_print(lem_in, 1);
 		return ;
 	}
 	if (ft_strcmp(line, "##end") == 0)
 	{
 		if (lem_in->end_name != NULL)
-			handle_error(lem_in, "end room already defined\n");
-		lem_in->end = 1;
+			handle_error(lem_in, "ERROR end room already defined\n");
+		set_and_print(lem_in, 2);
 		return ;
 	}
 	while (line[i] != ' ' && line[i] != '\0')
@@ -85,11 +99,11 @@ void	get_lem_in(t_lem_in *lem_in)
 
 	read = get_next_line(0, &buf);
 	if (read == 0 || read == -1 || buf == NULL)
-		handle_error(lem_in, "error reading lem_in\n");
+		handle_error(lem_in, "ERROR reading lem_in\n");
 	if (is_number(buf) == 1)
 		handle_ant_print(lem_in, buf);
 	else
-		handle_error(lem_in, "no ants found\n");
+		handle_error(lem_in, "ERROR no ants found\n");
 	ft_strdel(&buf);
 	read = get_next_line(0, &buf);
 	while (read != 0 && ft_strcmp("", buf) != 0)
@@ -104,5 +118,5 @@ void	get_lem_in(t_lem_in *lem_in)
 	read = get_next_line(0, &buf);
 	ft_strdel(&buf);
 	if (read == 1)
-		handle_error(lem_in, "error lem_in not in correct format\n");
+		handle_error(lem_in, "ERROR lem_in not in correct format\n");
 }

@@ -57,9 +57,9 @@ int	is_number(char *str)
 /*
 *	Get the minium number from last position before -1 
 *	and add +1 to it to make sure the same path is not counted
-*	again.
+*	again. 
 */
-int	min_number(int x, int replace[100])
+int	min_number(int x, int replace[100]) // TODO: remove?
 {
 	int	i;
 
