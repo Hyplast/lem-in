@@ -1,0 +1,132 @@
+/*
+ *	First parse ant count, then rooms and links one line at a time.
+ *	If the ant count is invalid, an error occurs during parsing lines,
+ *	or a source or a sink node has not been saved, return an error.
+ */
+ 
+ /*
+ *	Parse one line of input read from stdin, depending on the current line type
+ *	and whether the line contains #'s at the beginning.
+ */
+ 
+ /*
+ *	Validate and save a link between two rooms (nodes) as an edge
+ *	in the graph.
+ */
+ 
+ 222222222222
+ /*
+ *	Transform a directed graph into a vertex disjoint graph. This is done in
+ *	two passes, first by splitting the nodes and then by splitting the edges.
+ *	The splitting is done by passing the splitter functions to the map_parse
+ *	iterator.
+ */
+
+t_lem	lem_transform_vertex_disjoint(t_lem *data)
+
+/*
+ * Split a node into two nodes node_in and node_out and add them to the new
+ * graph passed as a parameter. Add the original edges to the new nodes.
+ */
+ 
+ 
+ /*
+ * Iterate the incoming edges of a node and split them into two
+ */
+
+
+/*
+ * Add edges and reverse edges to the graph.
+ */
+
+1111111111
+/*
+ *	Transform the graph to turn node capacities into edge capacities,
+ *	find the max flow paths for the transformed graph (if there are any),
+ *	choose the combination of paths to use and the amount of ants to send
+ *	down each path, and finally move the ants and save the rounds to output.
+ */
+ 
+ 
+ /*
+ *	Optimise path use by choosing the combination of paths to use
+ *	as well as the amount of ants to send down each path. This happens
+ *	by iterating over all path combinations, starting with the smallest
+ *	amount of paths (1), and choosing the optimal amount of ants for each
+ *	path to minimize the total cost measured in rounds. Once the path cost
+ *	stops decreasing, the minimum path cost has been found.
+ */
+ 
+ 
+ /*
+ *	Choose the optimal amount of ants per path for the path
+ *	combination i to minimize the total path cost.
+ */
+ 
+ 
+ /*
+ *	Constructs the max flow paths for a range of flows from
+ *	0 to max flow. Returns an array of pointers to array of
+ *	paths for different flows.
+ */
+ 
+ 
+ /*
+ *	Iterate a breadth first search over the network increasing the flow by
+ *	1 each iteration. The breadth first search returns a list of edges that
+ *	lead from sink to source. The loop continues until the breadth first seacrh
+ *	doesn't return any more edges or if the edge list couldn't be track back to
+ *	the source node. Calls lem_save_max_flow_paths which returns a list of paths
+ *	associated with the corresponding flow. That combination of paths is then
+ *	added to `path_combinations` for future porcessing.
+ */
+ 
+ /*
+ *	Backtracks the edges in the edge list returned by the breadth first search
+ *	and updated the edge flows. The updating function is passed as a function
+ *	pointer to the core library function graph_edge_backtrack.
+ */
+ 
+ 
+ 
+ /*
+ *	Increase the given edge flow by 1 and decrease the flow if its
+ *	reverse edge by 1, and then update the validity of both edges
+ *	according to whether the edge flow < capacity.
+ */
+
+
+
+ * \authors Julius Koskela
+ *
+ * \brief Breadth first search on a graph.
+ *
+ * Performs a breadth first search on a graph saving the result as edges
+ * put into an array. If NULL is passed as destination, will search the
+ * whole graph. Checks of edges are valid as well and won't traverse edges
+ * that are marked as invalid. This is helpful with max flow for example.
+ *
+ * \param g Source graph.
+ * \param src_key Key of the root of the search.
+ * \param dst_key Key of the destination of the search. If NULL is passed
+ * will seacrh the whole graph.
+ *
+ * \return An array containing a list of edges.
+ *
+ */
+ 
+ 
+ 
+-1. Mark all nodes as unvisited. Run bfs to get bottleneck value, sum all bottleneck value to calculate maxium flow.
+
+0. Perform BFS from source to sink. If it is the sink, then stop. Add to the node if the edge leading to the node has capacity greater than zero. However before
+adding to the que, we visit it and tack where it came from by placing an edge into prev array to rebuild the augmenting path later on.
+
+Know that the path did not make into sink if there is no entry into the sink array ( if (prev[t] == null) return 0;  // Sink not reachable.
+
+
+1.Find augmented path and bottle neck
+
+2. Retrace augmentend path and update flow values
+
+3. return bottleneck flow

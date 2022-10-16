@@ -38,8 +38,8 @@ typedef struct s_room
 typedef struct s_node
 {
 	struct s_room	*room;
-	struct s_room	*in;
-	struct s_room	*out;
+	struct s_node	*in;
+	struct s_node	*out;
 	int				in_visited;
 	int				out_visited;
 	struct s_node	*next;

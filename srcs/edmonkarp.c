@@ -126,15 +126,6 @@ int	go_to_linked_ro(t_lem_in *lem_in, t_queue **queue,
 	return (distance);
 }
 
-
-// void	print_parents(t_lem_in *lem_in)
-// {
-// 	t_room *ending;
-
-// 	ending = lem_in->end_room;
-	
-// }
-
 /*
 *	Bread first traversal to find path lenghts between start and end rooms.
 */
@@ -153,15 +144,52 @@ void	bread_firs(t_lem_in *lem_in, t_queue **queue, t_room *room)
 	}
 }
 
-
 // void	update_augment_values()
 // {
 // 	t_queue	*queue;
-
 // 	queue = init_queue();
 // 	bread_firs(lem_in, &queue, lem_in->start_room);
-
 // }
+
+t_node	*find_a_node(t_lem_in *lem_in, t_room *room)
+{
+	t_node	*temp;
+
+	temp = lem_in->nodes;
+	if (room == NULL)
+		return (NULL);
+	while (temp)
+	{
+		if (temp->room == room)
+			return (temp);
+		temp = temp->next;
+	}
+	return (NULL);
+}
+
+
+void	print_node_paths(t_lem_in *lem_in)
+{
+	t_node	*node;
+	t_room	*room;
+	int		i;
+
+	i = 0;
+	room = lem_in->start_room->neighbors[i];
+	while (room)
+	{
+		ft_printf("#%s#->", lem_in->nodes->room->name);
+		node = find_a_node(lem_in, room);
+		while (node)
+		{
+			ft_printf("#%s#->", node->room->name);
+			node = node->out;
+		}
+		ft_putchar('\n');
+		room = lem_in->start_room->neighbors[++i];
+	}
+}
+
 
 /*
 *	Set visited rooms in a path x.
@@ -176,20 +204,6 @@ void	set_path_to_visited(t_path *path, int x)
 		temp->room->visited = x;
 		temp = temp->next_path;
 	}
-}
-
-t_node	*find_a_node(t_lem_in *lem_in, t_room *room)
-{
-	t_node	*temp;
-
-	temp = lem_in->nodes;
-	while (temp)
-	{
-		if (temp->room == room)
-			return (temp);
-		temp = temp->next;
-	}
-	return (NULL);
 }
 
 /*
@@ -286,54 +300,118 @@ void	find_the_paths(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 }
 
 /*
-*	Given room x, find the room y that is the shortest distance to x.
+*	Given node x, find the node y that is the shortest distance to end.
 *	@return	the room that is the shortest distance to x.
 *	@return NULL if no room is found. 
 */
-t_room	*return_shortest_node(t_room *start, t_room *room)
+t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 {
-	t_room	*temp;
-	t_room	*shortest_room;
+	t_node	*temp;
+	t_node	*shortest_node;
 	int		shortest_distance;
 	int		i;
 
 	i = 0;
-	shortest_room = NULL;
-	temp = room->neighbors[i];
+	shortest_node = NULL;
+	temp = find_a_node(lem_in, node->room->neighbors[i]);
 	shortest_distance = 2147483647;
 	while (temp != NULL)
 	{
-		if (temp->distance < shortest_distance)
+		if (temp->room->distance < shortest_distance)
 		{
-			if (temp != start && temp->visited != 3)
+			if (temp->in_visited != 1)
 			{
-				shortest_distance = temp->distance;
-				shortest_room = temp;
+				shortest_distance = temp->room->distance;
+				shortest_node = temp;
 			}
 		}
-		temp = room->neighbors[++i];
+		temp = find_a_node(lem_in, node->room->neighbors[++i]);
 	}
-	return (shortest_room);
+	return (shortest_node);
 }
+
+void	case_travel_upstream(t_node *node, t_node *prev)
+{
+	prev->out = node;
+	node->in = prev;
+}
+
+void	case_backtrack_upstream(t_lem_in *lem_in, t_node **node, t_node *prev)
+{
+	// prev->out = node;
+	(*node)->out_visited = 1;
+	(*node)->in = prev;
+
+	// go to the originating node
+	(*node) = find_a_node(lem_in, (*node)->room->parent);
+	(*node)->in_visited = 1;
+
+}
+
+void	case_flow_full(t_node *node, t_node *prev)
+{
+	node = NULL;
+	prev = NULL;
+	node = prev;
+	prev = node;
+	return ;
+}
+
+void	follow_node_path(t_lem_in *lem_in, t_node *node)
+{
+	t_node	*prev;
+	t_node	*current;
+
+	current = node;
+	while (current->room != lem_in->end_room)
+	{
+		// if (!node->in)
+		// 	node->in = prev;
+		prev = node;
+		current = return_shortest_node(lem_in, current);
+
+		if (current->room == lem_in->end_room)
+			return ;
+		if (current->in == NULL && current->in == NULL)
+			case_travel_upstream(current, prev);
+		else if (current->in_visited == 0 && current->out_visited == 0)
+			case_backtrack_upstream(lem_in, &current, prev);
+		else
+			case_flow_full(current, prev);
+
+		if (current == NULL)
+			return ;
+		// {
+		// 	if (node->in != NULL)
+		// 	{
+		// 		node->in_visited = 1;
+		// 	}
+		// 	if (prev->out_visited != NULL)
+		// 		prev->out_visited = 1;
+		// 	prev->out = node;
+		// 	node->in = prev;			
+		// }
+	}
+}
+
 
 void	find_that_path(t_lem_in *lem_in, t_room *room)
 {
-	t_room	*neighbor;
-	t_room	*prev;
+	// t_room	*neighbor;
 	t_node	*node;
-	int		i;
+	// t_node	*room_node;
+	// int		i;
 
-	i = 0;
-	prev = room;
-	neighbor = room->neighbors[i];
-	while (neighbor)
-	{
-		node = find_a_node(lem_in, neighbor);
-		if (!node->in)
-			node->in = prev;
+	// i = 0;
+	node = find_a_node(lem_in, room);
+	follow_node_path(lem_in, node);
+	// prev = room;
+	// neighbor = room->neighbors[++i];
+	// while (neighbor)
+	// {
 		
-		neighbor = room->neighbors[++i];
-	}
+	// 	neighbor = room->neighbors[++i];
+	// }
 
 }
 
@@ -375,15 +453,15 @@ void	set_nodes_for_path(t_lem_in *lem_in, t_path *path)
 	node = find_a_node(lem_in, temp->room);
 	prev = node;
 	temp = temp->next_path;
-	node->out = temp->room;
+	node->out = find_a_node(lem_in, temp->room);
 	while (temp)
 	{
 		node = find_a_node(lem_in, temp->room);
-		node->in = prev->room;
+		node->in = prev;
 		prev = node;
 		temp = temp->next_path;
 		if (temp)
-			node->out = temp->room;
+			node->out = find_a_node(lem_in, temp->room);
 	}
 }
 
@@ -399,13 +477,14 @@ void	edmonkarp(t_lem_in *lem_in)
 	// set_path_to_visited(lem_in->paths[0], 2);
 	// lem_in->start_room->visited = 3;
 	// path = lem_in->paths[1];
+	print_node_paths(lem_in);
 	room = lem_in->start_room->neighbors[++i];
 	while (room)
 	{
 		find_that_path(lem_in, room);
 		// find_the_paths(lem_in, room, lem_in->start_room,
 			// lem_in->end_room);
-		
+		print_node_paths(lem_in);
 		// return_shortest_room(start, room)
 		
 		room = lem_in->start_room->neighbors[++i];

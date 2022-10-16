@@ -98,7 +98,8 @@ int	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue,
 				}
 				temp->room_2->visited = 1;
 				temp->room_2->distance = distance;
-				temp->room_2->parent = temp->room_1;
+				if (temp->room_2->parent == NULL)
+					temp->room_2->parent = temp->room_1;
 				insert(queue, temp->room_2);
 			}
 		}
