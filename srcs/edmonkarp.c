@@ -178,11 +178,14 @@ void	print_node_paths(t_lem_in *lem_in)
 	room = lem_in->start_room->neighbors[i];
 	while (room)
 	{
-		ft_printf("#%s#->", lem_in->nodes->room->name);
+		ft_printf("#%s#->\n", lem_in->nodes->room->name);
 		node = find_a_node(lem_in, room);
 		while (node)
 		{
-			ft_printf("#%s#->", node->room->name);
+			ft_printf("#%s#:->", node->room->name);
+			if (node->out && node->in)
+				ft_printf("out: %s, in: %s ", node->out->room->name, node->in->room->name);
+			ft_printf("node->in_vis: %d, ->out_vis: %d\n", node->in_visited, node->out_visited);
 			node = node->out;
 		}
 		ft_putchar('\n');
@@ -304,7 +307,7 @@ void	find_the_paths(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 *	@return	the room that is the shortest distance to x.
 *	@return NULL if no room is found. 
 */
-t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
+t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node, int flow)
 {
 	t_node	*temp;
 	t_node	*shortest_node;
@@ -321,8 +324,19 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 		{
 			if (temp->in_visited != 1)
 			{
-				shortest_distance = temp->room->distance;
-				shortest_node = temp;
+				if (flow == 1 && temp->room != lem_in->end_room)
+				{
+					if (temp->out == NULL && temp->in == NULL)
+					{
+						shortest_distance = temp->room->distance;
+						shortest_node = temp;
+					}
+				}
+				else
+				{
+					shortest_distance = temp->room->distance;
+					shortest_node = temp;
+				}
 			}
 		}
 		temp = find_a_node(lem_in, node->room->neighbors[++i]);
@@ -332,6 +346,8 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 
 void	case_travel_upstream(t_node *node, t_node *prev)
 {
+	if (prev->out != NULL)
+		prev->out_visited = 1;
 	prev->out = node;
 	node->in = prev;
 }
@@ -340,6 +356,7 @@ void	case_backtrack_upstream(t_lem_in *lem_in, t_node **node, t_node *prev)
 {
 	// prev->out = node;
 	(*node)->out_visited = 1;
+	(*node)->in_visited = 1;
 	(*node)->in = prev;
 
 	// go to the originating node
@@ -357,25 +374,34 @@ void	case_flow_full(t_node *node, t_node *prev)
 	return ;
 }
 
-void	follow_node_path(t_lem_in *lem_in, t_node *node)
+void	follow_node_path(t_lem_in *lem_in, t_node *node, int *flow)
 {
 	t_node	*prev;
 	t_node	*current;
+	//int		flow;
 
+	//flow = 0;	// zero until entered flow for first time;
 	current = node;
 	while (current->room != lem_in->end_room)
 	{
 		// if (!node->in)
 		// 	node->in = prev;
-		prev = node;
-		current = return_shortest_node(lem_in, current);
-
-		if (current->room == lem_in->end_room)
+		prev = current;
+		current = return_shortest_node(lem_in, current, *flow);
+		if (current == NULL)
 			return ;
+		if (current->room == lem_in->end_room)
+		{
+			prev->out = current;
+			return ;
+		}
 		if (current->in == NULL && current->in == NULL)
 			case_travel_upstream(current, prev);
 		else if (current->in_visited == 0 && current->out_visited == 0)
+		{
 			case_backtrack_upstream(lem_in, &current, prev);
+			*flow = 1;
+		}
 		else
 			case_flow_full(current, prev);
 
@@ -395,7 +421,7 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node)
 }
 
 
-void	find_that_path(t_lem_in *lem_in, t_room *room)
+void	find_that_path(t_lem_in *lem_in, t_room *room, int *flow)
 {
 	// t_room	*neighbor;
 	t_node	*node;
@@ -404,7 +430,7 @@ void	find_that_path(t_lem_in *lem_in, t_room *room)
 
 	// i = 0;
 	node = find_a_node(lem_in, room);
-	follow_node_path(lem_in, node);
+	follow_node_path(lem_in, node, flow);
 	// prev = room;
 	// neighbor = room->neighbors[++i];
 	// while (neighbor)
@@ -470,8 +496,10 @@ void	edmonkarp(t_lem_in *lem_in)
 	// t_path	*path;
 	t_room	*room;
 	int		i;
+	int		flow;
 
 	i = 0;
+	flow = 0;
 	set_all_visited_to_zero(lem_in);
 	set_nodes_for_path(lem_in, lem_in->paths[0]);
 	// set_path_to_visited(lem_in->paths[0], 2);
@@ -481,9 +509,10 @@ void	edmonkarp(t_lem_in *lem_in)
 	room = lem_in->start_room->neighbors[++i];
 	while (room)
 	{
-		find_that_path(lem_in, room);
+		find_that_path(lem_in, room, &flow);
 		// find_the_paths(lem_in, room, lem_in->start_room,
 			// lem_in->end_room);
+		ft_printf("\n new node paths with room: %s\n", room->name);
 		print_node_paths(lem_in);
 		// return_shortest_room(start, room)
 		

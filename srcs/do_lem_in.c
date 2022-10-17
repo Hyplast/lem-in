@@ -104,17 +104,17 @@ void	do_lem_in(t_lem_in *lem_in)
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	
 
-	print_rooms(lem_in);
+	// print_rooms(lem_in);
 	find_neighbors(lem_in);
 	find_paths(lem_in);
-	print_paths(lem_in);
+	// print_paths(lem_in);
 
 
 
 	set_all_visited_to_zero(lem_in);
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->end_room);
-	print_rooms(lem_in);
+	// print_rooms(lem_in);
 	find_paths_reverse_order(lem_in);
 	change_paths_order(lem_in);
 	set_visited_to_zero(lem_in);
