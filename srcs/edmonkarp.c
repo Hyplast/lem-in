@@ -392,7 +392,7 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 	{
 		if (temp->room == lem_in->end_room)
 			return (temp);
-		if (temp->in_visited != 1 && temp->out == NULL && temp->in == NULL)
+		if (temp->in_visited != 1) // && temp->out == NULL && temp->in == NULL)
 		{
 			if (temp->room->distance < shortest_distance)
 			{
@@ -403,7 +403,7 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 		temp = find_a_node(lem_in, node->room->neighbors[++i]);
 	}
 	// if (shortest_node == NULL)
-	shortest_node = find_neighbors_with_flow(lem_in, node, shortest_node, shortest_distance);
+	// 	shortest_node = find_neighbors_with_flow(lem_in, node, shortest_node, shortest_distance);
 	return (shortest_node);
 }
 
@@ -417,15 +417,26 @@ void	case_travel_upstream(t_node *node, t_node *prev)
 
 void	case_backtrack_upstream(t_lem_in *lem_in, t_node **node, t_node *prev)
 {
-	// prev->out = node;
-	(*node)->out_visited = 1;
-	(*node)->in_visited = 1;
-	prev->out = (*node);
-	(*node)->in = prev;
-
-	// go to the originating node
-	(*node) = find_a_node(lem_in, (*node)->room->parent);
-	(*node)->in_visited = 1;
+	t_node	*temp;
+	temp = (*node);
+	temp = find_a_node(lem_in, temp->room->parent);
+	temp = return_shortest_node(lem_in, temp);
+	if (temp != prev)
+	{
+		// prev->out = node;
+		(*node)->out_visited = 1;
+		(*node)->in_visited = 1;
+		prev->out = (*node);
+		(*node)->in = prev;
+		// go to the originating node
+		(*node) = find_a_node(lem_in, (*node)->room->parent);
+		(*node)->in_visited = 1;
+	}
+	else
+	{
+		(*node)->in_visited = 1;
+		(*node) = return_shortest_node(lem_in, prev);
+	}
 
 }
 
@@ -437,6 +448,7 @@ void	case_flow_full(t_node *node, t_node *prev)
 	prev = node;
 	return ;
 }
+
 
 void	follow_node_path(t_lem_in *lem_in, t_node *node)
 {

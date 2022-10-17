@@ -80,9 +80,9 @@ int	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue,
 		t_room *room, int distance)
 {
 	t_link		*temp;
-	int			just_once;
+	// int			just_once;
 
-	just_once = 0;
+	// just_once = 0;
 	temp = lem_in->links;
 	while (temp != NULL)
 	{
@@ -91,13 +91,13 @@ int	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue,
 			check_for_goal(lem_in, temp, room);
 			if (temp->room_2->visited == 0)
 			{
-				if (just_once == 0)
-				{
-					distance++;
-					just_once = 1;
-				}
+				// if (just_once == 0)
+				// {
+				// 	distance++;
+				// 	just_once = 1;
+				// }
 				temp->room_2->visited = 1;
-				temp->room_2->distance = distance;
+				temp->room_2->distance = ++distance;
 				if (temp->room_2->parent == NULL)
 					temp->room_2->parent = temp->room_1;
 				insert(queue, temp->room_2);
