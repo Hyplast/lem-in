@@ -123,7 +123,11 @@ void	do_lem_in(t_lem_in *lem_in)
 	print_paths(lem_in);
 	edmonkarp(lem_in);
 
+	
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
+	ft_printf("after edmonkarp\n");
+	print_paths(lem_in);
+
 	// more_paths(lem_in);
 	set_visited_to_zero(lem_in);
 	print_rooms(lem_in);

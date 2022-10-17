@@ -302,12 +302,82 @@ void	find_the_paths(t_lem_in *lem_in, t_room *room, t_room *start, t_room *end)
 	lem_in->paths = paths;
 }
 
+// /*
+// *	Given node x, find the node y that is the shortest distance to end.
+// *	@return	the room that is the shortest distance to x.
+// *	@return NULL if no room is found. 
+// */
+// t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node, int flow)
+// {
+// 	t_node	*temp;
+// 	t_node	*shortest_node;
+// 	int		shortest_distance;
+// 	int		i;
+
+// 	i = 0;
+// 	shortest_node = NULL;
+// 	temp = find_a_node(lem_in, node->room->neighbors[i]);
+// 	shortest_distance = 2147483647;
+// 	while (temp != NULL)
+// 	{
+// 		if (temp->out == NULL && temp->in == NULL)
+// 		{
+// 			shortest_distance = temp->room->distance;
+// 			shortest_node = temp;
+// 		}
+// 		if (temp->room->distance < shortest_distance)
+// 		{
+// 			if (temp->in_visited != 1)
+// 			{
+// 				if (flow == 1 && temp->room != lem_in->end_room)
+// 				{
+// 					if (temp->out == NULL && temp->in == NULL)
+// 					{
+// 						shortest_distance = temp->room->distance;
+// 						shortest_node = temp;
+// 					}
+// 				}
+// 				else
+// 				{
+// 					shortest_distance = temp->room->distance;
+// 					shortest_node = temp;
+// 				}
+// 			}
+// 		}
+// 		temp = find_a_node(lem_in, node->room->neighbors[++i]);
+// 	}
+// 	return (shortest_node);
+// }
+
+
+t_node	*find_neighbors_with_flow(t_lem_in *lem_in, t_node *node, t_node *shortest_node, int shortest_distance)
+{
+	t_node	*temp;
+	int		i;
+
+	i = 0;
+	temp = find_a_node(lem_in, node->room->neighbors[i]);
+	while (temp != NULL)
+	{
+		if (temp->in_visited != 1)
+		{
+			if (temp->room->distance < shortest_distance)
+			{
+				shortest_distance = temp->room->distance;
+				shortest_node = temp;
+			}
+		}
+		temp = find_a_node(lem_in, node->room->neighbors[++i]);
+	}
+	return (shortest_node);
+}
+
 /*
 *	Given node x, find the node y that is the shortest distance to end.
 *	@return	the room that is the shortest distance to x.
 *	@return NULL if no room is found. 
 */
-t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node, int flow)
+t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 {
 	t_node	*temp;
 	t_node	*shortest_node;
@@ -320,27 +390,20 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node, int flow)
 	shortest_distance = 2147483647;
 	while (temp != NULL)
 	{
-		if (temp->room->distance < shortest_distance)
+		if (temp->room == lem_in->end_room)
+			return (temp);
+		if (temp->in_visited != 1 && temp->out == NULL && temp->in == NULL)
 		{
-			if (temp->in_visited != 1)
+			if (temp->room->distance < shortest_distance)
 			{
-				if (flow == 1 && temp->room != lem_in->end_room)
-				{
-					if (temp->out == NULL && temp->in == NULL)
-					{
-						shortest_distance = temp->room->distance;
-						shortest_node = temp;
-					}
-				}
-				else
-				{
-					shortest_distance = temp->room->distance;
-					shortest_node = temp;
-				}
+				shortest_distance = temp->room->distance;
+				shortest_node = temp;
 			}
 		}
 		temp = find_a_node(lem_in, node->room->neighbors[++i]);
 	}
+	// if (shortest_node == NULL)
+	shortest_node = find_neighbors_with_flow(lem_in, node, shortest_node, shortest_distance);
 	return (shortest_node);
 }
 
@@ -357,6 +420,7 @@ void	case_backtrack_upstream(t_lem_in *lem_in, t_node **node, t_node *prev)
 	// prev->out = node;
 	(*node)->out_visited = 1;
 	(*node)->in_visited = 1;
+	prev->out = (*node);
 	(*node)->in = prev;
 
 	// go to the originating node
@@ -374,7 +438,7 @@ void	case_flow_full(t_node *node, t_node *prev)
 	return ;
 }
 
-void	follow_node_path(t_lem_in *lem_in, t_node *node, int *flow)
+void	follow_node_path(t_lem_in *lem_in, t_node *node)
 {
 	t_node	*prev;
 	t_node	*current;
@@ -387,7 +451,7 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node, int *flow)
 		// if (!node->in)
 		// 	node->in = prev;
 		prev = current;
-		current = return_shortest_node(lem_in, current, *flow);
+		current = return_shortest_node(lem_in, current);
 		if (current == NULL)
 			return ;
 		if (current->room == lem_in->end_room)
@@ -400,11 +464,9 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node, int *flow)
 		else if (current->in_visited == 0 && current->out_visited == 0)
 		{
 			case_backtrack_upstream(lem_in, &current, prev);
-			*flow = 1;
 		}
 		else
 			case_flow_full(current, prev);
-
 		if (current == NULL)
 			return ;
 		// {
@@ -421,7 +483,7 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node, int *flow)
 }
 
 
-void	find_that_path(t_lem_in *lem_in, t_room *room, int *flow)
+void	find_that_path(t_lem_in *lem_in, t_room *room)
 {
 	// t_room	*neighbor;
 	t_node	*node;
@@ -430,7 +492,7 @@ void	find_that_path(t_lem_in *lem_in, t_room *room, int *flow)
 
 	// i = 0;
 	node = find_a_node(lem_in, room);
-	follow_node_path(lem_in, node, flow);
+	follow_node_path(lem_in, node);
 	// prev = room;
 	// neighbor = room->neighbors[++i];
 	// while (neighbor)
@@ -491,15 +553,75 @@ void	set_nodes_for_path(t_lem_in *lem_in, t_path *path)
 	}
 }
 
+t_path	*create_path_node(t_lem_in *lem_in, t_node *node)
+{
+	t_node	*temp;
+	t_path	*path;
+
+	path = lem_in_add_new_path(node->room);
+	temp = node->out;
+	while (temp->room != lem_in->end_room)
+	{
+		lem_in_add_to_path(&path, temp->room);
+		temp = temp->out;
+		if (temp == NULL)
+		{
+			handle_error(lem_in, "ERROR no path found from nodes.");
+			exit(-1);
+		}
+	}
+	lem_in_add_to_path(&path, lem_in->end_room);
+	return (path);
+}
+
+void	path_from_node(t_lem_in *lem_in, t_node *node)
+{
+	t_path	**paths;
+	t_path	*path;
+	int		len;
+	int		i;
+
+	len = 0;
+	i = 0;
+	if (lem_in->paths != NULL)
+	{
+		while (lem_in->paths[len] != NULL)
+			len++;
+	}
+	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)len + 1 + 1));
+	path = create_path_node(lem_in, node);
+	while (i < len)
+	{
+		paths[i] = lem_in->paths[i];
+		i++;
+	}
+	paths[len] = path;
+	paths[len + 1] = NULL;
+	free(lem_in->paths);
+	lem_in->paths = paths;
+}
+
+void	add_paths_from_node(t_lem_in *lem_in)
+{
+	t_room	*room;
+	int		i;
+
+	i = 0;
+	room = lem_in->start_room->neighbors[++i];
+	while (room)
+	{
+		path_from_node(lem_in, find_a_node(lem_in, room));
+		room = lem_in->start_room->neighbors[++i];
+	}
+}
+
 void	edmonkarp(t_lem_in *lem_in)
 {
 	// t_path	*path;
 	t_room	*room;
 	int		i;
-	int		flow;
 
 	i = 0;
-	flow = 0;
 	set_all_visited_to_zero(lem_in);
 	set_nodes_for_path(lem_in, lem_in->paths[0]);
 	// set_path_to_visited(lem_in->paths[0], 2);
@@ -509,7 +631,7 @@ void	edmonkarp(t_lem_in *lem_in)
 	room = lem_in->start_room->neighbors[++i];
 	while (room)
 	{
-		find_that_path(lem_in, room, &flow);
+		find_that_path(lem_in, room);
 		// find_the_paths(lem_in, room, lem_in->start_room,
 			// lem_in->end_room);
 		ft_printf("\n new node paths with room: %s\n", room->name);
@@ -518,6 +640,6 @@ void	edmonkarp(t_lem_in *lem_in)
 		
 		room = lem_in->start_room->neighbors[++i];
 	}
-
+	add_paths_from_node(lem_in);
 }
 
