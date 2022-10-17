@@ -558,8 +558,8 @@ t_path	*create_path_node(t_lem_in *lem_in, t_node *node)
 	t_node	*temp;
 	t_path	*path;
 
-	path = lem_in_add_new_path(node->room);
-	temp = node->out;
+	path = lem_in_add_new_path(lem_in->start_room);
+	temp = node;
 	while (temp->room != lem_in->end_room)
 	{
 		lem_in_add_to_path(&path, temp->room);
@@ -571,8 +571,37 @@ t_path	*create_path_node(t_lem_in *lem_in, t_node *node)
 		}
 	}
 	lem_in_add_to_path(&path, lem_in->end_room);
+	// start_to_end(lem_in, &path);
 	return (path);
 }
+
+void	start_to_end_node(t_lem_in *lem_in, t_path **path)
+{
+	t_path	*temp;
+	t_path	*new_path;
+	// t_path	*start_of_new_path;
+
+	temp = *path;
+	new_path = lem_in_add_new_path(lem_in->end_room);
+	temp = temp->next_path;
+	while (temp->next_path)
+	{
+		lem_in_add_to_path(&new_path, temp->room);
+		temp = temp->next_path;
+	}
+	lem_in_add_to_path(&new_path, lem_in->start_room);
+	free(*path);
+	*path = new_path;
+	// start_of_new_path = new_path;
+	// while (*path)
+	// {
+	// 	(*path)->room = new_path->room;
+	// 	*path = (*path)->next_path;
+	// 	new_path = new_path->next_path;
+	// }
+	// free_a_path(start_of_new_path);
+}
+
 
 void	path_from_node(t_lem_in *lem_in, t_node *node)
 {
@@ -590,6 +619,7 @@ void	path_from_node(t_lem_in *lem_in, t_node *node)
 	}
 	paths = (t_path **)malloc(sizeof(t_path *) * ((size_t)len + 1 + 1));
 	path = create_path_node(lem_in, node);
+	start_to_end_node(lem_in, &path);
 	while (i < len)
 	{
 		paths[i] = lem_in->paths[i];
@@ -613,33 +643,35 @@ void	add_paths_from_node(t_lem_in *lem_in)
 		path_from_node(lem_in, find_a_node(lem_in, room));
 		room = lem_in->start_room->neighbors[++i];
 	}
+
 }
 
 void	edmonkarp(t_lem_in *lem_in)
 {
-	// t_path	*path;
 	t_room	*room;
 	int		i;
 
 	i = 0;
 	set_all_visited_to_zero(lem_in);
 	set_nodes_for_path(lem_in, lem_in->paths[0]);
-	// set_path_to_visited(lem_in->paths[0], 2);
-	// lem_in->start_room->visited = 3;
-	// path = lem_in->paths[1];
 	print_node_paths(lem_in);
 	room = lem_in->start_room->neighbors[++i];
 	while (room)
 	{
 		find_that_path(lem_in, room);
-		// find_the_paths(lem_in, room, lem_in->start_room,
-			// lem_in->end_room);
 		ft_printf("\n new node paths with room: %s\n", room->name);
 		print_node_paths(lem_in);
-		// return_shortest_room(start, room)
-		
 		room = lem_in->start_room->neighbors[++i];
 	}
+
+	ft_printf("after change_paths_order\n");
+	print_paths(lem_in);
 	add_paths_from_node(lem_in);
+	i = 0;
+	ft_printf("after change_paths_order\n");
+	print_paths(lem_in);
+	// change_paths_order(lem_in);
+	bubble_sort_paths(lem_in);
+	remove_duplicates(lem_in, i);
 }
 
