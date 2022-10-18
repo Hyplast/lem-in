@@ -107,7 +107,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	find_neighbors(lem_in);
 
 
-	print_rooms(lem_in);
+	// print_rooms(lem_in);
 	// print_paths(lem_in);
 
 	find_the_shortest_path(lem_in);

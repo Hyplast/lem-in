@@ -682,7 +682,7 @@ void	add_paths_from_node(t_lem_in *lem_in)
 	int		i;
 
 	i = 0;
-	room = lem_in->start_room->neighbors[++i];
+	room = lem_in->start_room->neighbors[i];
 	while (room)
 	{
 		path_from_node(lem_in, find_a_node(lem_in, room));
