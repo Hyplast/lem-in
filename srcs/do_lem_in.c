@@ -117,16 +117,22 @@ void	do_lem_in(t_lem_in *lem_in)
 	change_paths_order(lem_in);
 	remove_duplicates(lem_in, i);
 
+	
 
 	print_rooms(lem_in);
 	print_paths(lem_in);
 
 	set_all_visited_to_zero(lem_in);
-	recalculate_bfs(lem_in);
 
-	print_paths(lem_in);
+	int	max_paths;
 
-	edmonkarp(lem_in);
+	max_paths = calculate_neigbors(lem_in);
+	if (lem_in->ants_count != 1 && max_paths != 1)
+	{
+		recalculate_bfs(lem_in, max_paths);
+		print_paths(lem_in);
+		edmonkarp(lem_in);
+	
 
 	print_rooms(lem_in);
 	print_paths(lem_in);
@@ -168,5 +174,9 @@ void	do_lem_in(t_lem_in *lem_in)
 	calculate_optimal_paths(lem_in);
 	ft_printf("after calculate_optimal_paths\n");
 	print_paths(lem_in);
+
+	}
+	set_visited_to_zero(lem_in);
+
 	move_ants(lem_in);
 }

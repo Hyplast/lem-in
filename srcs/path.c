@@ -164,7 +164,7 @@ void	swap_start_end(t_lem_in *lem_in)
 	}
 }
 
-void	recalculate_bfs(t_lem_in *lem_in)
+void	recalculate_bfs(t_lem_in *lem_in, int max_paths)
 {
 	t_queue	*queue;
 	// t_room	*room;
@@ -190,7 +190,8 @@ void	recalculate_bfs(t_lem_in *lem_in)
 		// room = return_shortest_room(lem_in->end_room, lem_in->end_room);
 		print_rooms(lem_in);
 		print_paths(lem_in);
-	
+		if (i <= max_paths - 1)
+			return ;
 	}
 }
 
