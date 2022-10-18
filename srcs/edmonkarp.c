@@ -816,7 +816,7 @@ void	edmonkarp(t_lem_in *lem_in, int max_paths)
 		print_node_paths(lem_in);
 	}
 	room = start_neighbor_w_path(lem_in);
-	while (room && i++ < max_paths)
+	while (room && i++ < max_paths) // while (room && i++ < max_paths + 1) TODO:fixing
 	{
 		find_that_path(lem_in, room);
 		ft_printf("\n new node paths with room: %s\n", room->name);

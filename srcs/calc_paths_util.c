@@ -97,7 +97,7 @@ int	get_paths_total_turns(t_path **paths)
 }
 
 /*
-*	Calculate minimun ant turns with paths comibinations.
+*	Calculate minimun ant turns with paths combinations.
 *	Start by splitting the ants equally on each path.
 *	Calculate how many turns this path with this many ants
 *	will take.
