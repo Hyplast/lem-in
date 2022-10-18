@@ -521,18 +521,18 @@ void	find_that_path(t_lem_in *lem_in, t_room *room)
 {
 	// t_room	*neighbor;
 	t_node	*node;
-	t_node*	compare;
+	// t_node*	compare;
 	// t_node	*room_node;
 	// int		i;
 
 	// i = 0;
 	node = find_a_node(lem_in, room);
 	follow_node_path(lem_in, node);
-	compare = node->out;
-	if (compare_to_other_nodes(lem_in, compare) > 0)
-	{
-		follow_node_path(lem_in, node);
-	}
+	// compare = node->out;
+	// if (compare_to_other_nodes(lem_in, compare) > 0)
+	// {
+	// 	follow_node_path(lem_in, node);
+	// }
 	// prev = room;
 	// neighbor = room->neighbors[++i];
 	// while (neighbor)
@@ -686,6 +686,8 @@ void	add_paths_from_node(t_lem_in *lem_in)
 
 }
 
+
+
 void	edmonkarp(t_lem_in *lem_in)
 {
 	t_room	*room;
@@ -696,6 +698,7 @@ void	edmonkarp(t_lem_in *lem_in)
 	set_nodes_for_path(lem_in, lem_in->paths[0]);
 	print_node_paths(lem_in);
 	room = lem_in->start_room->neighbors[++i];
+
 	while (room)
 	{
 		find_that_path(lem_in, room);

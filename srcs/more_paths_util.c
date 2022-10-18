@@ -14,7 +14,7 @@
 
 /*  
 *	set each room in the path running throught it
-*   to visited.
+*   to visited and max distance except start and end.
 */
 void	set_one_path_to_visited(t_lem_in *lem_in, t_path *path)
 {
@@ -24,10 +24,13 @@ void	set_one_path_to_visited(t_lem_in *lem_in, t_path *path)
 	while (temp)
 	{
 		temp->room->visited = 1;
+		temp->room->distance = 2147483647;
 		temp = temp->next_path;
 	}
 	lem_in->end_room->visited = 0;
+	lem_in->end_room->distance = 0;
 	lem_in->start_room->visited = 0;
+	lem_in->start_room->distance = 0;
 }
 
 /*  
