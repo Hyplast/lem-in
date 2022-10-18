@@ -101,7 +101,9 @@ void	do_lem_in(t_lem_in *lem_in)
 
 	i = 0;
 	queue = init_queue();
+	swap_links_around(lem_in);
 	bread_first_search(lem_in, &queue, lem_in->start_room);
+	
 	find_neighbors(lem_in);
 
 
@@ -119,8 +121,12 @@ void	do_lem_in(t_lem_in *lem_in)
 	set_all_visited_to_zero(lem_in);
 	recalculate_bfs(lem_in);
 
-	// print_rooms(lem_in);
-	// print_paths(lem_in);
+	print_paths(lem_in);
+
+	edmonkarp(lem_in);
+
+	print_rooms(lem_in);
+	print_paths(lem_in);
 
 	find_paths(lem_in);
 	// print_paths(lem_in);

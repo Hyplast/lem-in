@@ -200,5 +200,6 @@ t_room		*return_shortest_non_occupied_room(t_room *start, t_room *room);
 void		edmonkarp(t_lem_in *lem_in);
 void		recalculate_bfs(t_lem_in *lem_in);
 void		find_the_shortest_path(t_lem_in *lem_in, int i);
+void		swap_links_around(t_lem_in *lem_in);
 
 #endif

@@ -577,7 +577,6 @@ void	set_nodes_for_path(t_lem_in *lem_in, t_path *path)
 	t_node	*node;
 
 	temp = path;
-	init_all_nodes(lem_in);
 	node = find_a_node(lem_in, temp->room);
 	prev = node;
 	temp = temp->next_path;
@@ -683,10 +682,46 @@ void	add_paths_from_node(t_lem_in *lem_in)
 		path_from_node(lem_in, find_a_node(lem_in, room));
 		room = lem_in->start_room->neighbors[++i];
 	}
-
 }
 
+int		neighbor_or_not(t_lem_in *lem_in, t_room *room)
+{
+	int		i;
+	t_path	*path;
+	t_room	*path_room;
 
+	i = 0;
+	path = lem_in->paths[i];
+	while (path)
+	{
+		path_room = path->next_path->room;
+		if (path_room == room)
+			return (0);
+		path = lem_in->paths[++i];
+	}
+	return (1);
+}
+
+t_room	*start_neighbor_w_path(t_lem_in *lem_in)
+{
+	t_room	*room;
+	int		i;
+	int		res;
+
+	i = 0;
+	res = 0;
+	room = lem_in->start_room->neighbors[i];
+	while (room)
+	{
+		res = neighbor_or_not(lem_in, room);
+		if (res == 1)
+		{
+			return (room);
+		}
+		room = lem_in->start_room->neighbors[++i];
+	}
+	return (NULL);
+}
 
 void	edmonkarp(t_lem_in *lem_in)
 {
@@ -694,11 +729,16 @@ void	edmonkarp(t_lem_in *lem_in)
 	int		i;
 
 	i = 0;
-	set_all_visited_to_zero(lem_in);
-	set_nodes_for_path(lem_in, lem_in->paths[0]);
-	print_node_paths(lem_in);
-	room = lem_in->start_room->neighbors[++i];
 
+	set_all_visited_to_zero(lem_in);
+	init_all_nodes(lem_in);
+	while (lem_in->paths[i])
+	{
+		set_nodes_for_path(lem_in, lem_in->paths[i++]);
+		print_node_paths(lem_in);
+	}
+	i = 0;
+	room = start_neighbor_w_path(lem_in);
 	while (room)
 	{
 		find_that_path(lem_in, room);
@@ -708,7 +748,7 @@ void	edmonkarp(t_lem_in *lem_in)
 		// ft_printf("\n second round with room: %s\n", room->name);
 		// print_node_paths(lem_in);
 		
-		room = lem_in->start_room->neighbors[++i];
+		room = start_neighbor_w_path(lem_in);
 	}
 
 	ft_printf("after change_paths_order\n");

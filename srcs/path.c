@@ -192,7 +192,10 @@ void	find_the_shortest_path(t_lem_in *lem_in, int i)
 	t_room	*room;
 	find_valid_path(lem_in);
 
-	room = lem_in->end_room->neighbors[i];
+	if (i == 0)
+		room = return_shortest_room(lem_in->end_room, lem_in->end_room);
+	else
+		room = lem_in->end_room->neighbors[i];
 	check_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 	if (lem_in->paths == NULL)
 		handle_error(lem_in, "ERROR no path found.");

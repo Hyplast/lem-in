@@ -91,6 +91,41 @@ void	add_neighbors(t_room *room_1, t_room *room_2)
 	room_1->neighbors = neighbors;
 }
 
+void	swap_links_around(t_lem_in *lem_in)
+{
+	t_link	*temp;
+	t_link	*prev;
+	t_link	*new_link;
+	// t_link	*link;
+
+	temp = lem_in->links;
+	prev = malloc(sizeof(t_link));
+	prev->room_1 = temp->room_1;
+	prev->room_2 = temp->room_2;
+	temp = temp->next;
+		// ft_memcpy(new_link, temp
+	while (temp)
+	{
+		new_link = malloc(sizeof(t_link));
+		new_link->room_1 = temp->room_1;
+		new_link->room_2 = temp->room_2;
+		prev->next = new_link;
+		// if (temp->next)
+			// prev = prev->next;
+		// ft_memcpy(new_link, temp, sizeof(temp) * 3);
+		// new_link->next = new_link;
+		// if (temp)
+		// 	new_link->next = temp;
+		new_link->next = lem_in->links;
+		lem_in->links = new_link;
+
+		temp = temp->next;
+	}
+	
+	lem_in->links = new_link;
+	
+}
+
 /*
 *	Find neighbors of the rooms. From shortest distance to longest.
 */
@@ -98,6 +133,7 @@ void	find_neighbors(t_lem_in *lem_in)
 {
 	t_link	*temp;
 
+	// swap_links_around(lem_in);
 	temp = lem_in->links;
 	while (temp != NULL)
 	{

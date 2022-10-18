@@ -34,9 +34,11 @@ k-l
 l-m
 m-d
 o-a
+o-b
 o-c
 o-d
 o-e
+o-f
 p-g
 p-h
 p-i
@@ -49,8 +51,6 @@ q-k
 q-l
 q-m
 q-d
-f-o
-b-o
 #         g - h
 #        / \ / \
 #   a - b - p - i
