@@ -746,26 +746,32 @@ void	edmonkarp(t_lem_in *lem_in)
 		set_nodes_for_path(lem_in, lem_in->paths[i++]);
 		print_node_paths(lem_in);
 	}
-	i = 0;
 	room = start_neighbor_w_path(lem_in);
+	
 	while (room)
 	{
 		find_that_path(lem_in, room);
 		ft_printf("\n new node paths with room: %s\n", room->name);
 		print_node_paths(lem_in);
+		print_paths(lem_in);
+		ft_printf("before add paths from node\n");
+		add_paths_from_node(lem_in);
+
+		ft_printf("after add paths from node\n");
+		print_paths(lem_in);
+
 		// find_that_path(lem_in, room);
 		// ft_printf("\n second round with room: %s\n", room->name);
 		// print_node_paths(lem_in);
 		
 		room = start_neighbor_w_path(lem_in);
 	}
-
-	ft_printf("after change_paths_order\n");
-	print_paths(lem_in);
-	add_paths_from_node(lem_in);
-	i = 0;
-	ft_printf("after change_paths_order\n");
-	print_paths(lem_in);
+	// ft_printf("after change_paths_order\n");
+	// print_paths(lem_in);
+	// // add_paths_from_node(lem_in);
+	// i = 0;
+	// ft_printf("after change_paths_order\n");
+	// print_paths(lem_in);
 	// change_paths_order(lem_in);
 	bubble_sort_paths(lem_in);
 	remove_duplicates(lem_in, i);
