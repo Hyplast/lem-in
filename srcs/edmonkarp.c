@@ -711,15 +711,80 @@ int		neighbor_or_not(t_lem_in *lem_in, t_room *room)
 	return (1);
 }
 
+int		short_dist_different_n(t_room *room, int *n)
+{
+	t_room	*temp;
+	int		shortest_distance;
+	int		i;
+
+	i = 0;
+	shortest_distance = 2147483647;
+	temp = room->neighbors[i];
+	while (temp != NULL)
+	{
+		if (temp->distance < shortest_distance)
+		{
+			if (temp->distance > *n)
+				shortest_distance = temp->distance;
+		}
+		temp = room->neighbors[++i];
+	}
+	return (shortest_distance);
+}
+
+t_room	*return_room_w_dist_x(t_room *room, int n)
+{
+	t_room	*temp;
+	int		i;
+
+	i = 0;
+	temp = room->neighbors[i];
+	while (temp != NULL)
+	{
+		if (temp->distance == n)
+			return (temp);
+		temp = room->neighbors[++i];
+	}
+	return (NULL);
+}
+
+t_room	*return_shortest_room_i(t_room *room, int *shortest_distance)
+{
+	t_room	*temp;
+	t_room	*shortest_room;
+	// int		sec_shortest_distance;
+	// int		i;
+	// int		res;
+
+	// i = 0;
+	shortest_room = NULL;
+	// temp = room->neighbors[i];
+	// sec_shortest_distance = 2147483647;
+	*shortest_distance = short_dist_different_n(room, shortest_distance);
+	temp = return_room_w_dist_x(room, *shortest_distance);
+	while (temp != NULL)
+	{
+		if (temp->distance == *shortest_distance)
+		{
+			shortest_room = temp;
+			return (shortest_room);
+		}
+		*shortest_distance = short_dist_different_n(room, shortest_distance);
+		temp = return_room_w_dist_x(room, *shortest_distance);
+	}
+	return (shortest_room);
+}
+
 t_room	*start_neighbor_w_path(t_lem_in *lem_in)
 {
 	t_room	*room;
-	int		i;
 	int		res;
+	int		dist;
 
-	i = 0;
+	dist = 0;
 	res = 0;
-	room = lem_in->start_room->neighbors[i];
+	// room = lem_in->start_room->neighbors[i];
+	room = return_shortest_room_i(lem_in->start_room, &dist);
 	while (room)
 	{
 		res = neighbor_or_not(lem_in, room);
@@ -727,12 +792,13 @@ t_room	*start_neighbor_w_path(t_lem_in *lem_in)
 		{
 			return (room);
 		}
-		room = lem_in->start_room->neighbors[++i];
+		// room = lem_in->start_room->neighbors[i++];
+		room = return_shortest_room_i(lem_in->start_room, &dist);
 	}
 	return (NULL);
 }
 
-void	edmonkarp(t_lem_in *lem_in)
+void	edmonkarp(t_lem_in *lem_in, int max_paths)
 {
 	t_room	*room;
 	t_queue	*queue;
@@ -750,7 +816,7 @@ void	edmonkarp(t_lem_in *lem_in)
 		print_node_paths(lem_in);
 	}
 	room = start_neighbor_w_path(lem_in);
-	while (room && i++ < calculate_neigbors(lem_in))
+	while (room && i++ < max_paths)
 	{
 		find_that_path(lem_in, room);
 		ft_printf("\n new node paths with room: %s\n", room->name);

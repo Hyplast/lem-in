@@ -98,14 +98,16 @@ void	do_lem_in(t_lem_in *lem_in)
 {
 	t_queue	*queue;
 	int		i;
+	int	max_paths;
 
+	
 	i = 0;
 	queue = init_queue();
 	// swap_links_around(lem_in);
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	
 	find_neighbors(lem_in);
-
+	max_paths = calculate_neigbors(lem_in);
 
 	print_rooms(lem_in);
 	// print_paths(lem_in);
@@ -124,14 +126,12 @@ void	do_lem_in(t_lem_in *lem_in)
 
 	set_all_visited_to_zero(lem_in);
 
-	int	max_paths;
 
-	max_paths = calculate_neigbors(lem_in);
 	if (lem_in->ants_count != 1 && max_paths != 1)
 	{
 		recalculate_bfs(lem_in, max_paths);
 		print_paths(lem_in);
-		edmonkarp(lem_in);
+		edmonkarp(lem_in, max_paths);
 	
 
 	print_rooms(lem_in);

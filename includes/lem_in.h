@@ -197,7 +197,7 @@ void		check_path_non_occupied(t_lem_in *lem_in, t_room *room,
 void		change_paths_order_reverse(t_lem_in *lem_in);
 void		loop_paths(t_lem_in *lem_in);
 t_room		*return_shortest_non_occupied_room(t_room *start, t_room *room);
-void		edmonkarp(t_lem_in *lem_in);
+void		edmonkarp(t_lem_in *lem_in, int max_paths);
 void		recalculate_bfs(t_lem_in *lem_in, int max_paths);
 void		find_the_shortest_path(t_lem_in *lem_in);
 void		swap_links_around(t_lem_in *lem_in);
