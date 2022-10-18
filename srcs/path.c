@@ -197,7 +197,7 @@ void	recalculate_bfs(t_lem_in *lem_in)
 void	find_the_shortest_path(t_lem_in *lem_in)
 {
 	t_room	*room;
-	find_valid_path(lem_in);
+	// find_valid_path(lem_in);
 
 	// if (i == 0)
 	room = return_shortest_room(lem_in->end_room, lem_in->end_room);

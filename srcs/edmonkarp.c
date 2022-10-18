@@ -679,13 +679,16 @@ void	path_from_node(t_lem_in *lem_in, t_node *node)
 void	add_paths_from_node(t_lem_in *lem_in)
 {
 	t_room	*room;
+	t_node	*node;
 	int		i;
 
 	i = 0;
 	room = lem_in->start_room->neighbors[i];
 	while (room)
 	{
-		path_from_node(lem_in, find_a_node(lem_in, room));
+		node = find_a_node(lem_in, room);
+		if (node->out != NULL)
+			path_from_node(lem_in, node);
 		room = lem_in->start_room->neighbors[++i];
 	}
 }
@@ -747,8 +750,7 @@ void	edmonkarp(t_lem_in *lem_in)
 		print_node_paths(lem_in);
 	}
 	room = start_neighbor_w_path(lem_in);
-	
-	while (room)
+	while (room && i++ < calculate_neigbors(lem_in))
 	{
 		find_that_path(lem_in, room);
 		ft_printf("\n new node paths with room: %s\n", room->name);
