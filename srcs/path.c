@@ -167,35 +167,42 @@ void	swap_start_end(t_lem_in *lem_in)
 void	recalculate_bfs(t_lem_in *lem_in)
 {
 	t_queue	*queue;
-	t_room	*room;
+	// t_room	*room;
 	int		i;
 
 	i = 0;
-	room = lem_in->end_room->neighbors[++i];
-	while (room)
+	// room = lem_in->end_room->neighbors[++i];
+	set_one_path_to_visited(lem_in, lem_in->paths[i]);
+	// room = return_shortest_room(lem_in->end_room, lem_in->end_room);
+	while (lem_in->paths[i])
 	{
 		queue = init_queue();
-		set_one_path_to_visited(lem_in, lem_in->paths[i - 1]);
 
 		bread_first_search(lem_in, &queue, lem_in->start_room);
-		find_the_shortest_path(lem_in, i);
-		room = lem_in->end_room->neighbors[++i];
+
+		find_the_shortest_path(lem_in);
 		swap_start_end(lem_in);
+
+		set_one_path_to_visited(lem_in, lem_in->paths[++i]);
+
+		// room = lem_in->end_room->neighbors[++i];
+		
+		// room = return_shortest_room(lem_in->end_room, lem_in->end_room);
 		print_rooms(lem_in);
 		print_paths(lem_in);
 	
 	}
 }
 
-void	find_the_shortest_path(t_lem_in *lem_in, int i)
+void	find_the_shortest_path(t_lem_in *lem_in)
 {
 	t_room	*room;
 	find_valid_path(lem_in);
 
-	if (i == 0)
-		room = return_shortest_room(lem_in->end_room, lem_in->end_room);
-	else
-		room = lem_in->end_room->neighbors[i];
+	// if (i == 0)
+	room = return_shortest_room(lem_in->end_room, lem_in->end_room);
+	// else
+	// 	room = lem_in->end_room->neighbors[i];
 	check_path(lem_in, room, lem_in->end_room, lem_in->start_room);
 	if (lem_in->paths == NULL)
 		handle_error(lem_in, "ERROR no path found.");

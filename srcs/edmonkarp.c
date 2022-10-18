@@ -392,7 +392,8 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 	{
 		if (temp->room == lem_in->end_room)
 			return (temp);
-		if (temp->in_visited < 1) // && temp->out == NULL && temp->in == NULL)
+		//if (temp->in_visited < 1) // && temp->out == NULL && temp->in == NULL)
+		if (temp->in == NULL)
 		{
 			if (temp->room->distance < shortest_distance)
 			{
@@ -402,8 +403,8 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 		}
 		temp = find_a_node(lem_in, node->room->neighbors[++i]);
 	}
-	// if (shortest_node == NULL)
-	// 	shortest_node = find_neighbors_with_flow(lem_in, node, shortest_node, shortest_distance);
+	if (shortest_node == NULL)
+		shortest_node = find_neighbors_with_flow(lem_in, node, shortest_node, shortest_distance);
 	return (shortest_node);
 }
 
@@ -420,9 +421,10 @@ void	case_backtrack_upstream(t_lem_in *lem_in, t_node **node, t_node *prev)
 	t_node	*temp;
 	// t_node	*temp_2;
 	// (*node)->in_visited = 1;
-	temp = (*node);
-	temp = find_a_node(lem_in, temp->room->parent);
-	temp = return_shortest_node(lem_in, temp);
+	temp = (*node)->in;
+	// temp = find_a_node(lem_in, temp->room->parent);
+	// temp = return_shortest_node(lem_in, temp);
+
 	// temp_2 = return_shortest_node(lem_in, prev);
 	// if (temp != prev)
 	// if (temp->room->distance < temp_2->room->distance)
@@ -430,11 +432,12 @@ void	case_backtrack_upstream(t_lem_in *lem_in, t_node **node, t_node *prev)
 	{
 		// prev->out = node;
 		(*node)->out_visited =+ 1;
-		(*node)->in_visited =+ 1;
+		// (*node)->in_visited =+ 1;
 		prev->out = (*node);
 		(*node)->in = prev;
 		// go to the originating node
-		(*node) = find_a_node(lem_in, (*node)->room->parent);
+		// (*node) = find_a_node(lem_in, (*node)->room->parent);
+		(*node) = temp;
 		(*node)->in_visited =+ 1;
 	}
 	else
@@ -526,7 +529,10 @@ void	find_that_path(t_lem_in *lem_in, t_room *room)
 	// int		i;
 
 	// i = 0;
+	// lem_in->start_room->distance = 2147483647;
+	// lem_in->end_room->distance = 0;
 	node = find_a_node(lem_in, room);
+	node->in = find_a_node(lem_in, lem_in->start_room);
 	follow_node_path(lem_in, node);
 	// compare = node->out;
 	// if (compare_to_other_nodes(lem_in, compare) > 0)
@@ -726,12 +732,15 @@ t_room	*start_neighbor_w_path(t_lem_in *lem_in)
 void	edmonkarp(t_lem_in *lem_in)
 {
 	t_room	*room;
+	t_queue	*queue;
 	int		i;
-
 	i = 0;
 
 	set_all_visited_to_zero(lem_in);
+	queue = init_queue();
+	bread_first_search(lem_in, &queue, lem_in->end_room);
 	init_all_nodes(lem_in);
+	print_rooms(lem_in);
 	while (lem_in->paths[i])
 	{
 		set_nodes_for_path(lem_in, lem_in->paths[i++]);

@@ -101,7 +101,7 @@ void	do_lem_in(t_lem_in *lem_in)
 
 	i = 0;
 	queue = init_queue();
-	swap_links_around(lem_in);
+	// swap_links_around(lem_in);
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	
 	find_neighbors(lem_in);
@@ -110,7 +110,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	print_rooms(lem_in);
 	// print_paths(lem_in);
 
-	find_the_shortest_path(lem_in, 0);
+	find_the_shortest_path(lem_in);
 	change_paths_order(lem_in);
 	remove_duplicates(lem_in, i);
 
