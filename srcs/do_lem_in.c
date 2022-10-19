@@ -91,6 +91,26 @@ void	print_paths(t_lem_in *lem_in)
 	ft_printf("\n");
 }
 
+
+/*
+*	Fix starting path to lem_in->start and ending path to lem_in->end.
+*/
+void	change_paths_order_i(t_lem_in *lem_in, int i)
+{
+	t_path	*path;
+
+	path = lem_in->paths[i];
+	while (path)
+	{
+		if (path->room == lem_in->start_room)
+			start_to_end(lem_in, &path);
+		else if (path->room == lem_in->end_room)
+			end_to_start(lem_in, path);
+		path = lem_in->paths[++i];
+	}
+}
+
+
 /*
 *	Ant solver
 */
@@ -168,9 +188,30 @@ void	do_lem_in(t_lem_in *lem_in)
 	ft_printf("after edmonkarp\n");
 	print_paths(lem_in);
 
+	// set_visited_to_zero(lem_in);
+
+
+	set_all_visited_to_zero(lem_in);
+
+	queue = init_queue();
+	bread_first_search(lem_in, &queue, lem_in->start_room);
+	find_paths(lem_in);
+
+	set_all_visited_to_zero(lem_in);
+	queue = init_queue();
+	bread_first_search(lem_in, &queue, lem_in->end_room);
+	find_paths_reverse_order(lem_in);
+
+	change_paths_order_i(lem_in, lem_in->paths_count);
+
+	set_visited_to_zero(lem_in);
+	bubble_sort_paths(lem_in);
+	remove_duplicates(lem_in, i);
 	// more_paths(lem_in);
 	set_visited_to_zero(lem_in);
 	
+	print_paths(lem_in);
+
 	calculate_optimal_paths(lem_in);
 	ft_printf("after calculate_optimal_paths\n");
 	print_paths(lem_in);
