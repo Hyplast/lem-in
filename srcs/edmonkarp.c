@@ -919,24 +919,24 @@ void	edmonkarp(t_lem_in *lem_in, int max_paths)
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->end_room);
 	init_all_nodes(lem_in);
-	print_rooms(lem_in);
+	// print_rooms(lem_in);
 	while (lem_in->paths[i])
 	{
 		set_nodes_for_path(lem_in, lem_in->paths[i++]);
-		print_node_paths(lem_in);
+		// print_node_paths(lem_in);
 	}
 	room = start_neighbor_w_path(lem_in);
 	while (room && i < max_paths) // while (room && i++ < max_paths + 1) TODO:fixing
 	{
 		find_that_path(lem_in, room);
-		ft_printf("\n new node paths with room: %s\n", room->name);
-		print_node_paths(lem_in);
-		print_paths(lem_in);
-		ft_printf("before add paths from node\n");
+		// ft_printf("\n new node paths with room: %s\n", room->name);
+		// print_node_paths(lem_in);
+		// print_paths(lem_in);
+		// ft_printf("before add paths from node\n");
 		add_paths_from_node(lem_in);
 
-		ft_printf("after add paths from node\n");
-		print_paths(lem_in);
+		// ft_printf("after add paths from node\n");
+		// print_paths(lem_in);
 
 		// find_that_path(lem_in, room);
 		// ft_printf("\n second round with room: %s\n", room->name);

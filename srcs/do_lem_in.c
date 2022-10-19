@@ -129,20 +129,20 @@ void	do_lem_in(t_lem_in *lem_in)
 	find_neighbors(lem_in);
 	max_paths = calculate_neigbors(lem_in);
 
-	print_rooms(lem_in);
+	// print_rooms(lem_in);
 	// print_paths(lem_in);
 
 	find_the_shortest_path(lem_in);
 
-	print_paths(lem_in);
+	// print_paths(lem_in);
 
 	change_paths_order(lem_in);
 	remove_duplicates(lem_in, i);
 
 	
 
-	print_rooms(lem_in);
-	print_paths(lem_in);
+	// print_rooms(lem_in);
+	// print_paths(lem_in);
 
 	set_all_visited_to_zero(lem_in);
 
@@ -150,12 +150,12 @@ void	do_lem_in(t_lem_in *lem_in)
 	if (lem_in->ants_count != 1 && max_paths != 1)
 	{
 		recalculate_bfs(lem_in, max_paths);
-		print_paths(lem_in);
+		// print_paths(lem_in);
 		edmonkarp(lem_in, max_paths);
 	
 
-	print_rooms(lem_in);
-	print_paths(lem_in);
+	// print_rooms(lem_in);
+	// print_paths(lem_in);
 
 	// find_paths(lem_in);
 	// print_paths(lem_in);
@@ -185,8 +185,8 @@ void	do_lem_in(t_lem_in *lem_in)
 
 	
 	lem_in->paths_count = (int)count_paths(lem_in->paths);
-	ft_printf("after edmonkarp\n");
-	print_paths(lem_in);
+	// ft_printf("after edmonkarp\n");
+	// print_paths(lem_in);
 
 	// set_visited_to_zero(lem_in);
 
@@ -210,11 +210,11 @@ void	do_lem_in(t_lem_in *lem_in)
 	// more_paths(lem_in);
 	set_visited_to_zero(lem_in);
 	
-	print_paths(lem_in);
+	// print_paths(lem_in);
 
 	calculate_optimal_paths(lem_in);
-	ft_printf("after calculate_optimal_paths\n");
-	print_paths(lem_in);
+	// ft_printf("after calculate_optimal_paths\n");
+	// print_paths(lem_in);
 
 	}
 	set_visited_to_zero(lem_in);

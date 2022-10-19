@@ -55,16 +55,16 @@ void	check_lem_in(t_lem_in *lem_in)
 
 	i = 0;
 	if (lem_in->start_name == NULL)
-		handle_error(lem_in, "start room not found\n");
+		handle_error(lem_in, "ERROR start room not found\n");
 	start = get_room(lem_in, lem_in->start_name);
 	if (start == NULL)
-		handle_error(lem_in, "start room not found\n");
+		handle_error(lem_in, "ERROR start room not found\n");
 	lem_in->start_room = start;
 	if (lem_in->end_name == NULL)
-		handle_error(lem_in, "end room not found\n");
+		handle_error(lem_in, "ERROR end room not found\n");
 	end = get_room(lem_in, lem_in->end_name);
 	if (end == NULL)
-		handle_error(lem_in, "end room not found\n");
+		handle_error(lem_in, "ERROR end room not found\n");
 	lem_in->end_room = end;
 	while (i++ < lem_in->ants_count)
 		lem_in_add_ant(lem_in, lem_in->ants_count - i + 1);
