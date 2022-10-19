@@ -124,16 +124,20 @@ void	do_lem_in(t_lem_in *lem_in)
 	i = 0;
 	queue = init_queue();
 	// swap_links_around(lem_in);
+	find_neighbors(lem_in);
+
 	bread_first_search(lem_in, &queue, lem_in->start_room);
 	
-	find_neighbors(lem_in);
+	
 	max_paths = calculate_neigbors(lem_in);
 
 	// print_rooms(lem_in);
 	// print_paths(lem_in);
+	set_all_zero_dist_to_max(lem_in);
 
 	find_the_shortest_path(lem_in);
 
+	// print_rooms(lem_in);
 	// print_paths(lem_in);
 
 	change_paths_order(lem_in);

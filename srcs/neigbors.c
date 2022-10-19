@@ -138,6 +138,19 @@ void	find_neighbors(t_lem_in *lem_in)
 	while (temp != NULL)
 	{
 		add_neighbors(temp->room_1, temp->room_2);
-		temp = temp->next;
+		if (temp->room_1->name[0] == 'W')
+		{
+			if (temp->room_1->name[1] == '_')
+			{
+				if (temp->room_1->name[2] == 'n')
+					temp = temp->next;
+				else
+					temp = temp->next;
+			}
+			else
+				temp = temp->next;
+		}
+		else
+			temp = temp->next;
 	}
 }

@@ -201,5 +201,6 @@ void		edmonkarp(t_lem_in *lem_in, int max_paths);
 void		recalculate_bfs(t_lem_in *lem_in, int max_paths);
 void		find_the_shortest_path(t_lem_in *lem_in);
 void		swap_links_around(t_lem_in *lem_in);
+void		set_all_zero_dist_to_max(t_lem_in *lem_in);
 
 #endif

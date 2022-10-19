@@ -31,6 +31,24 @@ void	bread_first_search(t_lem_in *lem_in, t_queue **queue, t_room *room)
 }
 
 /*
+*	Set all rooms distance to max from zero.
+*/
+void	set_all_zero_dist_to_max(t_lem_in *lem_in)
+{
+	t_room	*temp;
+
+	temp = lem_in->rooms;
+	while (temp)
+	{
+		if (temp->distance == 0)
+			temp->distance = 2147483647;
+		temp = temp->next;
+	}
+	lem_in->start_room->distance = 0;
+}
+
+
+/*
 *	Set all rooms visited to zero.
 */
 void	set_all_visited_to_zero(t_lem_in *lem_in)

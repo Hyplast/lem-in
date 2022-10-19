@@ -73,10 +73,61 @@ int	is_queue_empty(t_queue *queue)
 	return (0);
 }
 
+
+
+/*
+*	Check if linked room is the goal, if it is, set it's distance to max
+*	int for preventing the exploring algorithm taking illegal shortcuts 
+*	through rooms.
+*/
+void	check_for_goal_new(t_lem_in *lem_in, t_room *temp, t_room *room)
+{
+	if (temp == lem_in->end_room || temp == lem_in->start_room)
+	{
+		if (temp != room)
+		{
+			temp->visited = 1;
+			temp->distance = 2147483647;
+		}
+	}
+}
+
+
 /*
 *	Check if the addresses point to the same memory location
 */
 int	go_to_linked_rooms(t_lem_in *lem_in, t_queue **queue,
+		t_room *room, int distance)
+{
+	t_room		*neighbor;
+	int			i;
+
+	i = 0;
+	neighbor = (*queue)->room->neighbors[i];
+	while (neighbor)
+	{
+		// if (neighbor == (*queue)->room)
+		// {
+		check_for_goal_new(lem_in, neighbor, room);
+		if (neighbor->visited == 0)
+		{
+			neighbor->visited = 1;
+			neighbor->distance = ++distance;
+			if (neighbor->parent == NULL)
+				neighbor->parent = (*queue)->room;
+			insert(queue, neighbor);
+		}
+		// }
+		neighbor = (*queue)->room->neighbors[++i];
+	}
+	return (distance);
+}
+
+
+/*
+*	Check if the addresses point to the same memory location
+*/
+int	go_to_linked_rooms_old(t_lem_in *lem_in, t_queue **queue,
 		t_room *room, int distance)
 {
 	t_link		*temp;
