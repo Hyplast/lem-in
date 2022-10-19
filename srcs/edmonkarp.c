@@ -498,13 +498,13 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node)
 		}
 		if (current->in == NULL && current->in == NULL)
 		{	
-			if (prev->room->distance < current->room->parent->distance)
-			{
-				current = prev;
-				case_flow_full(lem_in, &current);
-			}
-			// special_backtrack_upstream(lem_in, &current, prev);
-			else
+			// if (prev->room->distance < current->room->parent->distance)
+			// {
+			// 	current = prev;
+			// 	case_flow_full(lem_in, &current);
+			// }
+			// // special_backtrack_upstream(lem_in, &current, prev);
+			// else
 				case_travel_upstream(current, prev);
 		}
 		else if (current->in_visited == 0 && current->out_visited == 0)
@@ -555,7 +555,7 @@ void	find_that_path(t_lem_in *lem_in, t_room *room)
 	// int		i;
 
 	// i = 0;
-	// lem_in->start_room->distance = 2147483647;
+	lem_in->start_room->distance = 2147483646;
 	// lem_in->end_room->distance = 0;
 	node = find_a_node(lem_in, room);
 	node->in = find_a_node(lem_in, lem_in->start_room);
