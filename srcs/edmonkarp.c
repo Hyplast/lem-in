@@ -805,6 +805,90 @@ t_room	*start_neighbor_w_path(t_lem_in *lem_in)
 	return (NULL);
 }
 
+
+
+/*  
+*	set each room that has a path running throught it
+*   to visited.
+*/
+void	set_path_to_x(t_lem_in *lem_in, t_path *path, int x)
+{
+	set_path_to_visited(path, x);
+	lem_in->start_room->visited = 0;
+	lem_in->end_room->visited = 0;
+}
+
+
+/*
+*	Check whether if any visited rooms from all rooms
+*	match path rooms.
+*	@return 1 if not match
+*	@return 0 if even one matches
+*/
+int		unique_path(t_lem_in *lem_in, t_path *path)
+{
+	t_room	*room;
+	t_path	*temp;
+
+	temp = path;
+	room = lem_in->rooms;
+	while (room)
+	{
+		if (room->visited == 1)
+		{
+			while (temp)
+			{
+				if (room == temp->room)
+					return (0);
+				temp = temp->next_path;
+			}
+			temp = path;
+		}
+		room = room->next;
+	}
+	return (1);
+}
+
+/*
+*		Calculate number of max paths that do not overlap.
+*		@return amount of paths
+*/
+int		count_n_unique_paths(t_lem_in *lem_in)
+{
+	int		number;
+	int		highest_number;
+	int		i;
+	int		j;
+	int		res;
+
+	res = 0;
+	i = 0;
+	j = 0;
+	number = 1;
+	highest_number = 1;
+	set_all_visited_to_zero(lem_in);
+	while (lem_in->paths[i])
+	{
+		set_path_to_x(lem_in, lem_in->paths[i], 1);
+		while (lem_in->paths[j])
+		{
+			res = unique_path(lem_in, lem_in->paths[j]);
+			if (res == 1)
+				set_path_to_x(lem_in, lem_in->paths[j], 1);
+			number = number + res;
+			// number =+ is_path_unique(lem_in, lem_in->paths[i], lem_in->paths[j]);
+			j++;
+		}
+		if (number > highest_number)
+			highest_number = number;
+		j = 0;
+		i++;
+		number = 1;
+		set_all_visited_to_zero(lem_in);
+	}
+	return (highest_number);
+}
+
 void	edmonkarp(t_lem_in *lem_in, int max_paths)
 {
 	t_room	*room;
@@ -823,7 +907,7 @@ void	edmonkarp(t_lem_in *lem_in, int max_paths)
 		print_node_paths(lem_in);
 	}
 	room = start_neighbor_w_path(lem_in);
-	while (room && i++ < max_paths) // while (room && i++ < max_paths + 1) TODO:fixing
+	while (room && i < max_paths) // while (room && i++ < max_paths + 1) TODO:fixing
 	{
 		find_that_path(lem_in, room);
 		ft_printf("\n new node paths with room: %s\n", room->name);
@@ -840,6 +924,7 @@ void	edmonkarp(t_lem_in *lem_in, int max_paths)
 		// print_node_paths(lem_in);
 		
 		room = start_neighbor_w_path(lem_in);
+		i = count_n_unique_paths(lem_in);
 	}
 	// ft_printf("after change_paths_order\n");
 	// print_paths(lem_in);
