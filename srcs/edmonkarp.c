@@ -448,12 +448,19 @@ void	case_backtrack_upstream(t_lem_in *lem_in, t_node **node, t_node *prev)
 
 }
 
-void	case_flow_full(t_node *node, t_node *prev)
+void	case_flow_full(t_lem_in *lem_in, t_node **node)
 {
-	node = NULL;
-	prev = NULL;
-	node = prev;
-	prev = node;
+	// node = NULL;
+	// prev = NULL;
+	t_node	*temp;
+
+	(*node)->in_visited =+ 1;
+	// temp = node->in;
+	temp = find_a_node(lem_in, (*node)->room->parent);
+	(*node) = temp;
+
+	// node = prev;
+	// prev = node;
 	return ;
 }
 
@@ -486,7 +493,7 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node)
 			case_backtrack_upstream(lem_in, &current, prev);
 		}
 		else
-			case_flow_full(current, prev);
+			case_flow_full(lem_in, &current);
 		if (current == NULL)
 			return ;
 		// {
