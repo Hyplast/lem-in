@@ -498,11 +498,11 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node)
 		}
 		if (current->in == NULL && current->in == NULL)
 		{	
-			// if (prev->room->distance < current->room->parent->distance)
-			// {
-			// 	current = prev;
-			// 	case_flow_full(lem_in, &current);
-			// }
+			if ((current->room->parent != NULL) && prev->room->distance < current->room->parent->distance)
+			{
+				current = prev;
+				case_flow_full(lem_in, &current);
+			}
 			// // special_backtrack_upstream(lem_in, &current, prev);
 			// else
 				case_travel_upstream(current, prev);
