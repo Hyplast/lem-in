@@ -173,21 +173,25 @@ void	print_node_paths(t_lem_in *lem_in)
 	t_node	*node;
 	t_room	*room;
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	room = lem_in->start_room->neighbors[i];
 	while (room)
 	{
 		ft_printf("#%s#->\n", lem_in->nodes->room->name);
 		node = find_a_node(lem_in, room);
-		while (node)
+		while ((node != NULL) & (j < 25))
 		{
 			ft_printf("#%s#:->", node->room->name);
 			if (node->out && node->in)
 				ft_printf("out: %s, in: %s ", node->out->room->name, node->in->room->name);
 			ft_printf("node->in_vis: %d, ->out_vis: %d\n", node->in_visited, node->out_visited);
 			node = node->out;
+			j++;
 		}
+		j = 0;
 		ft_putchar('\n');
 		room = lem_in->start_room->neighbors[++i];
 	}
@@ -388,6 +392,7 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 	shortest_node = NULL;
 	temp = find_a_node(lem_in, node->room->neighbors[i]);
 	shortest_distance = 2147483647;
+	// shortest_distance = node->room->distance;
 	while (temp != NULL)
 	{
 		if (temp->room == lem_in->end_room)
@@ -464,10 +469,15 @@ void	case_flow_full(t_lem_in *lem_in, t_node **node)
 	return ;
 }
 
+void	special_backtrack_upstream(t_node **node, t_node *prev)
+{
+	(*node) = prev;
+}
 
 void	follow_node_path(t_lem_in *lem_in, t_node *node)
 {
 	t_node	*prev;
+	// t_node	*special;
 	t_node	*current;
 	//int		flow;
 
@@ -487,7 +497,16 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node)
 			return ;
 		}
 		if (current->in == NULL && current->in == NULL)
-			case_travel_upstream(current, prev);
+		{	
+			if (prev->room->distance < current->room->parent->distance)
+			{
+				current = prev;
+				case_flow_full(lem_in, &current);
+			}
+			// special_backtrack_upstream(lem_in, &current, prev);
+			else
+				case_travel_upstream(current, prev);
+		}
 		else if (current->in_visited == 0 && current->out_visited == 0)
 		{
 			case_backtrack_upstream(lem_in, &current, prev);
