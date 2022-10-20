@@ -111,6 +111,51 @@ void	change_paths_order_i(t_lem_in *lem_in, int i)
 }
 
 
+void	print_neigbors(t_room *room)
+{
+	t_room	*neighbor;
+	int		i;
+
+	i = 0;
+	neighbor = room->neighbors[i];
+	ft_printf("printing %s neighbors dist : %i.\n", room->name, room->distance);
+	while (neighbor)
+	{
+		ft_printf("%i. neighr with name %s and dist %i.\n", i, neighbor->name, neighbor->distance);
+		neighbor = room->neighbors[++i];
+	}
+	
+}
+
+
+/*
+*	Remove neighbors from a room which distance is 0.
+*/
+void	remove_zero_neighbors(t_room *room)
+{
+	t_room *temp;
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	temp = room->neighbors[i];
+	while (temp)
+	{
+		if (temp->distance == 0)
+		{
+			while (room->neighbors[j])
+				j++;
+			// free(room->neighbors[i]);
+			room->neighbors[i] = room->neighbors[j - 1];
+			room->neighbors[j - 1] = NULL;
+			j = 0;
+			i--;
+		}
+		temp = room->neighbors[++i];
+	}
+}
+
 /*
 *	Ant solver
 */
@@ -126,13 +171,35 @@ void	do_lem_in(t_lem_in *lem_in)
 	// swap_links_around(lem_in);
 	find_neighbors(lem_in);
 
-	bread_first_search(lem_in, &queue, lem_in->start_room);
-	
-	
-	max_paths = calculate_neigbors(lem_in);
+	print_neigbors(lem_in->start_room);
+	print_neigbors(lem_in->end_room);
+	ft_printf("\n");
+
+	bread_first_search(lem_in, &queue, lem_in->end_room);
+
+	print_neigbors(lem_in->start_room);
+	print_neigbors(lem_in->end_room);
+
+	remove_zero_neighbors(lem_in->start_room);
 
 	// print_rooms(lem_in);
 	// print_paths(lem_in);
+	print_neigbors(lem_in->start_room);
+	print_neigbors(lem_in->end_room);
+	
+
+	queue = init_queue();
+	set_all_distance_to_n_and_visited_to_x(lem_in, 0, 0);
+	bread_first_search(lem_in, &queue, lem_in->start_room);
+	remove_zero_neighbors(lem_in->end_room);
+	
+	print_neigbors(lem_in->start_room);
+	print_neigbors(lem_in->end_room);
+	ft_printf("\n");
+	
+
+	max_paths = calculate_neigbors(lem_in);
+
 	set_all_zero_dist_to_max(lem_in);
 
 	find_the_shortest_path(lem_in);
@@ -145,8 +212,8 @@ void	do_lem_in(t_lem_in *lem_in)
 
 	
 
-	// print_rooms(lem_in);
-	// print_paths(lem_in);
+	print_rooms(lem_in);
+	print_paths(lem_in);
 
 	set_all_visited_to_zero(lem_in);
 
@@ -154,7 +221,7 @@ void	do_lem_in(t_lem_in *lem_in)
 	if (lem_in->ants_count != 1 && max_paths != 1)
 	{
 		recalculate_bfs(lem_in, max_paths);
-		// print_paths(lem_in);
+		print_paths(lem_in);
 		edmonkarp(lem_in, max_paths);
 	
 
@@ -214,11 +281,11 @@ void	do_lem_in(t_lem_in *lem_in)
 	// more_paths(lem_in);
 	set_visited_to_zero(lem_in);
 	
-	// print_paths(lem_in);
+	print_paths(lem_in);
 
 	calculate_optimal_paths(lem_in);
-	// ft_printf("after calculate_optimal_paths\n");
-	// print_paths(lem_in);
+	ft_printf("after calculate_optimal_paths\n");
+	print_paths(lem_in);
 
 	}
 	set_visited_to_zero(lem_in);

@@ -180,11 +180,14 @@ void	print_node_paths(t_lem_in *lem_in)
 	room = lem_in->start_room->neighbors[i];
 	while (room)
 	{
-		ft_printf("#%s#->\n", lem_in->nodes->room->name);
+
+		ft_printf("#%s#-> ", lem_in->nodes->room->name);
+		ft_printf("#dist: %d#->\n", room->distance);
 		node = find_a_node(lem_in, room);
 		while ((node != NULL) & (j < 25))
 		{
 			ft_printf("#%s#:->", node->room->name);
+			
 			if (node->out && node->in)
 				ft_printf("out: %s, in: %s ", node->out->room->name, node->in->room->name);
 			ft_printf("node->in_vis: %d, ->out_vis: %d\n", node->in_visited, node->out_visited);
@@ -398,7 +401,7 @@ t_node	*return_shortest_node(t_lem_in *lem_in, t_node *node)
 		if (temp->room == lem_in->end_room)
 			return (temp);
 		//if (temp->in_visited < 1) // && temp->out == NULL && temp->in == NULL)
-		if (temp->in == NULL)
+		if (temp->out_visited == 0)
 		{
 			if (temp->room->distance < shortest_distance)
 			{
@@ -488,7 +491,9 @@ void	follow_node_path(t_lem_in *lem_in, t_node *node)
 		// if (!node->in)
 		// 	node->in = prev;
 		prev = current;
+		print_neigbors(current->room);
 		current = return_shortest_node(lem_in, current);
+		// print_neigbors(current->room);
 		if (current == NULL)
 			return ;
 		if (current->room == lem_in->end_room)
@@ -914,34 +919,39 @@ void	edmonkarp(t_lem_in *lem_in, int max_paths)
 	t_queue	*queue;
 	int		i;
 	i = 0;
+	int	counter;
 
-	set_all_visited_to_zero(lem_in);
+	counter = 0;
+	set_all_distance_to_n_and_visited_to_x(lem_in, 0, 0);
 	queue = init_queue();
 	bread_first_search(lem_in, &queue, lem_in->end_room);
 	init_all_nodes(lem_in);
-	// print_rooms(lem_in);
+	print_rooms(lem_in);
 	while (lem_in->paths[i])
 	{
 		set_nodes_for_path(lem_in, lem_in->paths[i++]);
-		// print_node_paths(lem_in);
+		print_node_paths(lem_in);
 	}
 	room = start_neighbor_w_path(lem_in);
 	while (room && i < max_paths) // while (room && i++ < max_paths + 1) TODO:fixing
 	{
 		find_that_path(lem_in, room);
 		// ft_printf("\n new node paths with room: %s\n", room->name);
-		// print_node_paths(lem_in);
-		// print_paths(lem_in);
+		print_node_paths(lem_in);
+		print_paths(lem_in);
 		// ft_printf("before add paths from node\n");
 		add_paths_from_node(lem_in);
 
-		// ft_printf("after add paths from node\n");
-		// print_paths(lem_in);
-
+		ft_printf("after add paths from node\n");
+		print_paths(lem_in);
+		bubble_sort_paths(lem_in);
+		remove_duplicates(lem_in, i);
+		ft_printf("cleanup paths\n");
+		print_paths(lem_in);
 		// find_that_path(lem_in, room);
 		// ft_printf("\n second round with room: %s\n", room->name);
 		// print_node_paths(lem_in);
-		
+		counter++;
 		room = start_neighbor_w_path(lem_in);
 		i = count_n_unique_paths(lem_in);
 	}
@@ -949,7 +959,7 @@ void	edmonkarp(t_lem_in *lem_in, int max_paths)
 	// print_paths(lem_in);
 	// // add_paths_from_node(lem_in);
 	// i = 0;
-	// ft_printf("after change_paths_order\n");
+	ft_printf("after change_paths_order number: %d\n", counter);
 	// print_paths(lem_in);
 	// change_paths_order(lem_in);
 	bubble_sort_paths(lem_in);

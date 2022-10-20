@@ -16,6 +16,8 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
+#define INT_MAX 2147483647
+
 typedef struct s_queue
 {
 	struct s_room	*room;
@@ -202,5 +204,7 @@ void		recalculate_bfs(t_lem_in *lem_in, int max_paths);
 void		find_the_shortest_path(t_lem_in *lem_in);
 void		swap_links_around(t_lem_in *lem_in);
 void		set_all_zero_dist_to_max(t_lem_in *lem_in);
+void		set_all_distance_to_n_and_visited_to_x(t_lem_in *lem_in, int n, int x);
+void		print_neigbors(t_room *room);
 
 #endif

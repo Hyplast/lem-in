@@ -24,11 +24,11 @@ void	set_one_path_to_visited(t_lem_in *lem_in, t_path *path)
 	while (temp)
 	{
 		temp->room->visited = 1;
-		temp->room->distance = 2147483647;
+		temp->room->distance = INT_MAX;
 		temp = temp->next_path;
 	}
 	lem_in->end_room->visited = 0;
-	lem_in->end_room->distance = 0;
+	lem_in->end_room->distance = INT_MAX;
 	lem_in->start_room->visited = 0;
 	lem_in->start_room->distance = 0;
 }

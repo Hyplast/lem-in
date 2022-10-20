@@ -47,6 +47,24 @@ void	set_all_zero_dist_to_max(t_lem_in *lem_in)
 	lem_in->start_room->distance = 0;
 }
 
+/*
+*	Set all rooms distance to n and visited to x.
+*	@param1	n = distance
+*	@param2 x = visited
+*/
+void	set_all_distance_to_n_and_visited_to_x(t_lem_in *lem_in, int n, int x)
+{
+	t_room	*temp;
+
+	temp = lem_in->rooms;
+	while (temp)
+	{
+		temp->distance = n;
+		temp->visited = x;
+		temp = temp->next;
+	}
+}
+
 
 /*
 *	Set all rooms visited to zero.
